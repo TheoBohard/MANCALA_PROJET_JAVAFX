@@ -1,8 +1,10 @@
 package ensi;
 import ensi.model.Personne;
+import jdk.net.Sockets;
 
 import java.io.*;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 
 import java.net.Socket;
@@ -14,37 +16,51 @@ public class ServeurMessage {
 
     public static void main(String[] zero)
     {
-        ServerSocket socketserver  ;
-        Socket socketduserveur ;
-        Personne pers= new Personne();
+        while(true) {
+            ServerSocket socketserver;
+            Socket socketduserveur;
+            Personne pers = new Personne();
 
-        try
-        {
-            socketserver = new ServerSocket(2009);
-            System.out.println("Le ensi est à l'écoute du port "+socketserver.getLocalPort());
-            socketduserveur = socketserver.accept();
-            System.out.println("Un zéro s'est connecté");
-            OutputStream os=socketduserveur.getOutputStream();
-            ObjectOutputStream oos=new ObjectOutputStream(os);
+            try {
+                socketserver = new ServerSocket(2009);
+                System.out.println("Le ensi est à l'écoute du port " + socketserver.getLocalPort());
+                socketduserveur = socketserver.accept();
 
-            pers.setNom("Mon nom");
-            pers.setPrenom("Mon prénom");
-            pers.setIp("10.10.0.0");
-            pers.setPort("2009");
-            System.out.println("Données envoyées");
-            pers.afficher();
+                Socket socket = new Socket(InetAddress.getLocalHost(), 2010);
 
-            oos.writeObject(pers);// envoie de l'objet
+                InputStream is = socket.getInputStream();
+                ObjectInputStream ois = new ObjectInputStream(is);
 
-            socketduserveur.close();
-            socketserver.close();
+                String request= (String) ois.readObject();
+                //System.exit(0);
 
-        }
-        catch (IOException e)
-            {
+                OutputStream os = socketduserveur.getOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(os);
+
+                System.out.println("Resquest received");
+                if(request.equals("New game")){
+                    oos.writeObject("Bien reçu : nouvelle partie");// envoie de l'objet
+                }
+                if(request.equals("Load game")){
+                    oos.writeObject("Bien reçu : chargement de partie");// envoie de l'objet
+                }
+                if(request.equals("EXIT")){
+                    System.out.println("EXIT");
+                    socket.close();
+                }
+                else{
+                    oos.writeObject("Je ne connais pas cette instruction");// envoie de l'objet
+                }
+
+                socketduserveur.close();
+                socketserver.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
+        }
     }
 
 }
