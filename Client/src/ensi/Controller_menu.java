@@ -3,12 +3,16 @@ package ensi;
 import ensi.model.Personne;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.AnchorPane;
 
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller_menu implements Initializable {
@@ -17,16 +21,35 @@ public class Controller_menu implements Initializable {
     @FXML public Button load_game;
     @FXML public Button options;
     @FXML public Button leave;
+    public Controller_connexion Cconnexion;
+    public String ip;
+    public String port;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
-    public void start_new_game(ActionEvent actionEvent) {
+    public void connexion() throws IOException, InterruptedException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("tab.fxml"));
+        this.Cconnexion = loader.getController();
+        while(this.Cconnexion.getIp_final()==null){
+            Thread.sleep(1000);
+        }
+        this.ip = this.Cconnexion.getIp_final();
+        this.port =  this.Cconnexion.getPort_final();
+    }
+
+    public void start_new_game(ActionEvent actionEvent) throws IOException, InterruptedException {
+        if(this.ip==null){
+            this.connexion();
+        }
         this.communique("New game");
     }
 
-    public void load_a_game(ActionEvent actionEvent) {
+    public void load_a_game(ActionEvent actionEvent) throws IOException, InterruptedException {
+        if(this.ip==null){
+            this.connexion();
+        }
         this.communique("Load game");
     }
 
