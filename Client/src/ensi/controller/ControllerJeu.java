@@ -1,4 +1,4 @@
-package ensi;
+package ensi.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-public class Controller_jeu implements Initializable {
+public class ControllerJeu implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

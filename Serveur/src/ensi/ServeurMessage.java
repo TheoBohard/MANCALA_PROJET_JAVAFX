@@ -17,14 +17,14 @@ public class ServeurMessage {
     public static void main(String[] zero)
     {
         while(true) {
-            ServerSocket socketserver;
-            Socket socketduserveur;
+            ServerSocket serverSocket;
+            Socket inputSocket;
             Personne pers = new Personne();
 
             try {
-                socketserver = new ServerSocket(2009);
-                System.out.println("Le ensi est à l'écoute du port " + socketserver.getLocalPort());
-                socketduserveur = socketserver.accept();
+                serverSocket = new ServerSocket(2009);
+                System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
+                inputSocket = serverSocket.accept();
 
                 Socket socket = new Socket(InetAddress.getLocalHost(), 2010);
 
@@ -34,7 +34,7 @@ public class ServeurMessage {
                 String request= (String) ois.readObject();
                 //System.exit(0);
 
-                OutputStream os = socketduserveur.getOutputStream();
+                OutputStream os = inputSocket.getOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(os);
 
                 System.out.println("Resquest received");
@@ -52,12 +52,10 @@ public class ServeurMessage {
                     oos.writeObject("Je ne connais pas cette instruction");// envoie de l'objet
                 }
 
-                socketduserveur.close();
-                socketserver.close();
+                inputSocket.close();
+                serverSocket.close();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
