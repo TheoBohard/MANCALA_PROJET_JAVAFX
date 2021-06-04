@@ -1,7 +1,6 @@
 package ensi.controller;
 
 import ensi.Main;
-import ensi.controller.ControllerConnexion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 import java.io.*;
 import java.net.*;
@@ -26,9 +24,11 @@ public class ControllerMenu implements Initializable {
     @FXML public Button leave;
     @FXML public AnchorPane anchorConnexion;
     @FXML public Text textAnchor;
+    public String mode;
     public ControllerConnexion controllerConnexion;
     public String ip;
     public String port;
+    private ControllerChooseMode controllerModeChoose;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -38,13 +38,17 @@ public class ControllerMenu implements Initializable {
         this.port = port;
     }
 
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
     public void connexion() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/connexion.fxml"));
 
         anchorConnexion.getChildren().add(loader.load());
         this.controllerConnexion = loader.getController();
-        controllerConnexion.setCmenu(this);
+        this.controllerConnexion.setCmenu(this);
 
         this.ip = this.controllerConnexion.getIpFinal();
         this.port =  this.controllerConnexion.getPortFinal();
@@ -54,16 +58,28 @@ public class ControllerMenu implements Initializable {
         if(this.ip==null){
             this.connexion();
         } else {
-            this.sendMessage("New game");
+            String response = this.sendMessage("New game");
+            if(response.equals("Bien reçu : nouvelle partie")) {
 
-            Stage gameStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+                anchorConnexion.getChildren().clear();
+                //Selection of game_mode
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/mode_choose.fxml"));
+                anchorConnexion.getChildren().add(loader.load());
+                this.controllerModeChoose = loader.getController();
+                this.controllerModeChoose.setCmenu(this);
 
-            gameStage.setTitle("Jeu MANCALA");
-            gameStage.setScene(new Scene(root, 1100, 700));
-            gameStage.show();
-            Main.primaryStage.close();
+
+            }
         }
+    }
+
+    public void launchgame() throws IOException {
+        Stage gameStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+        gameStage.setTitle("Jeu MANCALA");
+        gameStage.setScene(new Scene(root, 1100, 800));
+        gameStage.show();
+        Main.primaryStage.close();
     }
 
     public void loadAGame() throws IOException {
@@ -83,9 +99,10 @@ public class ControllerMenu implements Initializable {
         System.exit(0);
     }
 
-    public void sendMessage(String message) throws UnknownHostException {
+    public String sendMessage(String message) throws UnknownHostException {
         Socket socket;
         Socket serverSocket;
+        String response = null;
 
         try {
             socket = createServerSocket(InetAddress.getByName(this.ip), Integer.parseInt(this.port));
@@ -101,16 +118,20 @@ public class ControllerMenu implements Initializable {
             InputStream is = socket.getInputStream();
             ObjectInputStream ois = new ObjectInputStream(is);
             if(!message.equals("EXIT")){
-                String response = (String) ois.readObject();
+                response = (String) ois.readObject();
                 System.out.println(response);
             }
-
-
             socket.close();
 
         } catch (ClassNotFoundException | IOException e)
         {
             e.printStackTrace();
+        }
+
+        if(response!=null){
+            return response;
+        }else{
+            return null;
         }
     }
 

@@ -1,12 +1,9 @@
 package ensi;
+
 import ensi.model.Personne;
-import jdk.net.Sockets;
-
 import java.io.*;
-
 import java.net.InetAddress;
 import java.net.ServerSocket;
-
 import java.net.Socket;
 
 /**
