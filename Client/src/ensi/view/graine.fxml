@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Ellipse?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="113.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="seedTemplate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="113.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Ellipse fx:id="seedTemplate" fill="#e4c479" layoutX="57.0" layoutY="35.0" radiusX="44.0" radiusY="28.0" stroke="BLACK" strokeType="INSIDE">
+      <Ellipse fill="#e4c479" layoutX="57.0" layoutY="35.0" radiusX="44.0" radiusY="28.0" stroke="BLACK" strokeType="INSIDE">
          <effect>
             <DropShadow blurType="GAUSSIAN" height="49.17" radius="23.715" width="47.69">
                <input>

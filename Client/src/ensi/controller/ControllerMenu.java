@@ -30,6 +30,7 @@ public class ControllerMenu implements Initializable {
     public String ip;
     public String port;
     private ControllerChooseMode controllerModeChoose;
+    private ArrayList<Integer> tab_seed = new ArrayList<Integer>();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
@@ -78,25 +79,25 @@ public class ControllerMenu implements Initializable {
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
 
-                ArrayList<Integer> tab_seed= (ArrayList<Integer>) ois.readObject();
+                tab_seed = (ArrayList<Integer>) ois.readObject();
 
                 OutputStream os = inputSocket.getOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(os);
 
                 System.out.println("Resquest received");
-
-                ControllerJeu controller_jeu = new ControllerJeu();
-                controller_jeu.init(tab_seed);
             }
         }
     }
 
     public void launchgame() throws IOException {
+        ControllerJeu controller_jeu = new ControllerJeu();
         Stage gameStage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
         gameStage.setTitle("Jeu MANCALA");
         gameStage.setScene(new Scene(root, 1100, 800));
         gameStage.show();
+        System.out.println("Helloooo worflddddd");
+        controller_jeu.init(tab_seed);
         Main.primaryStage.close();
     }
 
