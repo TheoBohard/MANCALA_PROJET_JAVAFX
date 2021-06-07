@@ -1,6 +1,10 @@
 package ensi;
 
+import ensi.model.Game_model;
 import ensi.model.Personne;
+import ensi.model.View_update;
+
+import javax.swing.text.View;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -13,7 +17,8 @@ public class ServeurMessage {
 
     public static void main(String[] zero)
     {
-        while(true) {
+        Boolean verif =true;
+        while(verif==true) {
             ServerSocket serverSocket;
             Socket inputSocket;
             Personne pers = new Personne();
@@ -35,15 +40,23 @@ public class ServeurMessage {
                 ObjectOutputStream oos = new ObjectOutputStream(os);
 
                 System.out.println("Resquest received");
+                System.out.println(request);
                 if(request.equals("New game")){
+                    verif=false;
                     oos.writeObject("Bien reçu : nouvelle partie");// envoie de l'objet
+                    Game_model model = new Game_model();
+                    View_update update = new View_update(model);
+                    update.update_view();
+                    System.out.println("JE SUIS LA");
                 }
-                if(request.equals("Load game")){
+                else if(request.equals("Load game")){
                     oos.writeObject("Bien reçu : chargement de partie");// envoie de l'objet
                 }
-                if(request.equals("EXIT")){
+                else if(request.equals("EXIT")){
                     System.out.println("EXIT");
                     socket.close();
+                }else if(request.equals("init")){
+
                 }
                 else{
                     oos.writeObject("Je ne connais pas cette instruction");// envoie de l'objet

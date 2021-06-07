@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ControllerMenu implements Initializable {
@@ -54,7 +55,7 @@ public class ControllerMenu implements Initializable {
         this.port =  this.controllerConnexion.getPortFinal();
     }
 
-    public void startNewGame() throws IOException {
+    public void startNewGame() throws IOException, ClassNotFoundException {
         if(this.ip==null){
             this.connexion();
         } else {
@@ -68,7 +69,24 @@ public class ControllerMenu implements Initializable {
                 this.controllerModeChoose = loader.getController();
                 this.controllerModeChoose.setCmenu(this);
 
+                ServerSocket serverSocket = new ServerSocket(2020);
+                System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
+                Socket inputSocket = serverSocket.accept();
 
+                Socket socket = new Socket(InetAddress.getLocalHost(), 2019);
+
+                InputStream is = socket.getInputStream();
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                ArrayList<Integer> tab_seed= (ArrayList<Integer>) ois.readObject();
+
+                OutputStream os = inputSocket.getOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(os);
+
+                System.out.println("Resquest received");
+
+                ControllerJeu controller_jeu = new ControllerJeu();
+                controller_jeu.init(tab_seed);
             }
         }
     }
