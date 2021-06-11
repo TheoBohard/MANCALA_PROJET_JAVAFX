@@ -45,77 +45,58 @@ public class ControllerJeu implements Initializable {
     private GridPane GridPane11;
     @FXML
     private GridPane GridPane12;
-
     @FXML
     private Circle CircleOne;
-
     @FXML
     private Circle CircleTwo;
-
     @FXML
     private Circle CircleThree;
-
     @FXML
     private Circle CIrcleFour;
-
     @FXML
     private Circle CircleFive;
-
     @FXML
     private Circle CircleSIx;
-
     @FXML
     private Circle CIrcleSeven;
-
     @FXML
     private Circle CircleEIght;
-
     @FXML
     private Circle CircleNIne;
-
     @FXML
     private Circle CircleTen;
-
     @FXML
     private Circle CIrcleEleven;
-
     @FXML
     private Circle CircleTwelve;
 
     private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        GridPaneArray.addAll(Arrays.asList(GridPane1, GridPane2, GridPane3, GridPane4, GridPane5,
-                GridPane6, GridPane7, GridPane8, GridPane9, GridPane10, GridPane11, GridPane12));
 
-        System.out.println("Hello");
-        try {
-            populateGridPane(10);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //TODO : Add action on click GridPane and circle
     }
 
     public void init(ArrayList<Integer> tab_seed) {
         GridPaneArray.addAll(Arrays.asList(GridPane1, GridPane2, GridPane3, GridPane4, GridPane5,
                 GridPane6, GridPane7, GridPane8, GridPane9, GridPane10, GridPane11, GridPane12));
+
         int compteur = 0;
-        for (int nb_seed : tab_seed) {
-//            GridPaneArray.get(compteur);
-            compteur++;
+        for(GridPane gridpane:GridPaneArray) {
+            try {
+                populateGridPane(tab_seed.get(compteur),gridpane);
+                compteur++;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //TODO : Add action on click GridPane and circle
         }
+
     }
 
-    private void populateGridPane(int numberSeed) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../view/graine.fxml"));
-        Scene scene = new Scene(root);
-
-        AnchorPane foo = (AnchorPane) scene.lookup("#seedTemplate");
+    private void populateGridPane(int numberSeed, GridPane grid) throws IOException {
 
         for (int i = 0; i < numberSeed; i++) {
-            GridPane1.add(new Ellipse(10,10), i%4 ,i/4 );
-            // TODO : Add the seed on the GridPane
+            grid.add(new Ellipse(10,10), i%4 ,i/4 );
         }
     }
 

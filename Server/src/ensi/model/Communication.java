@@ -20,7 +20,7 @@ public class Communication {
         String response = null;
 
         try {
-            socket = createServerSocket(InetAddress.getByName("127.0.0.1"), 2020);
+            socket = createServerSocket(InetAddress.getLocalHost(), 2020);
 
             ServerSocket clientSocket = new ServerSocket(2019);
             serverSocket = clientSocket.accept();
