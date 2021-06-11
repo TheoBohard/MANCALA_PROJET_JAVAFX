@@ -2,11 +2,11 @@ package ensi.model;
 
 import java.util.ArrayList;
 
-public class Game_model {
+public class gameModel {
 
     ArrayList<Whole> wholes = new ArrayList<Whole>();
 
-    public Game_model() {
+    public gameModel() {
        for(int i=0;i<16;i++){
            wholes.add(new Whole());
            wholes.get(i).setNb_seed(4);

@@ -2,13 +2,12 @@ package ensi.model;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class View_update {
+public class viewUpdate {
 
-    private final Game_model model;
+    private final gameModel model;
 
-    public View_update(Game_model model) {
+    public viewUpdate(gameModel model) {
         this.model=model;
     }
 

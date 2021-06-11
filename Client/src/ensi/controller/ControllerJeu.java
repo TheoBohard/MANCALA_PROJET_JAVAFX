@@ -22,29 +22,29 @@ import java.util.ResourceBundle;
 public class ControllerJeu implements Initializable {
 
     @FXML
-    private GridPane GridPane1;
+    public GridPane GridPane1;
     @FXML
-    private GridPane GridPane2;
+    public GridPane GridPane2;
     @FXML
-    private GridPane GridPane3;
+    public GridPane GridPane3;
     @FXML
-    private GridPane GridPane4;
+    public GridPane GridPane4;
     @FXML
-    private GridPane GridPane5;
+    public GridPane GridPane5;
     @FXML
-    private GridPane GridPane6;
+    public GridPane GridPane6;
     @FXML
-    private GridPane GridPane7;
+    public GridPane GridPane7;
     @FXML
-    private GridPane GridPane8;
+    public GridPane GridPane8;
     @FXML
-    private GridPane GridPane9;
+    public GridPane GridPane9;
     @FXML
-    private GridPane GridPane10;
+    public GridPane GridPane10;
     @FXML
-    private GridPane GridPane11;
+    public GridPane GridPane11;
     @FXML
-    private GridPane GridPane12;
+    public GridPane GridPane12;
     @FXML
     private Circle CircleOne;
     @FXML
@@ -66,22 +66,21 @@ public class ControllerJeu implements Initializable {
     @FXML
     private Circle CircleTen;
     @FXML
-    private Circle CIrcleEleven;
+    private Circle CircleEleven;
     @FXML
     private Circle CircleTwelve;
 
     private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
     public void init(ArrayList<Integer> tab_seed) {
-        GridPaneArray.addAll(Arrays.asList(GridPane1, GridPane2, GridPane3, GridPane4, GridPane5,
+        int compteur = 0;
+        this.GridPaneArray.addAll(Arrays.asList(this.GridPane1, GridPane2, GridPane3, GridPane4, GridPane5,
                 GridPane6, GridPane7, GridPane8, GridPane9, GridPane10, GridPane11, GridPane12));
 
-        int compteur = 0;
-        for(GridPane gridpane:GridPaneArray) {
+        for(GridPane gridpane:this.GridPaneArray) {
             try {
                 populateGridPane(tab_seed.get(compteur),gridpane);
                 compteur++;

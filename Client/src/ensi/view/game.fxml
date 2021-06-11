@@ -67,7 +67,7 @@
                   <DropShadow />
                </effect>
             </Circle>
-            <Circle fx:id="CIrcleEleven" fill="#ad4b09ae" layoutX="825.0" layoutY="494.0" radius="68.0" stroke="#652e09" strokeType="INSIDE" strokeWidth="6.0">
+            <Circle fx:id="CircleEleven" fill="#ad4b09ae" layoutX="825.0" layoutY="494.0" radius="68.0" stroke="#652e09" strokeType="INSIDE" strokeWidth="6.0">
                <effect>
                   <DropShadow />
                </effect>

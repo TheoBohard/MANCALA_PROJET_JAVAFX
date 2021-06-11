@@ -20,7 +20,7 @@ public class ControllerChooseMode implements Initializable {
     public String portFinal;
     public ControllerMenu controllerMenu;
 
-    public ControllerMenu getCmenu() {
+    public ControllerMenu getControllerMenu() {
         return controllerMenu;
     }
 

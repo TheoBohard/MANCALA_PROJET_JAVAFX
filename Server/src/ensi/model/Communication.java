@@ -14,10 +14,9 @@ public class Communication {
     public Communication() {
     }
 
-    public String sendMessage(Object message) throws UnknownHostException {
+    public void sendMessage(Object message) {
         Socket socket;
         Socket serverSocket;
-        String response = null;
 
         try {
             socket = createServerSocket(InetAddress.getLocalHost(), 2020);
@@ -29,20 +28,10 @@ public class Communication {
 
             serverSocket.close();
             clientSocket.close();
-
-            InputStream is = socket.getInputStream();
-            ObjectInputStream ois = new ObjectInputStream(is);
-
             socket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (response != null) {
-            return response;
-        } else {
-            return null;
         }
     }
 

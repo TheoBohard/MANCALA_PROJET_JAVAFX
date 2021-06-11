@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ControllerMenu implements Initializable {
@@ -90,14 +91,20 @@ public class ControllerMenu implements Initializable {
     }
 
     public void launchgame() throws IOException {
-        ControllerJeu controller_jeu = new ControllerJeu();
         Stage gameStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("../view/game.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root);
+
         gameStage.setTitle("Jeu MANCALA");
-        gameStage.setScene(new Scene(root, 1100, 800));
+        gameStage.setScene(scene);
+
+        ControllerJeu gameController = loader.getController();
+
         gameStage.show();
+        gameController.init(tab_seed);
         System.out.println("Helloooo worflddddd");
-        controller_jeu.init(tab_seed);
         Main.primaryStage.close();
     }
 
@@ -108,7 +115,7 @@ public class ControllerMenu implements Initializable {
         this.sendMessage("Load game");
     }
 
-    public void start_options(ActionEvent actionEvent) {
+    public void startOptions(ActionEvent actionEvent) {
 
     }
 
@@ -118,7 +125,7 @@ public class ControllerMenu implements Initializable {
         System.exit(0);
     }
 
-    public String sendMessage(String message) throws UnknownHostException {
+    public String sendMessage(String message) {
         Socket socket;
         Socket serverSocket;
         String response = null;
@@ -147,11 +154,7 @@ public class ControllerMenu implements Initializable {
             e.printStackTrace();
         }
 
-        if(response!=null){
-            return response;
-        }else{
-            return null;
-        }
+        return response;
     }
 
     private Socket createServerSocket(InetAddress address, int port) throws IOException {
