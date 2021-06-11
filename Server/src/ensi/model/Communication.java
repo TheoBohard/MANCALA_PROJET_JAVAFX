@@ -10,18 +10,28 @@ public class Communication {
 
     private String ip;
     private String port;
+    private int nb_player_connected;
+
+    public int getNb_player_connected() {
+        return nb_player_connected;
+    }
+
+    public void setNb_player_connected(int nb_player_connected) {
+        this.nb_player_connected = nb_player_connected;
+    }
 
     public Communication() {
     }
 
-    public void sendMessage(Object message) {
+    public void sendMessage(Object message, int port_socket, int port_socket_serveur) {
         Socket socket;
         Socket serverSocket;
 
         try {
-            socket = createServerSocket(InetAddress.getLocalHost(), 2020);
+            System.out.println(port_socket);
+            socket = createServerSocket(InetAddress.getLocalHost(), port_socket);
 
-            ServerSocket clientSocket = new ServerSocket(2019);
+            ServerSocket clientSocket = new ServerSocket(port_socket_serveur);
             serverSocket = clientSocket.accept();
 
             sendMessageSocket(serverSocket, message);

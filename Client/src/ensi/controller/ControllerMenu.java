@@ -62,7 +62,11 @@ public class ControllerMenu implements Initializable {
             this.connexion();
         } else {
             String response = this.sendMessage("New game");
-            if(response.equals("Bien reçu : nouvelle partie")) {
+            String[] tab = response.split(",");
+            System.out.println(tab);
+            String which_port = tab[1];
+
+            if(tab[0].equals("Bien reçu : nouvelle partie")) {
 
                 anchorConnexion.getChildren().clear();
                 //Selection of game_mode
@@ -71,11 +75,11 @@ public class ControllerMenu implements Initializable {
                 this.controllerModeChoose = loader.getController();
                 this.controllerModeChoose.setCmenu(this);
 
-                ServerSocket serverSocket = new ServerSocket(2020);
+                ServerSocket serverSocket = new ServerSocket(Integer.parseInt(which_port));//2020
                 System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
                 Socket inputSocket = serverSocket.accept();
 
-                Socket socket = new Socket(InetAddress.getLocalHost(), 2019);
+                Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(which_port)-1);//2019
 
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);

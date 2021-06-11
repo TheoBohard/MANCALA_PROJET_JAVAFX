@@ -1,5 +1,6 @@
 package ensi;
 
+import ensi.model.Communication;
 import ensi.model.gameModel;
 import ensi.model.viewUpdate;
 
@@ -7,6 +8,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by faye on 01/06/2017.
@@ -17,6 +19,12 @@ public class ServeurMessage {
     public static void main(String[] zero)
     {
         boolean verif = true;
+        int nb_player_connected=0;
+        ArrayList<String> list_ports = new ArrayList<>();
+        list_ports.add("2020");
+        list_ports.add("2015");
+        gameModel model = new gameModel();
+        viewUpdate update = new viewUpdate(model,list_ports);
 
         while(verif) {
             ServerSocket serverSocket;
@@ -41,14 +49,18 @@ public class ServeurMessage {
                     System.out.println("Resquest received");
                     System.out.println(request);
                     switch (request) {
-                        case "New game":
-                            verif = false;
-                            oos.writeObject("Bien reçu : nouvelle partie");// envoie de l'objet
 
-                            gameModel model = new gameModel();
-                            viewUpdate update = new viewUpdate(model);
+                        case "New game":
+
+                            //verif = false;
+                            String port = list_ports.get(nb_player_connected);
+                            nb_player_connected++;
+
+                            oos.writeObject("Bien reçu : nouvelle partie,".concat(port));// envoie de l'objet
+
                             update.update_view();
                             System.out.println("JE SUIS LA");
+
                             break;
                         case "Load game":
                             oos.writeObject("Bien reçu : chargement de partie");// envoie de l'objet

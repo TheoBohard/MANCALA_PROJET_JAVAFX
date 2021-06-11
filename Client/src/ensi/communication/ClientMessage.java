@@ -1,13 +1,12 @@
 package ensi.communication;
-import ensi.model.Personne;
 
-import java.io.*;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.InetAddress;
-
 import java.net.Socket;
-
 import java.net.UnknownHostException;
+
 /**
  * Created by faye on 01/06/2017.
  */
@@ -15,7 +14,6 @@ public class ClientMessage {
     public static void main(String[] zero)
     {
         Socket socket;
-        Personne pers= new Personne();
 
         try
         {
@@ -24,8 +22,6 @@ public class ClientMessage {
             InputStream is=socket.getInputStream();
             ObjectInputStream ois=new ObjectInputStream(is);
 
-            pers= (Personne) ois.readObject();// envoie de l'objet
-            pers.afficher();
 
             socket.close();
 
@@ -35,10 +31,6 @@ public class ClientMessage {
             e.printStackTrace();
         }
         catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
         {
             e.printStackTrace();
         }
