@@ -33,12 +33,12 @@ public class ControllerChooseMode implements Initializable {
         this.portFinal = "";
     }
 
-    public void one_player(ActionEvent actionEvent) throws IOException {
+    public void one_player(ActionEvent actionEvent) throws IOException, InterruptedException {
         controllerMenu.setMode("Oneplayer");
         controllerMenu.launchgame();
     }
 
-    public void two_players(ActionEvent actionEvent) throws IOException {
+    public void two_players(ActionEvent actionEvent) throws IOException, InterruptedException {
         controllerMenu.setMode("Twoplayers");
         controllerMenu.launchgame();
     }

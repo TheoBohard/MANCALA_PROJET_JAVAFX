@@ -26,7 +26,8 @@ public class Communication {
     public void sendInitMessage(Object message, int port_socket, int port_socket_serveur) {
         Socket socket;
         Socket serverSocket;
-
+        System.out.println(port_socket);
+        System.out.println(port_socket_serveur);
         try {
             System.out.println(port_socket);
             socket = createServerSocket(InetAddress.getLocalHost(), port_socket);

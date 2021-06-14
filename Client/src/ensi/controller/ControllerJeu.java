@@ -72,6 +72,12 @@ public class ControllerJeu implements Initializable {
     private Circle CircleTwelve;
     private Communication com;
     private String passWord;
+    private String port;
+
+
+    public void setPort(String port) {
+        this.port = port;
+    }
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
@@ -131,7 +137,7 @@ public class ControllerJeu implements Initializable {
         }
     }
 
-    public void ask_server_to_move(MouseEvent mouseEvent) throws IOException {
+    public void ask_server_to_move(MouseEvent mouseEvent) throws IOException, InterruptedException {
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
         Object serverReponse = com.sendMessage(id.concat(",").concat(this.passWord));
@@ -148,16 +154,17 @@ public class ControllerJeu implements Initializable {
 
     }
 
-    private void listen_to_server() {
+    public void listen_to_server() throws InterruptedException {
         ServerSocket serverSocket;
         Socket inputSocket;
 
         try {
-            serverSocket = new ServerSocket(2011);
+            System.out.println(this.port);
+            serverSocket = new ServerSocket(Integer.parseInt(this.port)+1);
             System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
 
-            try (Socket socket = new Socket(InetAddress.getLocalHost(), 2012)) {
+            try (Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(this.port)+2)) {
 
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
@@ -167,16 +174,18 @@ public class ControllerJeu implements Initializable {
                 OutputStream os = inputSocket.getOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(os);
 
-                System.out.println("Resquest received");
+                System.out.println("Resquest received ECOUTE");
                 System.out.println(request);
 
                 updateView((ArrayList<?>) request);
 
-
+                inputSocket.close();
+                serverSocket.close();
             }
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
     }
 }

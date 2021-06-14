@@ -48,14 +48,13 @@ public class ViewUpdate {
     }
 
 
-    public void updateViewOtherPlayer() {
+    public void updateViewOtherPlayer(int index_joueur) {
         ArrayList<Integer> seedInfo = new ArrayList<>();
-        System.out.println("TEST");
         ArrayList<Whole> wholes = this.model.getWholes();
         for(Whole whole:wholes){
             int nb_seed = whole.getNb_seed();
             seedInfo.add(nb_seed);
         }
-        com.sendInitMessage(seedInfo, 2011, 2012);
+        com.sendInitMessage(seedInfo, Integer.parseInt(this.list_ports.get((index_joueur)%2))+1, Integer.parseInt(this.list_ports.get((index_joueur)%2))+2);
     }
 }

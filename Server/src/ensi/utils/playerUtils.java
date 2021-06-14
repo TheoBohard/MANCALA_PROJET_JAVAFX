@@ -1,6 +1,5 @@
 package ensi.utils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,8 +16,8 @@ public class playerUtils {
         return player;
     }
 
-    static public String chooseRandomPlayer(ArrayList<String> players) {
+    static public int chooseRandomPlayer() {
         Random rand = new Random();
-        return players.get(rand.nextInt(2));
+        return rand.nextInt(2);
     }
 }

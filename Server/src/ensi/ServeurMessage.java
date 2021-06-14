@@ -19,7 +19,10 @@ import java.util.ArrayList;
 
 public class ServeurMessage {
 
+
+
     public static void main(String[] zero) throws IOException {
+        int index_joueur = 0;
         int nb_player_connected = 0;
         ArrayList<String> list_ports = new ArrayList<>();
         list_ports.add("2020");
@@ -29,6 +32,8 @@ public class ServeurMessage {
         idGenerator utilPass = new idGenerator();
         ArrayList<String> passwords = new ArrayList<String>();
         Communication com = new Communication();
+
+        int ordre = playerUtils.chooseRandomPlayer();
 
         while (passwords.size() < 2) {
             ServerSocket serverSocket;
@@ -54,6 +59,17 @@ public class ServeurMessage {
                     switch (request) {
 
                         case "New game":
+                            int position=-1;
+
+                            if(nb_player_connected==0 && ordre==0){
+                                position=1;
+                            }else if(nb_player_connected==0 && ordre==1) {
+                                position = 2;
+                            }else if(nb_player_connected==1 && ordre==0) {
+                                position = 2;
+                            }else if(nb_player_connected==1 && ordre==1) {
+                                position = 1;
+                            }
 
                             String port = list_ports.get(nb_player_connected);
                             nb_player_connected++;
@@ -63,7 +79,9 @@ public class ServeurMessage {
                                     .concat(port)
                                     .concat(",").concat(pass)
                                     .concat(",")
-                                    .concat(String.valueOf(nb_player_connected)));
+                                    .concat(String.valueOf(nb_player_connected))
+                                    .concat(",")
+                                    .concat(Integer.toString(position)));
 
                             update.initViewAndComm();
                             System.out.println("JE SUIS LA");
@@ -95,7 +113,7 @@ public class ServeurMessage {
             }
         }
 
-        String playerTurn = playerUtils.chooseRandomPlayer(passwords);
+        String playerTurn = passwords.get(ordre);
         //TODO : Informer le client de si il doit jouer ou non
 
 
@@ -132,11 +150,12 @@ public class ServeurMessage {
                         String[] requestSplitted = request.split(",");
                         // [0] => GridPane [1] => Password
                         if (requestSplitted[1].equals(playerTurn)) {
+                            index_joueur = (index_joueur+1)%2;
                             System.out.println("On fait l'action");
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                            model.moveWholes(7);
+                            model.moveWholes(Integer.parseInt(requestSplitted[0]));
                             update.updateView(oos);
-                            update.updateViewOtherPlayer();
+                            update.updateViewOtherPlayer(index_joueur);
                         } else {
                             System.out.println("On ne fait pas l'action");
                             oos.writeObject("Ce n'est pas ton tour");

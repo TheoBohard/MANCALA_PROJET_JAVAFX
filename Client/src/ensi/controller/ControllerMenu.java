@@ -31,11 +31,13 @@ public class ControllerMenu implements Initializable {
     public ControllerConnexion controllerConnexion;
     public String ip;
     public String port;
+    public String comPort;
     private ControllerChooseMode controllerModeChoose;
     private ArrayList<Integer> tab_seed = new ArrayList<Integer>();
     private Communication com;
     private String passWord;
     private int numberPlayer = 0;
+    private String position;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         com = new Communication();
@@ -70,9 +72,10 @@ public class ControllerMenu implements Initializable {
             String response = (String) com.sendMessage("New game");
             String[] tab = response.split(",");
             System.out.println(Arrays.toString(tab));
-            String which_port = tab[1];
+            this.comPort = tab[1];
             this.passWord = tab[2];
-            numberPlayer = Integer.parseInt(tab[3]);
+            this.numberPlayer = Integer.parseInt(tab[3]);
+            this.position = tab[4];
 
             if(tab[0].equals("Bien reçu : nouvelle partie")) {
 
@@ -83,11 +86,11 @@ public class ControllerMenu implements Initializable {
                 this.controllerModeChoose = loader.getController();
                 this.controllerModeChoose.setCmenu(this);
 
-                ServerSocket serverSocket = new ServerSocket(Integer.parseInt(which_port));
+                ServerSocket serverSocket = new ServerSocket(Integer.parseInt(this.comPort));
                 System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
                 Socket inputSocket = serverSocket.accept();
 
-                Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(which_port)-1);
+                Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(this.comPort)-1);
 
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
@@ -102,7 +105,7 @@ public class ControllerMenu implements Initializable {
         }
     }
 
-    public void launchgame() throws IOException {
+    public void launchgame() throws IOException, InterruptedException {
         Stage gameStage = new Stage();
         //TODO : Server will say what view we want to load
         String view = "../view/gamePlayer".concat(String.valueOf(numberPlayer)).concat(".fxml");
@@ -116,10 +119,15 @@ public class ControllerMenu implements Initializable {
 
         ControllerJeu gameController = loader.getController();
         gameController.setPassWord(this.passWord);
+        gameController.setPort(this.comPort);
 
         gameStage.show();
         gameController.init(tab_seed);
         Main.primaryStage.close();
+
+        if(this.position.equals("2")){
+            gameController.listen_to_server();
+        }
     }
 
     public void loadAGame() throws IOException {
