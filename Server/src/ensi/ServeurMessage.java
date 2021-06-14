@@ -18,7 +18,6 @@ public class ServeurMessage {
 
     public static void main(String[] zero)
     {
-        boolean verif = true;
         int nb_player_connected=0;
         ArrayList<String> list_ports = new ArrayList<>();
         list_ports.add("2020");
@@ -26,8 +25,9 @@ public class ServeurMessage {
         GameModel model = new GameModel();
         ViewUpdate update = new ViewUpdate(model,list_ports);
         Password utilPass = new Password();
+        ArrayList<String> passwords = new ArrayList<String>();
 
-        while(verif) {
+        while(passwords.size()>2) {
             ServerSocket serverSocket;
             Socket inputSocket;
 
@@ -55,7 +55,7 @@ public class ServeurMessage {
                             String port = list_ports.get(nb_player_connected);
                             nb_player_connected++;
                             String pass = utilPass.generatePassword();
-
+                            passwords.add(pass);
                             oos.writeObject("Bien reçu : nouvelle partie,".concat(port).concat(",").concat(pass));// envoie de l'objet
 
                             update.update_view();
@@ -87,6 +87,64 @@ public class ServeurMessage {
                 e.printStackTrace();
             }
         }
+
+        while (true){
+
+            serverSocket = new ServerSocket(2009);
+            System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
+            inputSocket = serverSocket.accept();
+
+            try (Socket socket = new Socket(InetAddress.getLocalHost(), 2010)) {
+
+                InputStream is = socket.getInputStream();
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                String request = (String) ois.readObject();
+
+                OutputStream os = inputSocket.getOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(os);
+
+                System.out.println("Resquest received");
+                System.out.println(request);
+                switch (request) {
+
+                    case "New game":
+
+                        String port = list_ports.get(nb_player_connected);
+                        nb_player_connected++;
+                        String pass = utilPass.generatePassword();
+                        passwords.add(pass);
+                        oos.writeObject("Bien reçu : nouvelle partie,".concat(port).concat(",").concat(pass));// envoie de l'objet
+
+                        update.update_view();
+                        System.out.println("JE SUIS LA");
+
+                        break;
+                    case "Load game":
+                        oos.writeObject("Bien reçu : chargement de partie");// envoie de l'objet
+
+                        break;
+                    case "EXIT":
+                        System.out.println("EXIT");
+                        socket.close();
+                        break;
+                    case "init":
+
+                        break;
+                    default:
+                        oos.writeObject("Je ne connais pas cette instruction");// envoie de l'objet
+
+                        break;
+                }
+            }
+
+            inputSocket.close();
+            serverSocket.close();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
