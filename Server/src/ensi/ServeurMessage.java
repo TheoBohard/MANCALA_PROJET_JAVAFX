@@ -33,7 +33,7 @@ public class ServeurMessage {
         ArrayList<String> passwords = new ArrayList<String>();
         Communication com = new Communication();
 
-        int ordre = playerUtils.chooseRandomPlayer();
+        int ordre = 0;
 
         while (passwords.size() < 2) {
             ServerSocket serverSocket;
@@ -138,7 +138,7 @@ public class ServeurMessage {
                 ObjectOutputStream oos = new ObjectOutputStream(os);
 
                 System.out.println("Resquest received");
-                System.out.println(request);
+                System.out.println("Request : " + request);
                 switch (request) {
                     case "give_me_view":
                         update.updateView(oos);
@@ -147,15 +147,17 @@ public class ServeurMessage {
                         socket.close();
                         break;
                     default:
+                        System.out.println("Default !!");
                         String[] requestSplitted = request.split(",");
                         // [0] => GridPane [1] => Password
                         if (requestSplitted[1].equals(playerTurn)) {
-                            index_joueur = (index_joueur+1)%2;
                             System.out.println("On fait l'action");
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                             model.moveWholes(Integer.parseInt(requestSplitted[0]));
                             update.updateView(oos);
+                            System.out.println("Index du joueur : " + index_joueur);
                             update.updateViewOtherPlayer(index_joueur);
+                            index_joueur = (index_joueur+1)%2;
                         } else {
                             System.out.println("On ne fait pas l'action");
                             oos.writeObject("Ce n'est pas ton tour");

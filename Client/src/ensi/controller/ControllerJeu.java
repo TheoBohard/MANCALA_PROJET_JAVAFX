@@ -2,13 +2,8 @@ package ensi.controller;
 
 import ensi.communication.Communication;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
@@ -19,6 +14,9 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ControllerJeu implements Initializable {
 
@@ -73,6 +71,7 @@ public class ControllerJeu implements Initializable {
     private Communication com;
     private String passWord;
     private String port;
+    ExecutorService threadpool;
 
 
     public void setPort(String port) {
@@ -147,7 +146,24 @@ public class ControllerJeu implements Initializable {
             System.out.println("Object is array list");
             System.out.println(serverReponse);
             updateView((ArrayList<?>) serverReponse);
-            this.listen_to_server();
+//            this.listen_to_server();
+            if(threadpool != null) threadpool.shutdown();
+            threadpool = Executors.newCachedThreadPool();
+            Future<?> futureTask = threadpool.submit(() -> {
+                try {
+                    listen_to_server();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            while(!futureTask.isDone()) {
+                System.out.println("Future task is not done");
+            }
+
+            threadpool.shutdown();
+
+
         } else if (serverReponse instanceof String) {
             System.out.println("Object is String");
         }
@@ -155,10 +171,12 @@ public class ControllerJeu implements Initializable {
     }
 
     public void listen_to_server() throws InterruptedException {
+        System.out.println("ENTERED LISTEN");
         ServerSocket serverSocket;
         Socket inputSocket;
 
         try {
+            System.out.println("Port = " + this.port);
             System.out.println(this.port);
             serverSocket = new ServerSocket(Integer.parseInt(this.port)+1);
             System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
@@ -171,21 +189,19 @@ public class ControllerJeu implements Initializable {
 
                 Object request = ois.readObject();
 
-                OutputStream os = inputSocket.getOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(os);
-
                 System.out.println("Resquest received ECOUTE");
                 System.out.println(request);
 
                 updateView((ArrayList<?>) request);
-
-                inputSocket.close();
-                serverSocket.close();
             }
+
+            inputSocket.close();
+            serverSocket.close();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
+        System.out.println("EXITED LISTEN");
     }
 }
