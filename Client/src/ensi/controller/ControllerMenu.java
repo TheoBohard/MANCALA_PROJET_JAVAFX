@@ -1,6 +1,7 @@
 package ensi.controller;
 
 import ensi.Main;
+import ensi.communication.Communication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,13 +33,17 @@ public class ControllerMenu implements Initializable {
     public String port;
     private ControllerChooseMode controllerModeChoose;
     private ArrayList<Integer> tab_seed = new ArrayList<Integer>();
+    private Communication com;
+    private String passWord;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        com = new Communication();
     }
 
-    public void tryConnection(String ip, String port) {
+    public void tryConnection(String ip, String port) throws IOException, ClassNotFoundException {
         this.ip = ip;
         this.port = port;
+        this.startNewGame();
     }
 
     public void setMode(String mode) {
@@ -61,10 +66,11 @@ public class ControllerMenu implements Initializable {
         if(this.ip==null){
             this.connexion();
         } else {
-            String response = this.sendMessage("New game");
+            String response = com.sendMessage("New game");
             String[] tab = response.split(",");
             System.out.println(tab);
             String which_port = tab[1];
+            this.passWord = tab[2];
 
             if(tab[0].equals("Bien reçu : nouvelle partie")) {
 
@@ -75,11 +81,11 @@ public class ControllerMenu implements Initializable {
                 this.controllerModeChoose = loader.getController();
                 this.controllerModeChoose.setCmenu(this);
 
-                ServerSocket serverSocket = new ServerSocket(Integer.parseInt(which_port));//2020
+                ServerSocket serverSocket = new ServerSocket(Integer.parseInt(which_port));
                 System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
                 Socket inputSocket = serverSocket.accept();
 
-                Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(which_port)-1);//2019
+                Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(which_port)-1);
 
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
@@ -105,10 +111,10 @@ public class ControllerMenu implements Initializable {
         gameStage.setScene(scene);
 
         ControllerJeu gameController = loader.getController();
+        gameController.setPassWord(this.passWord);
 
         gameStage.show();
         gameController.init(tab_seed);
-        System.out.println("Helloooo worflddddd");
         Main.primaryStage.close();
     }
 
@@ -116,7 +122,7 @@ public class ControllerMenu implements Initializable {
         if(this.ip==null){
             this.connexion();
         }
-        this.sendMessage("Load game");
+        com.sendMessage("Load game");
     }
 
     public void startOptions(ActionEvent actionEvent) {
@@ -124,53 +130,9 @@ public class ControllerMenu implements Initializable {
     }
 
     public void leaveProgram() throws UnknownHostException {
-        this.sendMessage("EXIT");
+        com.sendMessage("EXIT");
 
         System.exit(0);
-    }
-
-    public String sendMessage(String message) {
-        Socket socket;
-        Socket serverSocket;
-        String response = null;
-
-        try {
-            socket = createServerSocket(InetAddress.getByName(this.ip), Integer.parseInt(this.port));
-
-            ServerSocket clientSocket = new ServerSocket(2010);
-            serverSocket = clientSocket.accept();
-
-            sendMessageSocket(serverSocket, message);
-
-            serverSocket.close();
-            clientSocket.close();
-
-            InputStream is = socket.getInputStream();
-            ObjectInputStream ois = new ObjectInputStream(is);
-            if(!message.equals("EXIT")){
-                response = (String) ois.readObject();
-                System.out.println(response);
-            }
-            socket.close();
-
-        } catch (ClassNotFoundException | IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        return response;
-    }
-
-    private Socket createServerSocket(InetAddress address, int port) throws IOException {
-        Socket socket = new Socket(address, port);
-        System.out.println("Connexion au serveur, IP = " + address.toString() + " / Port = " + port);
-        return socket;
-    }
-
-    private void sendMessageSocket(Socket socket, String message) throws IOException {
-        OutputStream os = socket.getOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(os);
-        oos.writeObject(message);
     }
 
 }

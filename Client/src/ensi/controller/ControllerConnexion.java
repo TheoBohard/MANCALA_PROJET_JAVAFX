@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -29,7 +30,7 @@ public class ControllerConnexion implements Initializable {
         this.portFinal = "";
     }
 
-    public void connexion() {
+    public void connexion() throws IOException, ClassNotFoundException {
         this.ipFinal =ip.getText();
         this.portFinal =port.getText();
         this.controllerMenu.tryConnection(this.ipFinal,this.portFinal);

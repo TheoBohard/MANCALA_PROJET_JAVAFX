@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Random;
 
 public class Communication {
 
@@ -21,6 +22,16 @@ public class Communication {
     }
 
     public Communication() {
+    }
+
+    public String generatePassword(){
+        Random rand = new Random();
+        String pass="";
+        for(int i = 0 ; i < 20 ; i++){
+            char c = (char)(rand.nextInt(26) + 97);
+            pass+=c;
+        }
+        return pass;
     }
 
     public void sendMessage(Object message, int port_socket, int port_socket_serveur) {

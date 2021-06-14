@@ -3,14 +3,14 @@ package ensi.model;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-public class viewUpdate {
+public class ViewUpdate {
 
-    private final gameModel model;
+    private final GameModel model;
     private final ArrayList<String> list_ports;
     private int index_port;
     private Communication com = new Communication();
 
-    public viewUpdate(gameModel model, ArrayList<String> list_ports) {
+    public ViewUpdate(GameModel model, ArrayList<String> list_ports) {
         this.model=model;
         this.list_ports=list_ports;
         this.index_port=0;

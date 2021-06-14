@@ -1,5 +1,6 @@
 package ensi.controller;
 
+import ensi.communication.Communication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,29 +23,29 @@ import java.util.ResourceBundle;
 public class ControllerJeu implements Initializable {
 
     @FXML
-    public GridPane GridPane1;
+    public GridPane GridPane_1;
     @FXML
-    public GridPane GridPane2;
+    public GridPane GridPane_2;
     @FXML
-    public GridPane GridPane3;
+    public GridPane GridPane_3;
     @FXML
-    public GridPane GridPane4;
+    public GridPane GridPane_4;
     @FXML
-    public GridPane GridPane5;
+    public GridPane GridPane_5;
     @FXML
-    public GridPane GridPane6;
+    public GridPane GridPane_6;
     @FXML
-    public GridPane GridPane7;
+    public GridPane GridPane_7;
     @FXML
-    public GridPane GridPane8;
+    public GridPane GridPane_8;
     @FXML
-    public GridPane GridPane9;
+    public GridPane GridPane_9;
     @FXML
-    public GridPane GridPane10;
+    public GridPane GridPane_10;
     @FXML
-    public GridPane GridPane11;
+    public GridPane GridPane_11;
     @FXML
-    public GridPane GridPane12;
+    public GridPane GridPane_12;
     @FXML
     private Circle CircleOne;
     @FXML
@@ -69,16 +70,23 @@ public class ControllerJeu implements Initializable {
     private Circle CircleEleven;
     @FXML
     private Circle CircleTwelve;
+    private Communication com;
+    private String passWord;
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
 
     private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        com = new Communication();
     }
 
     public void init(ArrayList<Integer> tab_seed) {
         int compteur = 0;
-        this.GridPaneArray.addAll(Arrays.asList(this.GridPane1, GridPane2, GridPane3, GridPane4, GridPane5,
-                GridPane6, GridPane7, GridPane8, GridPane9, GridPane10, GridPane11, GridPane12));
+        this.GridPaneArray.addAll(Arrays.asList(this.GridPane_1, GridPane_2, GridPane_3, GridPane_4, GridPane_5,
+                GridPane_6, GridPane_7, GridPane_8, GridPane_9, GridPane_10, GridPane_11, GridPane_12));
 
         for(GridPane gridpane:this.GridPaneArray) {
             try {
@@ -87,7 +95,6 @@ public class ControllerJeu implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //TODO : Add action on click GridPane and circle
         }
 
     }
@@ -101,5 +108,12 @@ public class ControllerJeu implements Initializable {
 
     public void circleMouseCliked(MouseEvent mouseEvent) {
         System.out.println("Mouse Clicked");
+    }
+
+    public void ask_server_to_move(MouseEvent mouseEvent) throws IOException {
+        GridPane gridpaneClicked = ((GridPane)mouseEvent.getSource());
+        String id = gridpaneClicked.getId().split("_")[1];
+        com.sendMessage(id.concat(",").concat(this.passWord));
+
     }
 }

@@ -1,14 +1,14 @@
 package ensi;
-
-import ensi.model.Communication;
-import ensi.model.gameModel;
-import ensi.model.viewUpdate;
+import ensi.utils.Password;
+import ensi.model.GameModel;
+import ensi.model.ViewUpdate;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
 
 /**
  * Created by faye on 01/06/2017.
@@ -23,8 +23,9 @@ public class ServeurMessage {
         ArrayList<String> list_ports = new ArrayList<>();
         list_ports.add("2020");
         list_ports.add("2015");
-        gameModel model = new gameModel();
-        viewUpdate update = new viewUpdate(model,list_ports);
+        GameModel model = new GameModel();
+        ViewUpdate update = new ViewUpdate(model,list_ports);
+        Password utilPass = new Password();
 
         while(verif) {
             ServerSocket serverSocket;
@@ -41,7 +42,6 @@ public class ServeurMessage {
                     ObjectInputStream ois = new ObjectInputStream(is);
 
                     String request = (String) ois.readObject();
-                    //System.exit(0);
 
                     OutputStream os = inputSocket.getOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -52,11 +52,11 @@ public class ServeurMessage {
 
                         case "New game":
 
-                            //verif = false;
                             String port = list_ports.get(nb_player_connected);
                             nb_player_connected++;
+                            String pass = utilPass.generatePassword();
 
-                            oos.writeObject("Bien reçu : nouvelle partie,".concat(port));// envoie de l'objet
+                            oos.writeObject("Bien reçu : nouvelle partie,".concat(port).concat(",").concat(pass));// envoie de l'objet
 
                             update.update_view();
                             System.out.println("JE SUIS LA");
