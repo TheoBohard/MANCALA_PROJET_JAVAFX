@@ -1,5 +1,7 @@
 package ensi.model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -16,9 +18,9 @@ public class ViewUpdate {
         this.index_port=0;
     }
 
-    public void update_view() throws UnknownHostException {
+    public void initViewAndComm() throws UnknownHostException {
 
-        ArrayList<Integer> seed_info = new ArrayList<Integer>();
+        ArrayList<Integer> seed_info = new ArrayList<>();
 
         ArrayList<Whole> wholes = this.model.getWholes();
         for(Whole whole:wholes){
@@ -31,9 +33,29 @@ public class ViewUpdate {
         System.out.println(list_ports + "-" + index_port);
 
         System.out.println("TENTATIVE ENVOIE");
-        com.sendMessage(seed_info,port,port-1);
+        com.sendInitMessage(seed_info,port,port-1);
+    }
+
+    public void updateView(ObjectOutputStream oos) throws IOException {
+        ArrayList<Integer> seedInfo = new ArrayList<>();
+        System.out.println("TEST");
+        ArrayList<Whole> wholes = this.model.getWholes();
+        for(Whole whole:wholes){
+            int nb_seed = whole.getNb_seed();
+            seedInfo.add(nb_seed);
+        }
+        com.sendMessage(seedInfo, oos);
     }
 
 
-
+    public void updateViewOtherPlayer() {
+        ArrayList<Integer> seedInfo = new ArrayList<>();
+        System.out.println("TEST");
+        ArrayList<Whole> wholes = this.model.getWholes();
+        for(Whole whole:wholes){
+            int nb_seed = whole.getNb_seed();
+            seedInfo.add(nb_seed);
+        }
+        com.sendInitMessage(seedInfo, 2011, 2012);
+    }
 }

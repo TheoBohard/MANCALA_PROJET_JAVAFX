@@ -7,10 +7,10 @@ import java.net.Socket;
 
 public class Communication {
 
-    public String sendMessage(String message) {
+    public Object sendMessage(String message) {
         Socket socket;
         Socket serverSocket;
-        String response = null;
+        Object response = null;
 
         try {
             socket = createServerSocket(InetAddress.getLocalHost(), Integer.parseInt(String.valueOf(2009)));
@@ -26,13 +26,12 @@ public class Communication {
             InputStream is = socket.getInputStream();
             ObjectInputStream ois = new ObjectInputStream(is);
             if(!message.equals("EXIT")){
-                response = (String) ois.readObject();
+                response = ois.readObject();
                 System.out.println(response);
             }
             socket.close();
 
-        } catch (ClassNotFoundException | IOException e)
-        {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
 

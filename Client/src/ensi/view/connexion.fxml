@@ -8,8 +8,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="296.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ensi.controller.ControllerConnexion">
    <children>
-      <TextArea fx:id="ip" layoutX="132.0" layoutY="34.0" prefHeight="71.0" prefWidth="347.0" />
-      <TextArea fx:id="port" layoutX="132.0" layoutY="117.0" prefHeight="71.0" prefWidth="347.0" />
+      <TextArea fx:id="ip" layoutX="132.0" layoutY="34.0" prefHeight="71.0" prefWidth="347.0" text="127.0.0.1" />
+      <TextArea fx:id="port" layoutX="132.0" layoutY="117.0" prefHeight="71.0" prefWidth="347.0" text="2009" />
       <Text layoutX="45.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP">
          <font>
             <Font size="30.0" />
@@ -20,6 +20,6 @@
             <Font size="26.0" />
          </font>
       </Text>
-      <Button fx:id="connexion" onAction="#connexion" layoutX="135.0" layoutY="218.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="331.0" text="CONNEXION" />
+      <Button fx:id="connexion" layoutX="135.0" layoutY="218.0" mnemonicParsing="false" onAction="#connexion" prefHeight="48.0" prefWidth="331.0" text="CONNEXION" />
    </children>
 </AnchorPane>

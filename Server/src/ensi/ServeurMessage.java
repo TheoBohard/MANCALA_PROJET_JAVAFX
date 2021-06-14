@@ -1,5 +1,8 @@
 package ensi;
-import ensi.utils.Password;
+
+import ensi.model.Communication;
+import ensi.utils.idGenerator;
+import ensi.utils.playerUtils;
 import ensi.model.GameModel;
 import ensi.model.ViewUpdate;
 
@@ -17,16 +20,17 @@ import java.util.ArrayList;
 public class ServeurMessage {
 
     public static void main(String[] zero) throws IOException {
-        int nb_player_connected=0;
+        int nb_player_connected = 0;
         ArrayList<String> list_ports = new ArrayList<>();
         list_ports.add("2020");
         list_ports.add("2015");
         GameModel model = new GameModel();
-        ViewUpdate update = new ViewUpdate(model,list_ports);
-        Password utilPass = new Password();
+        ViewUpdate update = new ViewUpdate(model, list_ports);
+        idGenerator utilPass = new idGenerator();
         ArrayList<String> passwords = new ArrayList<String>();
+        Communication com = new Communication();
 
-        while(passwords.size()>2) {
+        while (passwords.size() < 2) {
             ServerSocket serverSocket;
             Socket inputSocket;
 
@@ -53,11 +57,15 @@ public class ServeurMessage {
 
                             String port = list_ports.get(nb_player_connected);
                             nb_player_connected++;
-                            String pass = utilPass.generatePassword();
+                            String pass = utilPass.generateId();
                             passwords.add(pass);
-                            oos.writeObject("Bien reçu : nouvelle partie,".concat(port).concat(",").concat(pass));// envoie de l'objet
+                            oos.writeObject("Bien reçu : nouvelle partie,"
+                                    .concat(port)
+                                    .concat(",").concat(pass)
+                                    .concat(",")
+                                    .concat(String.valueOf(nb_player_connected)));
 
-                            update.update_view();
+                            update.initViewAndComm();
                             System.out.println("JE SUIS LA");
 
                             break;
@@ -87,7 +95,12 @@ public class ServeurMessage {
             }
         }
 
-        while (true){
+        String playerTurn = playerUtils.chooseRandomPlayer(passwords);
+        //TODO : Informer le client de si il doit jouer ou non
+
+
+        //Deroulement de la partie
+        while (true) {
 
             ServerSocket serverSocket;
             Socket inputSocket;
@@ -109,32 +122,25 @@ public class ServeurMessage {
                 System.out.println("Resquest received");
                 System.out.println(request);
                 switch (request) {
-
-                    case "New game":
-
-                        String port = list_ports.get(nb_player_connected);
-                        nb_player_connected++;
-                        String pass = utilPass.generatePassword();
-                        passwords.add(pass);
-                        oos.writeObject("Bien reçu : nouvelle partie,".concat(port).concat(",").concat(pass));// envoie de l'objet
-
-                        update.update_view();
-                        System.out.println("JE SUIS LA");
-
-                        break;
-                    case "Load game":
-                        oos.writeObject("Bien reçu : chargement de partie");// envoie de l'objet
-
-                        break;
+                    case "give_me_view":
+                        update.updateView(oos);
                     case "EXIT":
                         System.out.println("EXIT");
                         socket.close();
                         break;
-                    case "init":
-
-                        break;
                     default:
-                        oos.writeObject("Je ne connais pas cette instruction");// envoie de l'objet
+                        String[] requestSplitted = request.split(",");
+                        // [0] => GridPane [1] => Password
+                        if (requestSplitted[1].equals(playerTurn)) {
+                            System.out.println("On fait l'action");
+                            playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+                            model.moveWholes(7);
+                            update.updateView(oos);
+                            update.updateViewOtherPlayer();
+                        } else {
+                            System.out.println("On ne fait pas l'action");
+                            oos.writeObject("Ce n'est pas ton tour");
+                        }
 
                         break;
                 }
@@ -148,5 +154,4 @@ public class ServeurMessage {
         }
 
     }
-
 }

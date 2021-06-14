@@ -14,8 +14,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 
 
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -53,17 +53,17 @@ public class ControllerJeu implements Initializable {
     @FXML
     private Circle CircleThree;
     @FXML
-    private Circle CIrcleFour;
+    private Circle CircleFour;
     @FXML
     private Circle CircleFive;
     @FXML
-    private Circle CircleSIx;
+    private Circle CircleSix;
     @FXML
-    private Circle CIrcleSeven;
+    private Circle CircleSeven;
     @FXML
-    private Circle CircleEIght;
+    private Circle CircleEight;
     @FXML
-    private Circle CircleNIne;
+    private Circle CircleNine;
     @FXML
     private Circle CircleTen;
     @FXML
@@ -88,9 +88,9 @@ public class ControllerJeu implements Initializable {
         this.GridPaneArray.addAll(Arrays.asList(this.GridPane_1, GridPane_2, GridPane_3, GridPane_4, GridPane_5,
                 GridPane_6, GridPane_7, GridPane_8, GridPane_9, GridPane_10, GridPane_11, GridPane_12));
 
-        for(GridPane gridpane:this.GridPaneArray) {
+        for (GridPane gridpane : this.GridPaneArray) {
             try {
-                populateGridPane(tab_seed.get(compteur),gridpane);
+                populateGridPane(tab_seed.get(compteur), gridpane);
                 compteur++;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -99,10 +99,16 @@ public class ControllerJeu implements Initializable {
 
     }
 
+    private void cleanGridPane(ArrayList<GridPane> gridPanes) {
+        for (GridPane grid : gridPanes) {
+            grid.getChildren().clear();
+        }
+    }
+
     private void populateGridPane(int numberSeed, GridPane grid) throws IOException {
 
         for (int i = 0; i < numberSeed; i++) {
-            grid.add(new Ellipse(10,10), i%4 ,i/4 );
+            grid.add(new Ellipse(10, 10), i % 4, i / 4);
         }
     }
 
@@ -110,10 +116,67 @@ public class ControllerJeu implements Initializable {
         System.out.println("Mouse Clicked");
     }
 
-    public void ask_server_to_move(MouseEvent mouseEvent) throws IOException {
-        GridPane gridpaneClicked = ((GridPane)mouseEvent.getSource());
-        String id = gridpaneClicked.getId().split("_")[1];
-        com.sendMessage(id.concat(",").concat(this.passWord));
+    public void updateView(ArrayList<?> tabSeed) {
+        int compteur = 0;
 
+        cleanGridPane(GridPaneArray);
+
+        for (GridPane gridpane : this.GridPaneArray) {
+            try {
+                populateGridPane((Integer) tabSeed.get(compteur), gridpane);
+                compteur++;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void ask_server_to_move(MouseEvent mouseEvent) throws IOException {
+        GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
+        String id = gridpaneClicked.getId().split("_")[1];
+        Object serverReponse = com.sendMessage(id.concat(",").concat(this.passWord));
+        System.out.println("Hello = " + serverReponse);
+
+        if (serverReponse instanceof ArrayList) {
+            System.out.println("Object is array list");
+            System.out.println(serverReponse);
+            updateView((ArrayList<?>) serverReponse);
+            this.listen_to_server();
+        } else if (serverReponse instanceof String) {
+            System.out.println("Object is String");
+        }
+
+    }
+
+    private void listen_to_server() {
+        ServerSocket serverSocket;
+        Socket inputSocket;
+
+        try {
+            serverSocket = new ServerSocket(2011);
+            System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
+            inputSocket = serverSocket.accept();
+
+            try (Socket socket = new Socket(InetAddress.getLocalHost(), 2012)) {
+
+                InputStream is = socket.getInputStream();
+                ObjectInputStream ois = new ObjectInputStream(is);
+
+                Object request = ois.readObject();
+
+                OutputStream os = inputSocket.getOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(os);
+
+                System.out.println("Resquest received");
+                System.out.println(request);
+
+                updateView((ArrayList<?>) request);
+
+
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

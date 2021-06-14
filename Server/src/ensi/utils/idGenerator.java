@@ -2,14 +2,14 @@ package ensi.utils;
 
 import java.util.Random;
 
-public class Password {
-    public String generatePassword(){
+public class idGenerator {
+    public String generateId(){
         Random rand = new Random();
-        String pass="";
+        StringBuilder pass= new StringBuilder();
         for(int i = 0 ; i < 20 ; i++){
             char c = (char)(rand.nextInt(26) + 97);
-            pass+=c;
+            pass.append(c);
         }
-        return pass;
+        return pass.toString();
     }
 }

@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Communication {
@@ -12,11 +13,9 @@ public class Communication {
     private String ip;
     private String port;
     private int nb_player_connected;
-
     public int getNb_player_connected() {
         return nb_player_connected;
     }
-
     public void setNb_player_connected(int nb_player_connected) {
         this.nb_player_connected = nb_player_connected;
     }
@@ -24,17 +23,7 @@ public class Communication {
     public Communication() {
     }
 
-    public String generatePassword(){
-        Random rand = new Random();
-        String pass="";
-        for(int i = 0 ; i < 20 ; i++){
-            char c = (char)(rand.nextInt(26) + 97);
-            pass+=c;
-        }
-        return pass;
-    }
-
-    public void sendMessage(Object message, int port_socket, int port_socket_serveur) {
+    public void sendInitMessage(Object message, int port_socket, int port_socket_serveur) {
         Socket socket;
         Socket serverSocket;
 
@@ -54,6 +43,10 @@ public class Communication {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendMessage(ArrayList<?> message, ObjectOutputStream oos) throws IOException {
+        oos.writeObject(message);
     }
 
     private Socket createServerSocket(InetAddress address, int port) throws IOException {

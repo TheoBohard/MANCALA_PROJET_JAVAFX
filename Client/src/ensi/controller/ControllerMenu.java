@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class ControllerMenu implements Initializable {
@@ -35,6 +35,7 @@ public class ControllerMenu implements Initializable {
     private ArrayList<Integer> tab_seed = new ArrayList<Integer>();
     private Communication com;
     private String passWord;
+    private int numberPlayer = 0;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         com = new Communication();
@@ -66,11 +67,12 @@ public class ControllerMenu implements Initializable {
         if(this.ip==null){
             this.connexion();
         } else {
-            String response = com.sendMessage("New game");
+            String response = (String) com.sendMessage("New game");
             String[] tab = response.split(",");
-            System.out.println(tab);
+            System.out.println(Arrays.toString(tab));
             String which_port = tab[1];
             this.passWord = tab[2];
+            numberPlayer = Integer.parseInt(tab[3]);
 
             if(tab[0].equals("Bien reçu : nouvelle partie")) {
 
@@ -102,7 +104,9 @@ public class ControllerMenu implements Initializable {
 
     public void launchgame() throws IOException {
         Stage gameStage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/game.fxml"));
+        //TODO : Server will say what view we want to load
+        String view = "../view/gamePlayer".concat(String.valueOf(numberPlayer)).concat(".fxml");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
