@@ -16,8 +16,7 @@ import java.util.ArrayList;
 
 public class ServeurMessage {
 
-    public static void main(String[] zero)
-    {
+    public static void main(String[] zero) throws IOException {
         int nb_player_connected=0;
         ArrayList<String> list_ports = new ArrayList<>();
         list_ports.add("2020");
@@ -90,6 +89,9 @@ public class ServeurMessage {
 
         while (true){
 
+            ServerSocket serverSocket;
+            Socket inputSocket;
+
             serverSocket = new ServerSocket(2009);
             System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
@@ -136,13 +138,13 @@ public class ServeurMessage {
 
                         break;
                 }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
 
             inputSocket.close();
             serverSocket.close();
 
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
 
     }
