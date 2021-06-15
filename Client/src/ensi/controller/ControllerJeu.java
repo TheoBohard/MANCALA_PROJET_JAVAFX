@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ControllerJeu implements Initializable {
 
@@ -121,8 +121,9 @@ public class ControllerJeu implements Initializable {
         System.out.println("Mouse Clicked");
     }
 
-    public void updateView(ArrayList<?> tabSeed) {
+    public boolean updateView(ArrayList<?> tabSeed) {
         int compteur = 0;
+        System.out.println("Array list : " + tabSeed);
 
         cleanGridPane(GridPaneArray);
 
@@ -130,13 +131,17 @@ public class ControllerJeu implements Initializable {
             try {
                 populateGridPane((Integer) tabSeed.get(compteur), gridpane);
                 compteur++;
+                System.out.println("Entered in updaterView");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        return true;
     }
 
-    public void ask_server_to_move(MouseEvent mouseEvent) throws IOException, InterruptedException {
+    public void ask_server_to_move(MouseEvent mouseEvent) {
+        AtomicBoolean status = new AtomicBoolean(false);
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
         Object serverReponse = com.sendMessage(id.concat(",").concat(this.passWord));
@@ -145,23 +150,22 @@ public class ControllerJeu implements Initializable {
         if (serverReponse instanceof ArrayList) {
             System.out.println("Object is array list");
             System.out.println(serverReponse);
-            updateView((ArrayList<?>) serverReponse);
+            status.set(updateView((ArrayList<?>) serverReponse));
 //            this.listen_to_server();
-            if(threadpool != null) threadpool.shutdown();
+
             threadpool = Executors.newCachedThreadPool();
-            Future<?> futureTask = threadpool.submit(() -> {
+            threadpool.submit(() -> {
+                ArrayList<?> wholesList = null;
+
                 try {
-                    listen_to_server();
+                    wholesList = (ArrayList<?>) listen_to_server();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                finally {
+                    updateView(wholesList);
+                }
             });
-
-            while(!futureTask.isDone()) {
-                System.out.println("Future task is not done");
-            }
-
-            threadpool.shutdown();
 
 
         } else if (serverReponse instanceof String) {
@@ -170,10 +174,11 @@ public class ControllerJeu implements Initializable {
 
     }
 
-    public void listen_to_server() throws InterruptedException {
+    public Object listen_to_server() throws InterruptedException {
         System.out.println("ENTERED LISTEN");
         ServerSocket serverSocket;
         Socket inputSocket;
+        Object request = null;
 
         try {
             System.out.println("Port = " + this.port);
@@ -181,19 +186,18 @@ public class ControllerJeu implements Initializable {
             serverSocket = new ServerSocket(Integer.parseInt(this.port)+1);
             System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
+            System.out.println("Le socket a ete accepte");
 
-            try (Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(this.port)+2)) {
+            Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(this.port) + 2);
 
-                InputStream is = socket.getInputStream();
-                ObjectInputStream ois = new ObjectInputStream(is);
+            System.out.println("Hello on essaye de recevoir l'array list");
+            InputStream is = socket.getInputStream();
+            ObjectInputStream ois = new ObjectInputStream(is);
 
-                Object request = ois.readObject();
+            request = ois.readObject();
 
-                System.out.println("Resquest received ECOUTE");
-                System.out.println(request);
-
-                updateView((ArrayList<?>) request);
-            }
+            System.out.println("Request received ECOUTE");
+            System.out.println(request);
 
             inputSocket.close();
             serverSocket.close();
@@ -203,5 +207,7 @@ public class ControllerJeu implements Initializable {
         }
 
         System.out.println("EXITED LISTEN");
+
+        return request;
     }
 }

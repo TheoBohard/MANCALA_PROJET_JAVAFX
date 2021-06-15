@@ -156,8 +156,8 @@ public class ServeurMessage {
                             model.moveWholes(Integer.parseInt(requestSplitted[0]));
                             update.updateView(oos);
                             System.out.println("Index du joueur : " + index_joueur);
-                            update.updateViewOtherPlayer(index_joueur);
                             index_joueur = (index_joueur+1)%2;
+                            update.updateViewOtherPlayer(index_joueur);
                         } else {
                             System.out.println("On ne fait pas l'action");
                             oos.writeObject("Ce n'est pas ton tour");

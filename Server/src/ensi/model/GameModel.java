@@ -17,7 +17,7 @@ public class GameModel {
     }
 
     public GameModel() {
-       for(int i=0;i<16;i++){
+       for(int i=0;i<12;i++){
            wholes.add(new Whole());
            wholes.get(i).setNb_seed(4);
         }
@@ -27,8 +27,10 @@ public class GameModel {
         int numberSeed = wholes.get(index).getNb_seed();
 
         for(int i = 0; i < numberSeed; i++) {
-            wholes.get(index+i+1).setNb_seed(wholes.get(index+i+1).getNb_seed()+1);
+            wholes.get((index+i+1)%12).setNb_seed(wholes.get((index+1)%12).getNb_seed()+1);
         }
+
+        System.out.println("MoveWholes SIZE : " + wholes.size());
 
         wholes.get(index).setNb_seed(0);
     }

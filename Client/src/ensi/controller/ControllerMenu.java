@@ -124,20 +124,20 @@ public class ControllerMenu implements Initializable {
         gameController.setPassWord(this.passWord);
         gameController.setPort(this.comPort);
 
-        gameStage.show();
         gameController.init(tab_seed);
         Main.primaryStage.close();
         System.out.println("Position : " + position);
+        gameStage.show();
         if(this.position.equals("2")){
             System.out.println("Je suis celui qui attend lol");
-            ExecutorService threadpool = Executors.newCachedThreadPool();
-            Future<?> futureTask = threadpool.submit(() -> {
-                try {
-                    gameController.listen_to_server();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
+//            ExecutorService threadpool = Executors.newCachedThreadPool();
+//            threadpool.submit(() -> {
+//                try {
+//                    gameController.listen_to_server();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            });
         }
     }
 

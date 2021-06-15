@@ -20,9 +20,6 @@ public class Communication {
 
             sendMessageSocket(serverSocket, message);
 
-            serverSocket.close();
-            clientSocket.close();
-
             InputStream is = socket.getInputStream();
             ObjectInputStream ois = new ObjectInputStream(is);
             if(!message.equals("EXIT")){
@@ -30,10 +27,13 @@ public class Communication {
                 System.out.println(response);
             }
             socket.close();
+            serverSocket.close();
+            clientSocket.close();
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
+
 
         return response;
     }
