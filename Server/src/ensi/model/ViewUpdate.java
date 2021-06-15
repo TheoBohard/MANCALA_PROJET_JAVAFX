@@ -36,14 +36,20 @@ public class ViewUpdate {
         com.sendInitMessage(seed_info,port,port-1);
     }
 
-    public void updateView(ObjectOutputStream oos) throws IOException {
+    public void updateView(ObjectOutputStream oos, int index_joueur) throws IOException {
         ArrayList<Integer> seedInfo = new ArrayList<>();
         System.out.println("TEST");
         ArrayList<Whole> wholes = this.model.getWholes();
+
         for(Whole whole : wholes){
             int nb_seed = whole.getNb_seed();
             seedInfo.add(nb_seed);
         }
+
+        seedInfo.add(model.getScoreJoueur1());
+        seedInfo.add(model.getScoreJoueur2());
+
+
         com.sendMessage(seedInfo, oos);
     }
 
@@ -56,6 +62,9 @@ public class ViewUpdate {
             int nb_seed = whole.getNb_seed();
             seedInfo.add(nb_seed);
         }
+
+        seedInfo.add(model.getScoreJoueur1());
+        seedInfo.add(model.getScoreJoueur2());
 
         com.sendInitMessage(seedInfo, Integer.parseInt(this.list_ports.get((index_joueur)%2))+1, Integer.parseInt(this.list_ports.get((index_joueur)%2))+2);
     }

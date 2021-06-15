@@ -149,7 +149,7 @@ public class ServeurMessage {
                 System.out.println("Request : " + request);
                 switch (request) {
                     case "give_me_view":
-                        update.updateView(oos);
+                        update.updateView(oos,index_joueur);
                     case "EXIT":
                         System.out.println("EXIT");
                         socket.close();
@@ -161,8 +161,8 @@ public class ServeurMessage {
                         if (requestSplitted[1].equals(playerTurn)) {
                             System.out.println("On fait l'action");
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                            model.moveWholes(Integer.parseInt(requestSplitted[0]), "PLAYER_ONE");
-                            update.updateView(oos);
+                            model.moveWholes(Integer.parseInt(requestSplitted[0]), index_joueur);
+                            update.updateView(oos,index_joueur);
                             System.out.println("Index du joueur : " + index_joueur);
                             index_joueur = (index_joueur+1)%2;
                             update.updateViewOtherPlayer(index_joueur);

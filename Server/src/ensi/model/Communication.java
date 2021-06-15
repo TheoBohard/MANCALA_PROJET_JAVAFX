@@ -47,6 +47,7 @@ public class Communication {
     }
 
     public void sendMessage(ArrayList<?> message, ObjectOutputStream oos) throws IOException {
+
         oos.writeObject(message);
     }
 

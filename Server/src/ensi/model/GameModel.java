@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class GameModel {
 
     ArrayList<Whole> wholes = new ArrayList<Whole>();
+    Integer scoreJoueur1 = 0;
+    Integer scoreJoueur2 = 0;
 
     public GameModel() {
        for(int i=0;i<12;i++){
@@ -14,7 +16,15 @@ public class GameModel {
 
     }
 
-    public void moveWholes(int index, String playerTurn) {
+    public Integer getScoreJoueur1() {
+        return scoreJoueur1;
+    }
+
+    public Integer getScoreJoueur2() {
+        return scoreJoueur2;
+    }
+
+    public void moveWholes(int index, int index_joueur) {
         index--;
         int numberSeed = wholes.get(index).getNb_seed();
         System.out.println("Number seed : => " + numberSeed);
@@ -25,18 +35,34 @@ public class GameModel {
             whole.setNb_seed(whole.getNb_seed()+1);
         }
 
+        //On regarde la dernière graines placé et on vérifie si elle remplit les deux conditions
+        int index_whole_to_check = (index - numberSeed + 12 )%12;
+        Whole whole_to_check = wholes.get(index_whole_to_check);
+        check_whole(whole_to_check,index_whole_to_check,index_joueur);
+
         System.out.println("MoveWholes SIZE : " + wholes.size());
 
         wholes.get(index).setNb_seed(0);
     }
 
-    public void checkIfPointEarned(String playerTurn, Whole whole) {
-        if(playerTurn.equals("PLAYER_1")) {
-
-        } else if(playerTurn.equals("PLAYER_2")) {
-
+    private void check_whole(Whole whole_to_check, Integer index_whole, Integer index_joueur) {
+        if(index_joueur==0){
+            if(index_whole<6 && whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3){
+                int score_to_give = whole_to_check.getNb_seed();
+                whole_to_check.setNb_seed(0);
+                scoreJoueur1 += score_to_give;
+            }
+        }else if(index_joueur==1){
+            if(index_whole>=6 && whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3){
+                int score_to_give = whole_to_check.getNb_seed();
+                whole_to_check.setNb_seed(0);
+                scoreJoueur2+= score_to_give;
+            }
         }
+        System.out.println(this.scoreJoueur1);
+        System.out.println(this.scoreJoueur2);
     }
+
 
     public ArrayList<Whole> getWholes() {
         return wholes;

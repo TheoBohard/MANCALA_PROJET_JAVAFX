@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.text.Text;
 
 
 import java.io.*;
@@ -68,6 +69,10 @@ public class ControllerJeu implements Initializable {
     @FXML
     private Circle CircleEleven;
     @FXML
+    private Text scorePlayer1;
+    @FXML
+    private Text scorePlayer2;
+    @FXML
     private Circle CircleTwelve;
     private Communication com;
     private String passWord;
@@ -122,12 +127,13 @@ public class ControllerJeu implements Initializable {
     }
 
     public boolean updateView(ArrayList<?> tabSeed) {
-        //TODO : Do it too for the first move !!
         Platform.runLater(() -> {
             int compteur = 0;
             System.out.println("Array list : " + tabSeed);
 
             cleanGridPane(GridPaneArray);
+
+            update_score((Integer) tabSeed.get(tabSeed.size()-1), (Integer) tabSeed.get(tabSeed.size()-2));
 
             for (GridPane gridpane : this.GridPaneArray) {
                 try {
@@ -142,6 +148,11 @@ public class ControllerJeu implements Initializable {
         );
 
         return true;
+    }
+
+    private void update_score(int score1, int score2) {
+        scorePlayer1.setText(Integer.toString(score1));
+        scorePlayer2.setText(Integer.toString(score2));
     }
 
     public void ask_server_to_move(MouseEvent mouseEvent) {
