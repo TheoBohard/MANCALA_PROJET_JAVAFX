@@ -22,7 +22,9 @@ public class ServeurMessage {
 
 
     public static void main(String[] zero) throws IOException {
-        int index_joueur = 0;
+        int index_joueur = -1;
+        int ordre = -1;
+
         int nb_player_connected = 0;
         ArrayList<String> list_ports = new ArrayList<>();
         list_ports.add("2020");
@@ -30,10 +32,16 @@ public class ServeurMessage {
         GameModel model = new GameModel();
         ViewUpdate update = new ViewUpdate(model, list_ports);
         idGenerator utilPass = new idGenerator();
-        ArrayList<String> passwords = new ArrayList<String>();
-        Communication com = new Communication();
+        ArrayList<String> passwords = new ArrayList<>();
 
-        int ordre = 0;
+        ordre = index_joueur  = playerUtils.chooseRandomNumber(2);
+
+        if(ordre < 0 || ordre > 1) {
+            System.out.println("Backup de l'ordre [Pas très accurate]");
+            ordre = index_joueur = 0;
+        }
+
+        System.out.println("Ordre = " + ordre);
 
         while (passwords.size() < 2) {
             ServerSocket serverSocket;
@@ -62,7 +70,7 @@ public class ServeurMessage {
                             int position=-1;
 
                             if(nb_player_connected==0 && ordre==0){
-                                position=1;
+                                position = 1;
                             }else if(nb_player_connected==0 && ordre==1) {
                                 position = 2;
                             }else if(nb_player_connected==1 && ordre==0) {
@@ -153,7 +161,7 @@ public class ServeurMessage {
                         if (requestSplitted[1].equals(playerTurn)) {
                             System.out.println("On fait l'action");
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                            model.moveWholes(Integer.parseInt(requestSplitted[0]));
+                            model.moveWholes(Integer.parseInt(requestSplitted[0]), "PLAYER_ONE");
                             update.updateView(oos);
                             System.out.println("Index du joueur : " + index_joueur);
                             index_joueur = (index_joueur+1)%2;

@@ -16,7 +16,7 @@ public class playerUtils {
         return player;
     }
 
-    static public int chooseRandomPlayer() {
+    static public int chooseRandomNumber(int max) {
         Random rand = new Random();
         return rand.nextInt(2);
     }

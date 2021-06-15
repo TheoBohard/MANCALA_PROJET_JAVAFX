@@ -72,7 +72,6 @@ public class ControllerJeu implements Initializable {
     private Communication com;
     private String passWord;
     private String port;
-    ExecutorService threadpool;
 
 
     public void setPort(String port) {
@@ -123,6 +122,7 @@ public class ControllerJeu implements Initializable {
     }
 
     public boolean updateView(ArrayList<?> tabSeed) {
+        //TODO : Do it too for the first move !!
         Platform.runLater(() -> {
             int compteur = 0;
             System.out.println("Array list : " + tabSeed);
@@ -145,7 +145,6 @@ public class ControllerJeu implements Initializable {
     }
 
     public void ask_server_to_move(MouseEvent mouseEvent) {
-        AtomicBoolean status = new AtomicBoolean(false);
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
         Object serverReponse = com.sendMessage(id.concat(",").concat(this.passWord));
@@ -154,13 +153,11 @@ public class ControllerJeu implements Initializable {
         if (serverReponse instanceof ArrayList) {
             System.out.println("Object is array list");
             System.out.println(serverReponse);
-            status.set(updateView((ArrayList<?>) serverReponse));
-//            this.listen_to_server();
+            updateView((ArrayList<?>) serverReponse);
 
-            threadpool = Executors.newCachedThreadPool();
+            ExecutorService threadpool = Executors.newCachedThreadPool();
             threadpool.submit(() -> {
                 ArrayList<?> wholesList = null;
-
                 try {
                     wholesList = (ArrayList<?>) listen_to_server();
                 } catch (InterruptedException e) {
