@@ -51,12 +51,16 @@ public class GameModel {
                 int score_to_give = whole_to_check.getNb_seed();
                 whole_to_check.setNb_seed(0);
                 scoreJoueur1 += score_to_give;
+                int new_index_to_check = (index_whole+1)%12;
+                check_whole(this.wholes.get(new_index_to_check),new_index_to_check,index_joueur);
             }
         }else if(index_joueur==1){
             if(index_whole>=6 && whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3){
                 int score_to_give = whole_to_check.getNb_seed();
                 whole_to_check.setNb_seed(0);
                 scoreJoueur2+= score_to_give;
+                int new_index_to_check = (index_whole+1)%12;
+                check_whole(this.wholes.get(new_index_to_check),new_index_to_check,index_joueur);
             }
         }
         System.out.println(this.scoreJoueur1);
