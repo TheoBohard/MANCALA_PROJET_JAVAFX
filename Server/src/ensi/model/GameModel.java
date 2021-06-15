@@ -30,9 +30,14 @@ public class GameModel {
         System.out.println("Number seed : => " + numberSeed);
 
         for(int i = 0; i < numberSeed; i++) {
-            Whole whole = wholes.get((index - i - 1 + 12 )%12);
-            System.out.println("Le whole concerné au niveau : " + (i+1) + " = " + whole.getNb_seed());
-            whole.setNb_seed(whole.getNb_seed()+1);
+            if((index - i - 1 + 12)%12 != index) {
+                System.out.println((index - i - 1 + 12*10) % 12);
+                Whole whole = wholes.get((index - i - 1 + 12*10) % 12);
+                //System.out.println("Le whole concerné au niveau : " + (i + 1) + " = " + whole.getNb_seed());
+                whole.setNb_seed(whole.getNb_seed() + 1);
+            }else{
+                numberSeed++;
+            }
         }
 
         //On regarde la dernière graines placé et on vérifie si elle remplit les deux conditions
@@ -47,7 +52,7 @@ public class GameModel {
 
     private void check_whole(Whole whole_to_check, Integer index_whole, Integer index_joueur) {
         if(index_joueur==0){
-            if(index_whole<6 && whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3){
+            if(index_whole<6 && (whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3)){
                 int score_to_give = whole_to_check.getNb_seed();
                 whole_to_check.setNb_seed(0);
                 scoreJoueur1 += score_to_give;
@@ -55,7 +60,7 @@ public class GameModel {
                 check_whole(this.wholes.get(new_index_to_check),new_index_to_check,index_joueur);
             }
         }else if(index_joueur==1){
-            if(index_whole>=6 && whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3){
+            if(index_whole>=6 && (whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3)){
                 int score_to_give = whole_to_check.getNb_seed();
                 whole_to_check.setNb_seed(0);
                 scoreJoueur2+= score_to_give;

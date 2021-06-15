@@ -12,7 +12,7 @@ Rules :
 prendre l'ensemble des graines dans l'un des trous de son territoire et les distribuer, un par trou, dans le
 sens inverse des aiguilles d'une montre.
 
-[x] Règle 4 : Si sa dernière graine tombe dans un trou du camp adverse et qu'il y a maintenant **deux** ou **trois**
+[o] Règle 4 : Si sa dernière graine tombe dans un trou du camp adverse et qu'il y a maintenant **deux** ou **trois**
 graines dans ce trou, le joueur récupère ces deux ou trois graines et les met de côté. Ensuite il regarde la
 case précédente : si elle est dans le camp adverse et contient deux ou trois graines, il récupère ces graines,
 et ainsi de suite jusqu'à ce qu'il arrive à son camp ou jusqu'à ce qu'il y ait un nombre de graines différent
