@@ -1,6 +1,7 @@
 package ensi.controller;
 
 import ensi.communication.Communication;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -122,20 +123,23 @@ public class ControllerJeu implements Initializable {
     }
 
     public boolean updateView(ArrayList<?> tabSeed) {
-        int compteur = 0;
-        System.out.println("Array list : " + tabSeed);
+        Platform.runLater(() -> {
+            int compteur = 0;
+            System.out.println("Array list : " + tabSeed);
 
-        cleanGridPane(GridPaneArray);
+            cleanGridPane(GridPaneArray);
 
-        for (GridPane gridpane : this.GridPaneArray) {
-            try {
-                populateGridPane((Integer) tabSeed.get(compteur), gridpane);
-                compteur++;
-                System.out.println("Entered in updaterView");
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (GridPane gridpane : this.GridPaneArray) {
+                try {
+                    populateGridPane((Integer) tabSeed.get(compteur), gridpane);
+                    compteur++;
+                    System.out.println("Entered in updaterView");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        );
 
         return true;
     }
