@@ -12,6 +12,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
 import javafx.stage.PopupWindow;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 import java.io.*;
@@ -85,10 +87,13 @@ public class ControllerJeu implements Initializable {
 
     private ArrayList<?> tabSeed;
 
-    final boolean CLIENT_NUMBER_SEED = false;
+    final boolean CLIENT_NUMBER_SEED = true;
     final boolean CLIENT_BOARD_STATE = true;
     final boolean CLIENT_SOUND_EFFECT = true;
     final boolean CLIENT_MUSIC = true;
+
+    public MediaPlayer mediaPlayerEffect;
+    public MediaPlayer mediaPlayerMusic;
 
 
     public void setPort(String port) {
@@ -129,7 +134,7 @@ public class ControllerJeu implements Initializable {
             actualGridPane.setOnMouseEntered(e -> displayTooltip(actualGridPane,
                     tabSeed.get(finalCounter) + " Graines"));
             actualCircle.setOnMouseEntered(e -> displayTooltip(actualGridPane,
-                    "10" + " Graines"));
+                    tabSeed.get(finalCounter) + " Graines"));
 
             counter++;
         }
@@ -143,6 +148,7 @@ public class ControllerJeu implements Initializable {
             }
         }
 
+        playMusic("blue.mp3");
     }
 
     private void displayTooltip(GridPane gridPane, String message) {
@@ -204,6 +210,7 @@ public class ControllerJeu implements Initializable {
     }
 
     public void ask_server_to_move(MouseEvent mouseEvent) {
+        playSoundEffect("sardoche_detruire.mp3");
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
         Object serverReponse = com.sendMessage(id.concat(",").concat(this.passWord));
@@ -269,5 +276,26 @@ public class ControllerJeu implements Initializable {
         System.out.println("EXITED LISTEN");
 
         return request;
+    }
+
+    private void playSoundEffect(String filename) {
+        if(CLIENT_SOUND_EFFECT) {
+            String musicFile = "Client/src/ensi/assets/".concat(filename);
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayerEffect = new MediaPlayer(sound);
+            Platform.runLater(() -> mediaPlayerEffect.play());
+        }
+    }
+
+    private void playMusic(String filename) {
+        if(CLIENT_MUSIC) {
+            String musicFile = "Client/src/ensi/assets/".concat(filename);
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayerMusic = new MediaPlayer(sound);
+            mediaPlayerMusic.setVolume(0.1);
+            Platform.runLater(() -> mediaPlayerMusic.play());
+        } else {
+            mediaPlayerMusic.stop();
+        }
     }
 }
