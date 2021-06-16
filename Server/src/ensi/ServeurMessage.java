@@ -135,6 +135,9 @@ public class ServeurMessage {
             System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
 
+            model.isThereAnyPossiblemove(index_joueur);
+
+
             try (Socket socket = new Socket(InetAddress.getLocalHost(), 2010)) {
 
                 InputStream is = socket.getInputStream();
@@ -155,17 +158,14 @@ public class ServeurMessage {
                         socket.close();
                         break;
                     default:
-                        System.out.println("Default !!");
                         String[] requestSplitted = request.split(",");
-                        // [0] => GridPane [1] => Password
                         if (requestSplitted[1].equals(playerTurn)) {
-                            System.out.println("On fait l'action");
 
                             boolean move_playable = model.is_move_playable(Integer.parseInt(requestSplitted[0]), index_joueur);
                             if(model.party_On==false){
                                 oos.writeObject("PARTIE TERMINE");
                             }
-                            else if(move_playable) {
+                            else if(move_playable && model.new_round==false) {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
 
                                 model.moveWholes(Integer.parseInt(requestSplitted[0]), index_joueur);
@@ -173,11 +173,19 @@ public class ServeurMessage {
                                 System.out.println("Index du joueur : " + index_joueur);
                                 index_joueur = (index_joueur + 1) % 2;
                                 update.updateViewOtherPlayer(index_joueur);
-                            }else{
+                            }else if(model.new_round==true){
+                                update.updateView(oos, index_joueur);
+                                index_joueur = (index_joueur + 1) % 2;
+                                update.updateViewOtherPlayer(index_joueur);
+
+                                //on retire aléatoirement le prochain joueur
+                                index_joueur=ordre=playerUtils.chooseRandomNumber(2);
+
+                                model.new_round=false;
+                            } else{
                                 oos.writeObject("Deplacement impossible");
                             }
                         } else {
-                            System.out.println("On ne fait pas l'action");
                             oos.writeObject("Ce n'est pas ton tour");
                         }
 

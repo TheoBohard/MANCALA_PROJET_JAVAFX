@@ -11,6 +11,7 @@ public class GameModel {
     private Integer roundJoueur2 = 0;
     private boolean right_to_take_seed = true;
     public boolean party_On=true;
+    public boolean new_round=false;
 
     public GameModel() {
        for(int i=0;i<12;i++){
@@ -21,10 +22,19 @@ public class GameModel {
     }
 
     public void reinit_round(){
+        wholes.clear();
         for(int i=0;i<12;i++){
             wholes.add(new Whole());
             wholes.get(i).setNb_seed(4);
         }
+    }
+
+    public Integer getRoundJoueur1() {
+        return roundJoueur1;
+    }
+
+    public Integer getRoundJoueur2() {
+        return roundJoueur2;
     }
 
     public Integer getScoreJoueur1() {
@@ -87,7 +97,6 @@ public class GameModel {
         //Alors on regarde si le coup joué lui redonne des graines
         if(this.getEnemySeeds(this,index_joueur)==0) {
           int enemySeeds = gameCopy.getEnemySeeds(gameCopy,index_joueur);
-          this.isThereAnyPossiblemove(index_joueur);
           if(enemySeeds>0){
               verif=true;
           }else{
@@ -110,13 +119,16 @@ public class GameModel {
         return verif;
     }
 
-    private void isThereAnyPossiblemove(int index_joueur) {
+    public void isThereAnyPossiblemove(int index_joueur) {
         ArrayList<Integer> res = this.getAllPossibleIndex(index_joueur);
 
         boolean verif=false;
         for(int i:res){
             GameModel copy = this.copyGameModel();
             copy.moveWholes(i+1,index_joueur);
+            System.out.println("ICI------------------------------------------------------------");
+            System.out.println(i);
+            copy.wholesToString();
             if(copy.getEnemySeeds(copy,index_joueur)!=0){
                 verif=true;
                 break;
@@ -139,13 +151,14 @@ public class GameModel {
             System.out.println("FIN DE LA PARTIE");
             this.party_On = false;
         }else{
+            this.new_round=true;
             this.reinit_round();
         }
     }
 
     private ArrayList<Integer> getAllPossibleIndex(int index_joueur) {
         ArrayList<Integer> res = new ArrayList<Integer>();
-        if(index_joueur==0){
+        if(index_joueur==1){
             for(int i=0;i<6;i++){
                 res.add(i);
             }

@@ -46,6 +46,8 @@ public class ViewUpdate {
             seedInfo.add(nb_seed);
         }
 
+        seedInfo.add(model.getRoundJoueur1());
+        seedInfo.add(model.getRoundJoueur2());
         seedInfo.add(model.getScoreJoueur1());
         seedInfo.add(model.getScoreJoueur2());
 
@@ -63,6 +65,8 @@ public class ViewUpdate {
             seedInfo.add(nb_seed);
         }
 
+        seedInfo.add(model.getRoundJoueur1());
+        seedInfo.add(model.getRoundJoueur2());
         seedInfo.add(model.getScoreJoueur1());
         seedInfo.add(model.getScoreJoueur2());
 
