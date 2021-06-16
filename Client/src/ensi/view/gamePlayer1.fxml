@@ -77,7 +77,7 @@
                   <DropShadow />
                </effect>
             </Circle>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="89.0" layoutY="602.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="274.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="89.0" layoutY="620.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="274.0" />
             <Text layoutX="151.0" layoutY="662.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                <font>
                   <Font size="37.0" />
@@ -88,7 +88,7 @@
                   <Font size="26.0" />
                </font>
             </Text>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="89.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="274.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="89.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="274.0" />
             <Text fx:id="scorePlayer1" layoutX="127.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
                <font>
                   <Font size="26.0" />
@@ -267,6 +267,16 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <Text fx:id="roundTextInfo" layoutX="645.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Round numéro 1">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Text>
+            <Text fx:id="roundScoreInfo" layoutX="650.0" layoutY="743.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score : 0-0">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Text>
          </children>
          <effect>
             <DropShadow height="118.14" radius="61.6075" width="130.29" />

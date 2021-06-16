@@ -4,35 +4,32 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Communication {
 
     private String ip;
     private String port;
-    private int nb_player_connected;
-    public int getNb_player_connected() {
-        return nb_player_connected;
+    private int nbPlayerConnected;
+    public int getNbPlayerConnected() {
+        return nbPlayerConnected;
     }
-    public void setNb_player_connected(int nb_player_connected) {
-        this.nb_player_connected = nb_player_connected;
+    public void setNbPlayerConnected(int nbPlayerConnected) {
+        this.nbPlayerConnected = nbPlayerConnected;
     }
 
     public Communication() {
     }
 
-    public void sendInitMessage(Object message, int port_socket, int port_socket_serveur) {
+    public void sendInitMessage(Object message, int portSocket, int portSocketServeur) {
         Socket socket;
         Socket serverSocket;
-        System.out.println(port_socket);
-        System.out.println(port_socket_serveur);
+        System.out.println(portSocket);
+        System.out.println(portSocketServeur);
         try {
-            System.out.println(port_socket);
-            socket = createServerSocket(InetAddress.getLocalHost(), port_socket);
+            System.out.println(portSocket);
+            socket = createServerSocket(InetAddress.getLocalHost(), portSocket);
 
-            ServerSocket clientSocket = new ServerSocket(port_socket_serveur);
+            ServerSocket clientSocket = new ServerSocket(portSocketServeur);
             serverSocket = clientSocket.accept();
 
             sendMessageSocket(serverSocket, message);

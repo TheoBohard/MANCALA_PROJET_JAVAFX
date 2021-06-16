@@ -1,6 +1,5 @@
 package ensi;
 
-import ensi.model.Communication;
 import ensi.utils.idGenerator;
 import ensi.utils.playerUtils;
 import ensi.model.GameModel;
@@ -22,23 +21,23 @@ public class ServeurMessage {
 
 
     public static void main(String[] zero) throws IOException {
-        int index_joueur = -1;
+        int indexJoueur = -1;
         int ordre = -1;
 
-        int nb_player_connected = 0;
-        ArrayList<String> list_ports = new ArrayList<>();
-        list_ports.add("2020");
-        list_ports.add("2015");
+        int nbPlayerConnected = 0;
+        ArrayList<String> listPorts = new ArrayList<>();
+        listPorts.add("2020");
+        listPorts.add("2015");
         GameModel model = new GameModel();
-        ViewUpdate update = new ViewUpdate(model, list_ports);
+        ViewUpdate update = new ViewUpdate(model, listPorts);
         idGenerator utilPass = new idGenerator();
         ArrayList<String> passwords = new ArrayList<>();
 
-        ordre = index_joueur  = playerUtils.chooseRandomNumber(2);
+        ordre = indexJoueur  = playerUtils.chooseRandomNumber(2);
 
         if(ordre < 0 || ordre > 1) {
             System.out.println("Backup de l'ordre [Pas très accurate]");
-            ordre = index_joueur = 0;
+            ordre = indexJoueur = 0;
         }
 
         System.out.println("Ordre = " + ordre);
@@ -69,25 +68,25 @@ public class ServeurMessage {
                         case "New game":
                             int position=-1;
 
-                            if(nb_player_connected==0 && ordre==0){
+                            if(nbPlayerConnected==0 && ordre==0){
                                 position = 1;
-                            }else if(nb_player_connected==0 && ordre==1) {
+                            }else if(nbPlayerConnected==0 && ordre==1) {
                                 position = 2;
-                            }else if(nb_player_connected==1 && ordre==0) {
+                            }else if(nbPlayerConnected==1 && ordre==0) {
                                 position = 2;
-                            }else if(nb_player_connected==1 && ordre==1) {
+                            }else if(nbPlayerConnected==1 && ordre==1) {
                                 position = 1;
                             }
 
-                            String port = list_ports.get(nb_player_connected);
-                            nb_player_connected++;
+                            String port = listPorts.get(nbPlayerConnected);
+                            nbPlayerConnected++;
                             String pass = utilPass.generateId();
                             passwords.add(pass);
                             oos.writeObject("Bien reçu : nouvelle partie,"
                                     .concat(port)
                                     .concat(",").concat(pass)
                                     .concat(",")
-                                    .concat(String.valueOf(nb_player_connected))
+                                    .concat(String.valueOf(nbPlayerConnected))
                                     .concat(",")
                                     .concat(Integer.toString(position)));
 
@@ -135,7 +134,7 @@ public class ServeurMessage {
             System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
 
-            model.isThereAnyPossiblemove(index_joueur);
+            model.isThereAnyPossiblemove(indexJoueur);
 
 
             try (Socket socket = new Socket(InetAddress.getLocalHost(), 2010)) {
@@ -151,8 +150,6 @@ public class ServeurMessage {
                 System.out.println("Resquest received");
                 System.out.println("Request : " + request);
                 switch (request) {
-                    case "give_me_view":
-                        update.updateView(oos,index_joueur);
                     case "EXIT":
                         System.out.println("EXIT");
                         socket.close();
@@ -161,27 +158,28 @@ public class ServeurMessage {
                         String[] requestSplitted = request.split(",");
                         if (requestSplitted[1].equals(playerTurn)) {
 
-                            boolean move_playable = model.is_move_playable(Integer.parseInt(requestSplitted[0]), index_joueur);
-                            if(model.party_On==false){
+                            boolean moveIsPlayable = model.isMovePlayable(Integer.parseInt(requestSplitted[0]), indexJoueur);
+
+                            if(!model.isPartyOn){
                                 oos.writeObject("PARTIE TERMINE");
                             }
-                            else if(move_playable && model.new_round==false) {
+                            else if(moveIsPlayable && !model.newRound) {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
 
-                                model.moveWholes(Integer.parseInt(requestSplitted[0]), index_joueur);
-                                update.updateView(oos, index_joueur);
-                                System.out.println("Index du joueur : " + index_joueur);
-                                index_joueur = (index_joueur + 1) % 2;
-                                update.updateViewOtherPlayer(index_joueur);
-                            }else if(model.new_round==true){
-                                update.updateView(oos, index_joueur);
-                                index_joueur = (index_joueur + 1) % 2;
-                                update.updateViewOtherPlayer(index_joueur);
+                                model.moveWholes(Integer.parseInt(requestSplitted[0]), indexJoueur);
+                                update.updateView(oos, indexJoueur);
+                                System.out.println("Index du joueur : " + indexJoueur);
+                                indexJoueur = (indexJoueur + 1) % 2;
+                                update.updateViewOtherPlayer(indexJoueur);
+                            } else if(model.newRound){
+                                update.updateView(oos, indexJoueur);
+                                indexJoueur = (indexJoueur + 1) % 2;
+                                update.updateViewOtherPlayer(indexJoueur);
 
                                 //on retire aléatoirement le prochain joueur
-                                index_joueur=ordre=playerUtils.chooseRandomNumber(2);
+                                indexJoueur = ordre = playerUtils.chooseRandomNumber(2);
 
-                                model.new_round=false;
+                                model.newRound =false;
                             } else{
                                 oos.writeObject("Deplacement impossible");
                             }

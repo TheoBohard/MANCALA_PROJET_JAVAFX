@@ -293,6 +293,7 @@ public class ControllerJeu implements Initializable {
             Media sound = new Media(new File(musicFile).toURI().toString());
             mediaPlayerMusic = new MediaPlayer(sound);
             mediaPlayerMusic.setVolume(0.1);
+            mediaPlayerMusic.setCycleCount(MediaPlayer.INDEFINITE);
             Platform.runLater(() -> mediaPlayerMusic.play());
         } else {
             mediaPlayerMusic.stop();

@@ -5,86 +5,86 @@ import java.util.ArrayList;
 public class GameModel {
 
     private ArrayList<Whole> wholes = new ArrayList<Whole>();
-    private Integer scoreJoueur1 = 0;
-    private Integer scoreJoueur2 = 0;
-    private Integer roundJoueur1 = 0;
-    private Integer roundJoueur2 = 0;
-    private boolean right_to_take_seed = true;
-    public boolean party_On=true;
-    public boolean new_round=false;
+    private Integer scorePlayer1 = 0;
+    private Integer scorePlayer2 = 0;
+    private Integer roundPlayer1 = 0;
+    private Integer roundPlayer2 = 0;
+    private boolean rightToTakeSeed = true;
+    public boolean isPartyOn = true;
+    public boolean newRound = false;
 
     public GameModel() {
        for(int i=0;i<12;i++){
            wholes.add(new Whole());
-           wholes.get(i).setNb_seed(4);
+           wholes.get(i).setNbSeed(4);
         }
 
     }
 
-    public void reinit_round(){
+    public void reInitRound(){
         wholes.clear();
         for(int i=0;i<12;i++){
             wholes.add(new Whole());
-            wholes.get(i).setNb_seed(4);
+            wholes.get(i).setNbSeed(4);
         }
     }
 
     public Integer getRoundJoueur1() {
-        return roundJoueur1;
+        return roundPlayer1;
     }
 
-    public Integer getRoundJoueur2() {
-        return roundJoueur2;
+    public Integer getRoundPlayer2() {
+        return roundPlayer2;
     }
 
     public Integer getScoreJoueur1() {
-        return scoreJoueur1;
+        return scorePlayer1;
     }
 
-    public Integer getScoreJoueur2() {
-        return scoreJoueur2;
+    public Integer getScorePlayer2() {
+        return scorePlayer2;
     }
 
-    public void moveWholes(int index, int index_joueur) {
+    public void moveWholes(int index, int playerIndex) {
         index--;
-        int numberSeed = wholes.get(index).getNb_seed();
+        int numberSeed = wholes.get(index).getNbSeed();
         System.out.println("Number seed : => " + numberSeed);
 
         for(int i = 0; i < numberSeed; i++) {
             if((index - i - 1 + 12)%12 != index) {
                 Whole whole = wholes.get((index - i - 1 + 12*10) % 12);
-                whole.setNb_seed(whole.getNb_seed() + 1);
+                whole.setNbSeed(whole.getNbSeed() + 1);
             }else{
                 numberSeed++;
             }
         }
 
         //On regarde la dernière graines placé et on vérifie si elle remplit les deux conditions
-        if(this.right_to_take_seed==true) {
-            int index_whole_to_check = (index - numberSeed + 12*10) % 12;
-            Whole whole_to_check = wholes.get(index_whole_to_check);
-            check_whole(whole_to_check, index_whole_to_check, index_joueur);
+        if(this.rightToTakeSeed) {
+            int indexWholeToCheck = (index - numberSeed + 12*10) % 12;
+            Whole wholeToCheck = wholes.get(indexWholeToCheck);
+            checkWhole(wholeToCheck, indexWholeToCheck, playerIndex);
         }
 
         System.out.println("MoveWholes SIZE : " + wholes.size());
 
-        wholes.get(index).setNb_seed(0);
+        wholes.get(index).setNbSeed(0);
     }
 
     private void wholesToString(){
         System.out.print("[");
         for(Whole whole:this.wholes){
-            System.out.print(whole.getNb_seed());
+            System.out.print(whole.getNbSeed());
         }
         System.out.println("]");
     }
 
-    public boolean is_move_playable(int index, int index_joueur){
+    public boolean isMovePlayable(int index, int playerIndex){
         this.wholesToString();
         GameModel gameCopy =  copyGameModel();
-        gameCopy.moveWholes(index,index_joueur);
+        gameCopy.moveWholes(index,playerIndex);
 
-        if(this.getWholes().get(index-1).getNb_seed()==0){
+        if(this.getWholes().get(index-1).getNbSeed()==0){
             this.wholesToString();
             gameCopy.wholesToString();
 
@@ -95,19 +95,19 @@ public class GameModel {
         boolean verif=true;
         //Si le joueur adverse n'a plus de graines
         //Alors on regarde si le coup joué lui redonne des graines
-        if(this.getEnemySeeds(this,index_joueur)==0) {
-          int enemySeeds = gameCopy.getEnemySeeds(gameCopy,index_joueur);
+        if(this.getEnemySeeds(this,playerIndex)==0) {
+          int enemySeeds = gameCopy.getEnemySeeds(gameCopy,playerIndex);
           if(enemySeeds>0){
               verif=true;
           }else{
               verif=false;
           }
         }else{
-            int enemySeeds = gameCopy.getEnemySeeds(gameCopy,index_joueur);
+            int enemySeeds = gameCopy.getEnemySeeds(gameCopy,playerIndex);
             if(enemySeeds==0){
-                this.right_to_take_seed = false;
+                this.rightToTakeSeed = false;
             }else{
-                this.right_to_take_seed = true;
+                this.rightToTakeSeed = true;
             }
         }
 
@@ -119,46 +119,46 @@ public class GameModel {
         return verif;
     }
 
-    public void isThereAnyPossiblemove(int index_joueur) {
-        ArrayList<Integer> res = this.getAllPossibleIndex(index_joueur);
+    public void isThereAnyPossiblemove(int playerIndex) {
+        ArrayList<Integer> res = this.getAllPossibleIndex(playerIndex);
 
         boolean verif=false;
         for(int i:res){
             GameModel copy = this.copyGameModel();
-            copy.moveWholes(i+1,index_joueur);
+            copy.moveWholes(i+1,playerIndex);
             System.out.println("ICI------------------------------------------------------------");
             System.out.println(i);
             copy.wholesToString();
-            if(copy.getEnemySeeds(copy,index_joueur)!=0){
+            if(copy.getEnemySeeds(copy,playerIndex)!=0){
                 verif=true;
                 break;
             }
         }
-        if(verif==false){
-            this.end_game();
+        if(!verif){
+            this.endGame();
         }
     }
 
-    private void end_game(){
-        if(this.scoreJoueur1>this.scoreJoueur2){
-            this.roundJoueur1++;
+    private void endGame(){
+        if(this.scorePlayer1 > this.scorePlayer2){
+            this.roundPlayer1++;
         }else{
-            this.roundJoueur2++;
+            this.roundPlayer2++;
         }
-        this.scoreJoueur1=this.scoreJoueur2=0;
+        this.scorePlayer1 = this.scorePlayer2 = 0;
 
-        if(this.roundJoueur1+this.roundJoueur2==6){
+        if(this.roundPlayer1 + this.roundPlayer2 == 6){
             System.out.println("FIN DE LA PARTIE");
-            this.party_On = false;
+            this.isPartyOn = false;
         }else{
-            this.new_round=true;
-            this.reinit_round();
+            this.newRound = true;
+            this.reInitRound();
         }
     }
 
-    private ArrayList<Integer> getAllPossibleIndex(int index_joueur) {
+    private ArrayList<Integer> getAllPossibleIndex(int playerIndex) {
         ArrayList<Integer> res = new ArrayList<Integer>();
-        if(index_joueur==1){
+        if(playerIndex==1){
             for(int i=0;i<6;i++){
                 res.add(i);
             }
@@ -171,19 +171,19 @@ public class GameModel {
     }
 
 
-    private int getEnemySeeds(GameModel gameCopy, Integer index_joueur) {
+    private int getEnemySeeds(GameModel gameCopy, Integer playerIndex) {
         int counter=0;
         int counterSeed=0;
         boolean verif = false;
         for (Whole whole : gameCopy.wholes) {
-            if (counter < 6 && index_joueur == 0) {
-                int nbSeed = whole.getNb_seed();
-                counterSeed+=nbSeed;
+            if (counter < 6 && playerIndex == 0) {
+                int nbSeed = whole.getNbSeed();
+                counterSeed += nbSeed;
 
             }
-            if (counter >= 6 && index_joueur == 1) {
-                int nbSeed = whole.getNb_seed();
-                counterSeed+=nbSeed;
+            if (counter >= 6 && playerIndex == 1) {
+                int nbSeed = whole.getNbSeed();
+                counterSeed += nbSeed;
 
             }
             counter++;
@@ -194,7 +194,7 @@ public class GameModel {
     private ArrayList<Whole> copyWholes(){
         ArrayList<Whole> copyWholes = new ArrayList<Whole>();
         for(Whole whole : this.wholes){
-            copyWholes.add(whole.copy_whole());
+            copyWholes.add(whole.copyWhole());
         }
         return copyWholes;
     }
@@ -205,26 +205,26 @@ public class GameModel {
         return copy;
     }
 
-    private void check_whole(Whole whole_to_check, Integer index_whole, Integer index_joueur) {
-        if(index_joueur==0){
-            if(index_whole<6 && (whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3)){
-                int score_to_give = whole_to_check.getNb_seed();
-                whole_to_check.setNb_seed(0);
-                scoreJoueur1 += score_to_give;
-                int new_index_to_check = (index_whole+1)%12;
-                check_whole(this.wholes.get(new_index_to_check),new_index_to_check,index_joueur);
+    private void checkWhole(Whole wholeToCheck, Integer wholeIndex, Integer playerIndex) {
+        if(playerIndex==0){
+            if(wholeIndex<6 && (wholeToCheck.getNbSeed()==2 || wholeToCheck.getNbSeed()==3)){
+                int scoreToGive = wholeToCheck.getNbSeed();
+                wholeToCheck.setNbSeed(0);
+                scorePlayer1 += scoreToGive;
+                int newIndexToCheck = (wholeIndex+1)%12;
+                checkWhole(this.wholes.get(newIndexToCheck),newIndexToCheck,playerIndex);
             }
-        }else if(index_joueur==1){
-            if(index_whole>=6 && (whole_to_check.getNb_seed()==2 || whole_to_check.getNb_seed()==3)){
-                int score_to_give = whole_to_check.getNb_seed();
-                whole_to_check.setNb_seed(0);
-                scoreJoueur2+= score_to_give;
-                int new_index_to_check = (index_whole+1)%12;
-                check_whole(this.wholes.get(new_index_to_check),new_index_to_check,index_joueur);
+        }else if(playerIndex==1){
+            if(wholeIndex>=6 && (wholeToCheck.getNbSeed()==2 || wholeToCheck.getNbSeed()==3)){
+                int scoreToGive = wholeToCheck.getNbSeed();
+                wholeToCheck.setNbSeed(0);
+                scorePlayer2 += scoreToGive;
+                int newIndexToCheck = (wholeIndex+1)%12;
+                checkWhole(this.wholes.get(newIndexToCheck),newIndexToCheck,playerIndex);
             }
         }
-        System.out.println(this.scoreJoueur1);
-        System.out.println(this.scoreJoueur2);
+        System.out.println(this.scorePlayer1);
+        System.out.println(this.scorePlayer2);
     }
 
 
