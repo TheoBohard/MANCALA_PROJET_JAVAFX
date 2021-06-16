@@ -1,4 +1,4 @@
-# MANCALA_PROJET_JAVAFX
+﻿# MANCALA_PROJET_JAVAFX
 This project is a JAVAFX project done at ENSICAEN for JAVAFX courses
 
 
@@ -18,14 +18,14 @@ case précédente : si elle est dans le camp adverse et contient deux ou trois g
 et ainsi de suite jusqu'à ce qu'il arrive à son camp ou jusqu'à ce qu'il y ait un nombre de graines différent
 de deux ou trois.
 
-[x] Règle 5 : On ne saute pas de case lorsqu'on égrène sauf lorsqu'on a douze graines ou plus, c'est-à-dire
+[o] Règle 5 : On ne saute pas de case lorsqu'on égrène sauf lorsqu'on a douze graines ou plus, c'est-à-dire
 qu'on fait un tour complet : on ne remplit pas la case dans laquelle on vient de prendre les graines.
 
 [x] Règle 6 : Il faut « nourrir » l'adversaire, c'est-à-dire que, quand celui-ci n'a plus de graines, il faut
 absolument jouer un coup qui lui permette de rejouer ensuite. Si ce n'est pas possible, la partie s'arrête et
 le joueur qui allait jouer capture les graines restantes.
 
-[x] Règle 7 : Si un coup devait prendre toutes les graines adverses, alors le coup peut être joué, mais aucune
+[o] Règle 7 : Si un coup devait prendre toutes les graines adverses, alors le coup peut être joué, mais aucune
 capture n'est faite : il ne faut pas « affamer » l'adversaire.
 
 [x] Règle 8 : La partie s'arrête quand :

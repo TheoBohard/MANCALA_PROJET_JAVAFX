@@ -16,4 +16,10 @@ public class Whole {
     public void setNb_seed(int nb_seed) {
         this.nb_seed = nb_seed;
     }
+
+    public Whole copy_whole(){
+        Whole copy = new Whole();
+        copy.setNb_seed(this.getNb_seed());
+        return copy;
+    }
 }

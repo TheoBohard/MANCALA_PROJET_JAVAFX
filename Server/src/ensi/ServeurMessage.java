@@ -160,12 +160,22 @@ public class ServeurMessage {
                         // [0] => GridPane [1] => Password
                         if (requestSplitted[1].equals(playerTurn)) {
                             System.out.println("On fait l'action");
-                            playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                            model.moveWholes(Integer.parseInt(requestSplitted[0]), index_joueur);
-                            update.updateView(oos,index_joueur);
-                            System.out.println("Index du joueur : " + index_joueur);
-                            index_joueur = (index_joueur+1)%2;
-                            update.updateViewOtherPlayer(index_joueur);
+
+                            boolean move_playable = model.is_move_playable(Integer.parseInt(requestSplitted[0]), index_joueur);
+                            if(model.party_On==false){
+                                oos.writeObject("PARTIE TERMINE");
+                            }
+                            if(move_playable) {
+                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+
+                                model.moveWholes(Integer.parseInt(requestSplitted[0]), index_joueur);
+                                update.updateView(oos, index_joueur);
+                                System.out.println("Index du joueur : " + index_joueur);
+                                index_joueur = (index_joueur + 1) % 2;
+                                update.updateViewOtherPlayer(index_joueur);
+                            }else{
+                                oos.writeObject("Deplacement impossible");
+                            }
                         } else {
                             System.out.println("On ne fait pas l'action");
                             oos.writeObject("Ce n'est pas ton tour");
