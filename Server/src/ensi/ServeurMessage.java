@@ -163,7 +163,7 @@ public class ServeurMessage {
 
                             boolean move_playable = model.is_move_playable(Integer.parseInt(requestSplitted[0]), index_joueur);
                             if(model.party_On==false){
-                                oos.writeObject("PARTIE TERMINE");
+                                //oos.writeObject("PARTIE TERMINE");
                             }
                             if(move_playable) {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);

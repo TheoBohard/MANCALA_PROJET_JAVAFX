@@ -10,7 +10,7 @@ public class GameModel {
     private Integer roundJoueur1 = 0;
     private Integer roundJoueur2 = 0;
     private boolean right_to_take_seed = true;
-    public boolean party_On;
+    public boolean party_On=true;
 
     public GameModel() {
        for(int i=0;i<12;i++){
