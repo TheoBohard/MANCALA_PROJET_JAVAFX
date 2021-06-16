@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class ControllerMenu implements Initializable {
 
@@ -127,14 +126,15 @@ public class ControllerMenu implements Initializable {
         gameController.init(tab_seed);
         Main.primaryStage.close();
         System.out.println("Position : " + position);
+
         gameStage.show();
-        if(this.position.equals("2")){
+        if (this.position.equals("2")){
             ExecutorService threadpool;
             threadpool = Executors.newCachedThreadPool();
             threadpool.submit(() -> {
                 ArrayList<?> wholesList = null;
                 try {
-                    wholesList = (ArrayList<?>) gameController.listen_to_server();
+                    wholesList = (ArrayList<?>) gameController.listenToServer();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

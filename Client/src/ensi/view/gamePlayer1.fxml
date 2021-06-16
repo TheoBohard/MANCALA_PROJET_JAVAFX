@@ -183,7 +183,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="GridPane_12" layoutX="161.0" layoutY="448.0" onMouseClicked="#ask_server_to_move" prefHeight="93.0" prefWidth="85.0">
+            <GridPane fx:id="GridPane_12" layoutX="161.0" layoutY="448.0" onMouseClicked="#askServerToMove" prefHeight="93.0" prefWidth="85.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -197,7 +197,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="GridPane_11" layoutX="321.0" layoutY="448.0" onMouseClicked="#ask_server_to_move" prefHeight="93.0" prefWidth="85.0">
+            <GridPane fx:id="GridPane_11" layoutX="321.0" layoutY="448.0" onMouseClicked="#askServerToMove" prefHeight="93.0" prefWidth="85.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -211,7 +211,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="GridPane_10" layoutX="473.0" layoutY="448.0" onMouseClicked="#ask_server_to_move" prefHeight="93.0" prefWidth="85.0">
+            <GridPane fx:id="GridPane_10" layoutX="473.0" layoutY="448.0" onMouseClicked="#askServerToMove" prefHeight="93.0" prefWidth="85.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -225,7 +225,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="GridPane_9" layoutX="627.0" layoutY="448.0" onMouseClicked="#ask_server_to_move" prefHeight="93.0" prefWidth="85.0">
+            <GridPane fx:id="GridPane_9" layoutX="627.0" layoutY="448.0" onMouseClicked="#askServerToMove" prefHeight="93.0" prefWidth="85.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -239,7 +239,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="GridPane_8" layoutX="783.0" layoutY="448.0" onMouseClicked="#ask_server_to_move" prefHeight="93.0" prefWidth="85.0">
+            <GridPane fx:id="GridPane_8" layoutX="783.0" layoutY="448.0" onMouseClicked="#askServerToMove" prefHeight="93.0" prefWidth="85.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -253,7 +253,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="GridPane_7" layoutX="935.0" layoutY="448.0" onMouseClicked="#ask_server_to_move" prefHeight="93.0" prefWidth="85.0">
+            <GridPane fx:id="GridPane_7" layoutX="935.0" layoutY="448.0" onMouseClicked="#askServerToMove" prefHeight="93.0" prefWidth="85.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -267,12 +267,17 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <Text fx:id="roundTextInfo" layoutX="645.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Round numéro 1">
+            <Text fx:id="roundTextInfo" layoutX="514.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0">
                <font>
                   <Font size="37.0" />
                </font>
             </Text>
-            <Text fx:id="roundScoreInfo" layoutX="650.0" layoutY="743.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score : 0-0">
+            <Text fx:id="roundScoreInfo" layoutX="514.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Text>
+            <Text fx:id="turnInfoText" layoutX="498.0" layoutY="735.0" strokeType="OUTSIDE" strokeWidth="0.0">
                <font>
                   <Font size="37.0" />
                </font>

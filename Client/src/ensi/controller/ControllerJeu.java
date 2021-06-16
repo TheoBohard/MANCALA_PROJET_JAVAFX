@@ -75,11 +75,17 @@ public class ControllerJeu implements Initializable {
     private Circle CircleEleven;
     @FXML
     private Circle CircleTwelve;
-
     @FXML
     private Text scorePlayer1;
     @FXML
     private Text scorePlayer2;
+
+    @FXML
+    private Text turnInfoText;
+    @FXML
+    private Text roundTextInfo;
+    @FXML
+    private Text roundScoreInfo;
 
     private Communication com;
     private String passWord;
@@ -148,7 +154,15 @@ public class ControllerJeu implements Initializable {
             }
         }
 
+        updateScoreGame(tabSeed);
+
         playMusic("blue.mp3");
+    }
+
+    private void updateScoreGame(ArrayList<?> tabSeed) {
+        int roudNumber = (Integer) tabSeed.get(tabSeed.size()-3) + (Integer) tabSeed.get(tabSeed.size()-4);
+        roundTextInfo.setText("Round numéro : " + roudNumber);
+        roundScoreInfo.setText("Score : " + tabSeed.get(tabSeed.size()-3) + "-" + tabSeed.get(tabSeed.size()-4));
     }
 
     private void displayTooltip(GridPane gridPane, String message) {
@@ -188,7 +202,7 @@ public class ControllerJeu implements Initializable {
 
             cleanGridPane(GridPaneArray);
 
-            update_score((Integer) tabSeed.get(tabSeed.size()-1), (Integer) tabSeed.get(tabSeed.size()-2));
+            updateScore((Integer) tabSeed.get(tabSeed.size()-1), (Integer) tabSeed.get(tabSeed.size()-2));
 
             for (GridPane gridpane : this.GridPaneArray) {
                 try {
@@ -199,17 +213,20 @@ public class ControllerJeu implements Initializable {
                     e.printStackTrace();
                 }
             }
-        }
+
+            updateScoreGame(tabSeed);
+
+                }
         );
 
     }
 
-    private void update_score(int score1, int score2) {
+    private void updateScore(int score1, int score2) {
         scorePlayer1.setText(Integer.toString(score1));
         scorePlayer2.setText(Integer.toString(score2));
     }
 
-    public void ask_server_to_move(MouseEvent mouseEvent) {
+    public void askServerToMove(MouseEvent mouseEvent) {
         playSoundEffect("sardoche_detruire.mp3");
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
@@ -225,7 +242,7 @@ public class ControllerJeu implements Initializable {
             threadpool.submit(() -> {
                 ArrayList<?> wholesList = null;
                 try {
-                    wholesList = (ArrayList<?>) listen_to_server();
+                    wholesList = (ArrayList<?>) listenToServer();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -241,7 +258,7 @@ public class ControllerJeu implements Initializable {
 
     }
 
-    public Object listen_to_server() throws InterruptedException {
+    public Object listenToServer() throws InterruptedException {
         System.out.println("ENTERED LISTEN");
         ServerSocket serverSocket;
         Socket inputSocket;
