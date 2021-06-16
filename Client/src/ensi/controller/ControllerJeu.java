@@ -4,21 +4,24 @@ import ensi.communication.Communication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
+import javafx.stage.PopupWindow;
 
 
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ControllerJeu implements Initializable {
 
@@ -69,14 +72,23 @@ public class ControllerJeu implements Initializable {
     @FXML
     private Circle CircleEleven;
     @FXML
+    private Circle CircleTwelve;
+
+    @FXML
     private Text scorePlayer1;
     @FXML
     private Text scorePlayer2;
-    @FXML
-    private Circle CircleTwelve;
+
     private Communication com;
     private String passWord;
     private String port;
+
+    private ArrayList<?> tabSeed;
+
+    final boolean CLIENT_NUMBER_SEED = false;
+    final boolean CLIENT_BOARD_STATE = true;
+    final boolean CLIENT_SOUND_EFFECT = true;
+    final boolean CLIENT_MUSIC = true;
 
 
     public void setPort(String port) {
@@ -88,15 +100,39 @@ public class ControllerJeu implements Initializable {
     }
 
     private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
+    private final ArrayList<Circle> CircleArray = new ArrayList<>();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         com = new Communication();
     }
 
     public void init(ArrayList<Integer> tab_seed) {
+        this.tabSeed = tab_seed;
         int compteur = 0;
-        this.GridPaneArray.addAll(Arrays.asList(this.GridPane_1, GridPane_2, GridPane_3, GridPane_4, GridPane_5,
+        this.GridPaneArray.addAll(Arrays.asList(GridPane_1, GridPane_2, GridPane_3, GridPane_4, GridPane_5,
                 GridPane_6, GridPane_7, GridPane_8, GridPane_9, GridPane_10, GridPane_11, GridPane_12));
+
+        this.CircleArray.addAll(Arrays.asList(CircleOne, CircleTwo, CircleThree, CircleFour, CircleFive,
+                CircleSix, CircleSeven, CircleEight, CircleNine, CircleTen, CircleEleven, CircleTwelve));
+
+        Iterator<GridPane> gridPaneIterator = GridPaneArray.iterator();
+        Iterator<Circle> circleIterator = CircleArray.iterator();
+
+        int counter = 0;
+
+        while (gridPaneIterator.hasNext() && circleIterator.hasNext()) {
+            GridPane actualGridPane = gridPaneIterator.next();
+            Circle actualCircle = circleIterator.next();
+
+            int finalCounter = counter;
+
+            actualGridPane.setOnMouseEntered(e -> displayTooltip(actualGridPane,
+                    tabSeed.get(finalCounter) + " Graines"));
+            actualCircle.setOnMouseEntered(e -> displayTooltip(actualGridPane,
+                    "10" + " Graines"));
+
+            counter++;
+        }
 
         for (GridPane gridpane : this.GridPaneArray) {
             try {
@@ -107,6 +143,22 @@ public class ControllerJeu implements Initializable {
             }
         }
 
+    }
+
+    private void displayTooltip(GridPane gridPane, String message) {
+        if(CLIENT_NUMBER_SEED) {
+            Tooltip tooltip = new Tooltip();
+            tooltip.setPrefSize(200, 100);
+            tooltip.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            Tooltip.install(gridPane, makeBubble(new Tooltip(message)));
+        }
+    }
+
+    private Tooltip makeBubble(Tooltip tooltip) {
+        tooltip.setStyle("-fx-font-size: 16px; -fx-shape: \"" + "M24 1h-24v16.981h4v5.019l7-5.019h13z" + "\";");
+        tooltip.setAnchorLocation(PopupWindow.AnchorLocation.WINDOW_BOTTOM_LEFT);
+
+        return tooltip;
     }
 
     private void cleanGridPane(ArrayList<GridPane> gridPanes) {
@@ -122,12 +174,9 @@ public class ControllerJeu implements Initializable {
         }
     }
 
-    public void circleMouseCliked(MouseEvent mouseEvent) {
-        System.out.println("Mouse Clicked");
-    }
-
-    public boolean updateView(ArrayList<?> tabSeed) {
+    public void updateView(ArrayList<?> tabSeed) {
         Platform.runLater(() -> {
+            this.tabSeed = tabSeed;
             int compteur = 0;
             System.out.println("Array list : " + tabSeed);
 
@@ -147,7 +196,6 @@ public class ControllerJeu implements Initializable {
         }
         );
 
-        return true;
     }
 
     private void update_score(int score1, int score2) {
