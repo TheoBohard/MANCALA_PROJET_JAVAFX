@@ -1,7 +1,9 @@
 package ensi.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 
@@ -33,13 +35,27 @@ public class ControllerChooseMode implements Initializable {
         this.portFinal = "";
     }
 
-    public void one_player(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void one_player() throws IOException, InterruptedException {
         controllerMenu.setMode("Oneplayer");
+        setDifficultyMode();
+    }
+
+    public void two_players() throws IOException, InterruptedException {
+        controllerMenu.setMode("Twoplayers");
+        setDifficultyMode();
+    }
+
+    private void setDifficultyMode() throws IOException, InterruptedException {
+        controllerMenu.chooseDifficultyMode();
+   }
+
+    public void easyMode() throws IOException, InterruptedException {
+        controllerMenu.setDifficulty("easyMode");
         controllerMenu.launchgame();
     }
 
-    public void two_players(ActionEvent actionEvent) throws IOException, InterruptedException {
-        controllerMenu.setMode("Twoplayers");
+    public void middleMode() throws IOException, InterruptedException {
+        controllerMenu.setDifficulty("middleMode");
         controllerMenu.launchgame();
     }
 }

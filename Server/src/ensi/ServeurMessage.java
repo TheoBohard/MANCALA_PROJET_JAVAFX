@@ -33,6 +33,9 @@ public class ServeurMessage {
         idGenerator utilPass = new idGenerator();
         ArrayList<String> passwords = new ArrayList<>();
 
+        String modeChoosed = "";
+        String difficultyChoosed = "";
+
         ordre = indexJoueur  = playerUtils.chooseRandomNumber(2);
 
         if(ordre < 0 || ordre > 1) {
@@ -63,7 +66,8 @@ public class ServeurMessage {
 
                     System.out.println("Resquest received");
                     System.out.println(request);
-                    switch (request) {
+
+                    switch (request.split(",")[0]) {
 
                         case "New game":
                             int position=-1;
@@ -96,19 +100,24 @@ public class ServeurMessage {
                             break;
                         case "Load game":
                             oos.writeObject("Bien reçu : chargement de partie");// envoie de l'objet
-
                             break;
                         case "EXIT":
                             System.out.println("EXIT");
                             socket.close();
                             break;
-                        case "init":
-
-                            break;
+                        case "GAME_INFO":
+                            if(nbPlayerConnected == 1) {
+                                String[] requestSplitted = request.split(",");
+                                oos.writeObject("OK");
+                                modeChoosed = requestSplitted[2];
+                                difficultyChoosed = requestSplitted[1];
+                                System.out.println("Mode : " + modeChoosed + " | Difficulty : " + difficultyChoosed);
+                                break;
+                            }
                         default:
-                            oos.writeObject("Je ne connais pas cette instruction");// envoie de l'objet
-
+                            oos.writeObject("Je ne connais pas cette instruction");
                             break;
+
                     }
                 }
 

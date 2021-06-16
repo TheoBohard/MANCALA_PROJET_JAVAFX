@@ -30,6 +30,7 @@ public class ControllerMenu implements Initializable {
     @FXML public AnchorPane anchorConnexion;
     @FXML public Text textAnchor;
     public String mode;
+    public String difficulty;
     public ControllerConnexion controllerConnexion;
     public String ip;
     public String port;
@@ -55,6 +56,10 @@ public class ControllerMenu implements Initializable {
         this.mode = mode;
     }
 
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public void connexion() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/connexion.fxml"));
@@ -65,6 +70,15 @@ public class ControllerMenu implements Initializable {
 
         this.ip = this.controllerConnexion.getIpFinal();
         this.port =  this.controllerConnexion.getPortFinal();
+    }
+
+    public void chooseDifficultyMode() throws IOException {
+        anchorConnexion.getChildren().clear();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/difficultyChoose.fxml"));
+        anchorConnexion.getChildren().add(loader.load());
+        this.controllerModeChoose = loader.getController();
+        this.controllerModeChoose.setCmenu(this);
     }
 
     public void startNewGame() throws IOException, ClassNotFoundException {
@@ -83,7 +97,7 @@ public class ControllerMenu implements Initializable {
 
                 anchorConnexion.getChildren().clear();
                 //Selection of game_mode
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/mode_choose.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/modeChoose.fxml"));
                 anchorConnexion.getChildren().add(loader.load());
                 this.controllerModeChoose = loader.getController();
                 this.controllerModeChoose.setCmenu(this);
@@ -127,6 +141,9 @@ public class ControllerMenu implements Initializable {
         Main.primaryStage.close();
         System.out.println("Position : " + position);
 
+        String sendGameInfo = ((String) com.sendMessage("GAME_INFO," + difficulty + "," + mode));
+        System.out.println("sendGameInfo = " + sendGameInfo);
+
         gameStage.show();
         if (this.position.equals("2")){
             ExecutorService threadpool;
@@ -153,7 +170,6 @@ public class ControllerMenu implements Initializable {
     }
 
     public void startOptions(ActionEvent actionEvent) {
-
     }
 
     public void leaveProgram() throws UnknownHostException {
