@@ -28,10 +28,7 @@ import javafx.stage.Window;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -121,13 +118,16 @@ public class ControllerJeu implements Initializable {
 
     private ArrayList<?> tabSeed;
 
-    boolean CLIENT_NUMBER_SEED = true;
-    boolean CLIENT_BOARD_STATE = true;
-    boolean CLIENT_SOUND_EFFECT = true;
-    boolean CLIENT_MUSIC = true;
+    private static boolean CLIENT_NUMBER_SEED = true;
+    private static boolean CLIENT_BOARD_STATE = true;
+    private static boolean CLIENT_SOUND_EFFECT = true;
+    private static boolean CLIENT_MUSIC = true;
 
-    public MediaPlayer mediaPlayerEffect;
-    public MediaPlayer mediaPlayerMusic;
+    private static String CURRENT_MUSIC;
+    private static String CURRENT_SOUND;
+
+    private static MediaPlayer mediaPlayerEffect;
+    private static MediaPlayer mediaPlayerMusic;
 
     private String fxmlFileLoaded = "";
 
@@ -148,36 +148,38 @@ public class ControllerJeu implements Initializable {
         this.fxmlFileLoaded = fxmlFileLoaded;
     }
 
-    public boolean isCLIENT_NUMBER_SEED() {
+    static public boolean isCLIENT_NUMBER_SEED() {
         return CLIENT_NUMBER_SEED;
     }
 
-    public void setCLIENT_NUMBER_SEED(boolean CLIENT_NUMBER_SEED) {
-        this.CLIENT_NUMBER_SEED = CLIENT_NUMBER_SEED;
+    static public void setCLIENT_NUMBER_SEED(boolean IS_NUMBER_SEED) {
+        CLIENT_NUMBER_SEED = IS_NUMBER_SEED;
     }
 
-    public boolean isCLIENT_BOARD_STATE() {
+    static public boolean isCLIENT_BOARD_STATE() {
         return CLIENT_BOARD_STATE;
     }
 
-    public void setCLIENT_BOARD_STATE(boolean CLIENT_BOARD_STATE) {
-        this.CLIENT_BOARD_STATE = CLIENT_BOARD_STATE;
+    static public void setCLIENT_BOARD_STATE(boolean IS_BOARD_STATE) {
+        CLIENT_BOARD_STATE = IS_BOARD_STATE;
     }
 
-    public boolean isCLIENT_SOUND_EFFECT() {
+    static public boolean isCLIENT_SOUND_EFFECT() {
         return CLIENT_SOUND_EFFECT;
     }
 
-    public void setCLIENT_SOUND_EFFECT(boolean CLIENT_SOUND_EFFECT) {
-        this.CLIENT_SOUND_EFFECT = CLIENT_SOUND_EFFECT;
+    static public void setCLIENT_SOUND_EFFECT(boolean IS_SOUND_EFFECT) {
+        CLIENT_SOUND_EFFECT = IS_SOUND_EFFECT;
+        playSoundEffect();
     }
 
-    public boolean isCLIENT_MUSIC() {
+    static public boolean isCLIENT_MUSIC() {
         return CLIENT_MUSIC;
     }
 
-    public void setCLIENT_MUSIC(boolean CLIENT_MUSIC) {
-        this.CLIENT_MUSIC = CLIENT_MUSIC;
+    static public void setCLIENT_MUSIC(boolean IS_MUSIC) {
+        CLIENT_MUSIC = IS_MUSIC;
+        playMusic();
     }
 
     private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
@@ -187,9 +189,8 @@ public class ControllerJeu implements Initializable {
         com = new Communication();
     }
 
-    public void init(ArrayList<Integer> tab_seed) {
-        this.tabSeed = tab_seed;
-        int compteur = 0;
+    public void init(ArrayList<Integer> seedTab) {
+        this.tabSeed = seedTab;
         this.GridPaneArray.addAll(Arrays.asList(GridPane_1, GridPane_2, GridPane_3, GridPane_4, GridPane_5,
                 GridPane_6, GridPane_7, GridPane_8, GridPane_9, GridPane_10, GridPane_11, GridPane_12));
 
@@ -215,10 +216,12 @@ public class ControllerJeu implements Initializable {
             counter++;
         }
 
+        counter = 0;
+
         for (GridPane gridpane : this.GridPaneArray) {
             try {
-                populateGridPane(tab_seed.get(compteur), gridpane);
-                compteur++;
+                populateGridPane(seedTab.get(counter), gridpane);
+                counter++;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -226,7 +229,9 @@ public class ControllerJeu implements Initializable {
 
         updateScoreGame(tabSeed);
 
-        playMusic("blue.mp3");
+
+        CURRENT_MUSIC = "blue.mp3";
+        playMusic();
 
         options.setOnAction(e -> {
             try {
@@ -256,9 +261,9 @@ public class ControllerJeu implements Initializable {
         roundTextInfo.setText("Round numéro : " + ((Integer) tabSeed.get(tabSeed.size()-1) + 1));
 
         if (fxmlFileLoaded.equals("../view/gamePlayer1.fxml")) {
-            roundScoreInfo.setText("Score : " + tabSeed.get(tabSeed.size()-4) + "-" + tabSeed.get(tabSeed.size()-5));
-        } else if (fxmlFileLoaded.equals("../view/gamePlayer2.fxml")) {
             roundScoreInfo.setText("Score : " + tabSeed.get(tabSeed.size()-5) + "-" + tabSeed.get(tabSeed.size()-4));
+        } else if (fxmlFileLoaded.equals("../view/gamePlayer2.fxml")) {
+            roundScoreInfo.setText("Score : " + tabSeed.get(tabSeed.size()-4) + "-" + tabSeed.get(tabSeed.size()-5));
         }
     }
 
@@ -325,7 +330,8 @@ public class ControllerJeu implements Initializable {
     }
 
     public void askServerToMove(MouseEvent mouseEvent) {
-        playSoundEffect("sardoche_detruire.mp3");
+        CURRENT_SOUND = "sardoche_detruire.mp3";
+        playSoundEffect();
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
         Object serverReponse = com.sendMessage(id.concat(",").concat(this.passWord));
@@ -400,18 +406,19 @@ public class ControllerJeu implements Initializable {
         return request;
     }
 
-    private void playSoundEffect(String filename) {
+    private static void playSoundEffect() {
         if(CLIENT_SOUND_EFFECT) {
-            String musicFile = "Client/src/ensi/assets/".concat(filename);
+            String musicFile = "Client/src/ensi/assets/".concat(CURRENT_SOUND);
             Media sound = new Media(new File(musicFile).toURI().toString());
             mediaPlayerEffect = new MediaPlayer(sound);
             Platform.runLater(() -> mediaPlayerEffect.play());
         }
     }
 
-    private void playMusic(String filename) {
+    static void playMusic() {
+        System.out.println("CLIENT MUSIC = " + CLIENT_MUSIC);
         if(CLIENT_MUSIC) {
-            String musicFile = "Client/src/ensi/assets/".concat(filename);
+            String musicFile = "Client/src/ensi/assets/".concat(CURRENT_MUSIC);
             Media sound = new Media(new File(musicFile).toURI().toString());
             mediaPlayerMusic = new MediaPlayer(sound);
             mediaPlayerMusic.setVolume(0.1);
