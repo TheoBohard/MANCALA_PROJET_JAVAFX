@@ -164,6 +164,18 @@ public class ServeurMessage {
                         break;
                     default:
                         String[] requestSplitted = request.split(",");
+                        System.out.println(requestSplitted);
+                        if(requestSplitted[1].equals("CANCEL_MOVE")){
+
+                            boolean change_turn = model.cancel_move();
+
+                            if(change_turn) {
+                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+                                update.updateView(oos, indexJoueur);
+                                indexJoueur = (indexJoueur + 1) % 2;
+                                update.updateViewOtherPlayer(indexJoueur);
+                            }
+                        }
                         if (requestSplitted[1].equals(playerTurn)) {
                             model.isPartyFinish(indexJoueur);
                             boolean moveIsPlayable = model.isMovePlayable(Integer.parseInt(requestSplitted[0]), indexJoueur);

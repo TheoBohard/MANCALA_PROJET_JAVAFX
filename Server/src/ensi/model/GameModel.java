@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class GameModel {
 
     private ArrayList<Whole> wholes = new ArrayList<Whole>();
-    private Integer scorePlayer1 = 23;
-    private Integer scorePlayer2 = 23;
+    private Integer scorePlayer1 = 0;
+    private Integer scorePlayer2 = 0;
     private Integer roundPlayer1 = 0;
     private Integer roundPlayer2 = 0;
     private boolean rightToTakeSeed = true;
@@ -14,8 +14,10 @@ public class GameModel {
     public boolean newRound = false;
     private String difficulty = "";
     private  int nb_round = 0;
+    private ArrayList<Whole> old_wholes;
 
     public GameModel() {
+        old_wholes = new ArrayList<Whole>();
        for(int i=0;i<12;i++){
            wholes.add(new Whole());
            wholes.get(i).setNbSeed(4);
@@ -60,6 +62,9 @@ public class GameModel {
     }
 
     public void moveWholes(int index, int playerIndex) {
+
+        old_wholes = copyWholes();
+
         index--;
         int numberSeed = wholes.get(index).getNbSeed();
         System.out.println("Number seed : => " + numberSeed);
@@ -266,6 +271,15 @@ public class GameModel {
 
     public void setDifficulty(String difficultyChosen) {
         this.difficulty =  difficultyChosen;
+    }
+
+    public boolean cancel_move() {
+        if(this.old_wholes!=null && this.old_wholes!=this.wholes){
+            this.wholes = this.old_wholes;
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 
