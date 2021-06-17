@@ -28,7 +28,7 @@ le joueur qui allait jouer capture les graines restantes.
 [o] Règle 7 : Si un coup devait prendre toutes les graines adverses, alors le coup peut être joué, mais aucune
 capture n'est faite : il ne faut pas « affamer » l'adversaire.
 
-[x] Règle 8 : La partie s'arrête quand :
+[o] Règle 8 : La partie s'arrête quand :
 ➢ Un des joueurs a capturé au moins 25 graines, et est désigné gagnant (mode moyen)
 ➢ Ou qu'il ne reste qu'au plus 6 graines en jeu et que l’un des joueurs n’a plus de graines dans son
 camp et que son adversaire n’a pas eu l’opportunité de lui en redonner (mode débutant)
