@@ -159,6 +159,10 @@ public class ControllerMenu implements Initializable {
                     gameController.updateView(wholesList);
                 }
             });
+            gameController.setTurnInfo("Ce n'est pas votre tour !");
+        }
+        else {
+            gameController.setTurnInfo("C'est votre tour !");
         }
     }
 
@@ -169,10 +173,10 @@ public class ControllerMenu implements Initializable {
         com.sendMessage("Load game");
     }
 
-    public void startOptions(ActionEvent actionEvent) {
+    public void startOptions() {
     }
 
-    public void leaveProgram() throws UnknownHostException {
+    public void leaveProgram() {
         com.sendMessage("EXIT");
 
         System.exit(0);

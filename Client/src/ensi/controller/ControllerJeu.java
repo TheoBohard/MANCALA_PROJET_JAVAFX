@@ -195,6 +195,7 @@ public class ControllerJeu implements Initializable {
     }
 
     public void updateView(ArrayList<?> tabSeed) {
+        setTurnInfo("C'est votre tour !");
         Platform.runLater(() -> {
             this.tabSeed = tabSeed;
             int compteur = 0;
@@ -216,7 +217,7 @@ public class ControllerJeu implements Initializable {
 
             updateScoreGame(tabSeed);
 
-                }
+            }
         );
 
     }
@@ -238,6 +239,8 @@ public class ControllerJeu implements Initializable {
             System.out.println(serverReponse);
             updateView((ArrayList<?>) serverReponse);
 
+            setTurnInfo("Ce n'est pas votre tour !");
+
             ExecutorService threadpool = Executors.newCachedThreadPool();
             threadpool.submit(() -> {
                 ArrayList<?> wholesList = null;
@@ -251,9 +254,14 @@ public class ControllerJeu implements Initializable {
                 }
             });
 
-
         } else if (serverReponse instanceof String) {
             System.out.println("Object is String");
+
+            if(serverReponse == "PARTIE TERMINE") {
+                System.out.println("La partie est terminée");
+                //TODO : Go to menu
+            }
+
         }
 
     }
@@ -315,5 +323,9 @@ public class ControllerJeu implements Initializable {
         } else {
             mediaPlayerMusic.stop();
         }
+    }
+
+    public void setTurnInfo(String turnInfo) {
+        turnInfoText.setText(turnInfo);
     }
 }
