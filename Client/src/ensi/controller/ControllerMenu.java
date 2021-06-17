@@ -42,16 +42,32 @@ public class ControllerMenu implements Initializable {
     private int numberPlayer = 0;
     private String position;
 
+    /**
+     * This function is what we do when a instance of ControllerMenu is implemented
+     * @param url The URL
+     * @param resourceBundle The RessourceBundle
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         com = new Communication();
     }
 
+    /**
+     * This function permit to try the connexion on the server
+     * @param ip The IP of the server
+     * @param port The port of the server
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void tryConnection(String ip, String port) throws IOException, ClassNotFoundException {
         this.ip = ip;
         this.port = port;
         this.startNewGame();
     }
 
+    /**
+     * Setter for mode
+     * @param mode The mode used
+     */
     public void setMode(String mode) {
         this.mode = mode;
     }

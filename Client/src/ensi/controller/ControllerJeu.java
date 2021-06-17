@@ -235,11 +235,58 @@ public class ControllerJeu implements Initializable {
             }
         });
 
-        surrenderGame.setOnAction(e -> com.sendMessage("ACTION,SURRENDER_GAME," + this.passWord));
+        surrenderGame.setOnAction(e -> {
+            Object response;
 
-        cancelMove.setOnAction(e -> com.sendMessage("ACTION,CANCEL_MOVE," + this.passWord));
+            response = com.sendMessage("ACTION,SURRENDER_GAME," + this.passWord);
+
+            if (response instanceof String) {
+                if (response == "ABANDON ?") {
+                    boolean wantToSurrender = askUserToSurrender("L'adversaire vous propose un abandon !\nVoulez vous l'accepter");
+                    if (wantToSurrender) {
+                        System.out.println("Abandon : " + wantToSurrender);
+                        com.sendMessage("ABANDONYES");
+                    } else {
+                        com.sendMessage("ABANDONNO");
+                    }
+                }
+                else if (response == "Deplacement impossible") {
+                    System.out.println("Abandon impossible");
+                }
+            }
+        }
+        );
+
+        cancelMove.setOnAction(e -> {
+            Object response;
+
+            response = com.sendMessage("ACTION,CANCEL_MOVE," + this.passWord);
+
+            if(response instanceof ArrayList) {
+                updateView((ArrayList<?>) response);
+            }
+            else if (response instanceof String) {
+                if(response == "Deplacement impossible") {
+                    System.out.println("Ce n'est pas possible");
+                }
+            }
+
+        });
 
         about.setOnAction(e -> displayAbout());
+    }
+
+    boolean askUserToSurrender(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+        alert.setContentText(message);
+        Button noButton = (Button) alert.getDialogPane().lookupButton(ButtonType.NO);
+        Button yesButton = (Button) alert.getDialogPane().lookupButton(ButtonType.YES);
+        noButton.setDefaultButton(false);
+        yesButton.setDefaultButton(true);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.YES;
     }
 
     private void displayAbout() {
@@ -265,6 +312,7 @@ public class ControllerJeu implements Initializable {
     }
 
     private void updateScoreGame(ArrayList<?> tabSeed) {
+        System.out.println("Array list : " + tabSeed);
         roundTextInfo.setText("Round numéro : " + ((Integer) tabSeed.get(tabSeed.size()-1) + 1));
 
         if (fxmlFileLoaded.equals("../view/gamePlayer1.fxml")) {
