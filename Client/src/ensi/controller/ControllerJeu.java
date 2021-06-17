@@ -9,21 +9,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
+import javafx.stage.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
 
 import java.io.*;
@@ -244,6 +238,18 @@ public class ControllerJeu implements Initializable {
         surrenderGame.setOnAction(e -> com.sendMessage("ACTION,SURRENDER_GAME"));
 
         cancelMove.setOnAction(e -> com.sendMessage("ACTION,CANCEL_MOVE"));
+
+        about.setOnAction(e -> displayAbout());
+    }
+
+    private void displayAbout() {
+        String msg = "Mancala - Copyright 2021 \nRéalisé par Théo BOHARD & Thomas FILLION \nENSICAEN";
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.initStyle(StageStyle.UNIFIED);
+        alert.initModality(Modality.WINDOW_MODAL);
+        alert.getDialogPane().setContentText(msg);
+        alert.getDialogPane().setHeaderText("A propos");
+        alert.show();
     }
 
     @FXML

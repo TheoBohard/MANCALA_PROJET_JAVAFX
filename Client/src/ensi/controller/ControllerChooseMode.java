@@ -35,26 +35,26 @@ public class ControllerChooseMode implements Initializable {
         this.portFinal = "";
     }
 
-    public void one_player() throws IOException, InterruptedException {
+    public void one_player() throws IOException {
         controllerMenu.setMode("Oneplayer");
         setDifficultyMode();
     }
 
-    public void two_players() throws IOException, InterruptedException {
+    public void two_players() throws IOException {
         controllerMenu.setMode("Twoplayers");
         setDifficultyMode();
     }
 
-    private void setDifficultyMode() throws IOException, InterruptedException {
+    private void setDifficultyMode() throws IOException {
         controllerMenu.chooseDifficultyMode();
    }
 
-    public void easyMode() throws IOException, InterruptedException {
+    public void easyMode() throws IOException {
         controllerMenu.setDifficulty("easyMode");
         controllerMenu.launchgame();
     }
 
-    public void middleMode() throws IOException, InterruptedException {
+    public void middleMode() throws IOException {
         controllerMenu.setDifficulty("middleMode");
         controllerMenu.launchgame();
     }

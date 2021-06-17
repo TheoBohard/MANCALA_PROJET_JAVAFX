@@ -308,7 +308,7 @@
                      </items></Menu>
                   <Menu mnemonicParsing="false" text="Système">
                      <items>
-                        <MenuItem fx:id="about1" mnemonicParsing="false" text="A propos" />
+                        <MenuItem fx:id="about" mnemonicParsing="false" text="A propos" />
                      </items>
                   </Menu>
               </menus>
