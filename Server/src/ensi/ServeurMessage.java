@@ -144,8 +144,6 @@ public class ServeurMessage {
             System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
 
-            model.isPartyFinish(indexJoueur);
-
 
             try (Socket socket = new Socket(InetAddress.getLocalHost(), 2010)) {
 
@@ -167,7 +165,7 @@ public class ServeurMessage {
                     default:
                         String[] requestSplitted = request.split(",");
                         if (requestSplitted[1].equals(playerTurn)) {
-
+                            model.isPartyFinish(indexJoueur);
                             boolean moveIsPlayable = model.isMovePlayable(Integer.parseInt(requestSplitted[0]), indexJoueur);
 
                             if(!model.isPartyOn){
@@ -182,12 +180,10 @@ public class ServeurMessage {
                                 indexJoueur = (indexJoueur + 1) % 2;
                                 update.updateViewOtherPlayer(indexJoueur);
                             } else if(model.newRound){
+                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                                 update.updateView(oos, indexJoueur);
                                 indexJoueur = (indexJoueur + 1) % 2;
                                 update.updateViewOtherPlayer(indexJoueur);
-
-                                //on retire aléatoirement le prochain joueur
-                                indexJoueur = ordre = playerUtils.chooseRandomNumber(2);
 
                                 model.newRound =false;
                             } else{

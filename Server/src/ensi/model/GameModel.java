@@ -5,14 +5,15 @@ import java.util.ArrayList;
 public class GameModel {
 
     private ArrayList<Whole> wholes = new ArrayList<Whole>();
-    private Integer scorePlayer1 = 0;
-    private Integer scorePlayer2 = 0;
+    private Integer scorePlayer1 = 23;
+    private Integer scorePlayer2 = 23;
     private Integer roundPlayer1 = 0;
     private Integer roundPlayer2 = 0;
     private boolean rightToTakeSeed = true;
     public boolean isPartyOn = true;
     public boolean newRound = false;
     private String difficulty = "";
+    private  int nb_round = 0;
 
     public GameModel() {
        for(int i=0;i<12;i++){
@@ -20,6 +21,10 @@ public class GameModel {
            wholes.get(i).setNbSeed(4);
         }
 
+    }
+
+    public int getNb_round() {
+        return nb_round;
     }
 
     public void reInitRound(){
@@ -153,7 +158,7 @@ public class GameModel {
                 this.endGame();
             }
         }
-        
+
         if(!verif){
             this.endGame();
         }
@@ -162,12 +167,14 @@ public class GameModel {
     private void endGame(){
         if(this.scorePlayer1 > this.scorePlayer2){
             this.roundPlayer1++;
-        }else{
+        }else if(this.scorePlayer1 > this.scorePlayer2){
             this.roundPlayer2++;
         }
+
+        this.nb_round++;
         this.scorePlayer1 = this.scorePlayer2 = 0;
 
-        if(this.roundPlayer1 + this.roundPlayer2 == 6){
+        if(this.nb_round == 6){
             System.out.println("FIN DE LA PARTIE");
             this.isPartyOn = false;
         }else{
@@ -226,6 +233,7 @@ public class GameModel {
     }
 
     private void checkWhole(Whole wholeToCheck, Integer wholeIndex, Integer playerIndex) {
+        System.out.println(playerIndex);
         if(playerIndex==0){
             if(wholeIndex<6 && (wholeToCheck.getNbSeed()==2 || wholeToCheck.getNbSeed()==3)){
                 int scoreToGive = wholeToCheck.getNbSeed();

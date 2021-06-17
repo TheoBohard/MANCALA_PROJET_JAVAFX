@@ -136,11 +136,13 @@ public class ControllerJeu implements Initializable {
             Circle actualCircle = circleIterator.next();
 
             int finalCounter = counter;
-
+            /*
             actualGridPane.setOnMouseEntered(e -> displayTooltip(actualGridPane,
                     tabSeed.get(finalCounter) + " Graines"));
             actualCircle.setOnMouseEntered(e -> displayTooltip(actualGridPane,
                     tabSeed.get(finalCounter) + " Graines"));
+
+             */
 
             counter++;
         }

@@ -40,7 +40,7 @@ public class ViewUpdate {
         ArrayList<Integer> seedInfo = new ArrayList<>();
         System.out.println("TEST");
         updateViewCommon(seedInfo);
-
+        System.out.println(seedInfo);
 
         com.sendMessage(seedInfo, oos);
     }
@@ -50,6 +50,7 @@ public class ViewUpdate {
         ArrayList<Integer> seedInfo = new ArrayList<>();
         System.out.println("TEST other player");
         updateViewCommon(seedInfo);
+        System.out.println(seedInfo);
 
         com.sendInitMessage(seedInfo, Integer.parseInt(this.portList.get((indexJoueur)%2))+1, Integer.parseInt(this.portList.get((indexJoueur)%2))+2);
     }
@@ -65,5 +66,6 @@ public class ViewUpdate {
         seedInfo.add(model.getRoundPlayer2());
         seedInfo.add(model.getScoreJoueur1());
         seedInfo.add(model.getScorePlayer2());
+        //seedInfo.add(model.getNb_round());
     }
 }
