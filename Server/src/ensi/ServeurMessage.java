@@ -178,7 +178,9 @@ public class ServeurMessage {
                                 oos.writeObject("Deplacement impossible");
                             }
                         }
-                        if(requestSplitted[1].equals("SURRENDER_GAME") && requestSplitted[2].equals(playerTurn)){
+                        else if(requestSplitted[1].equals("SURRENDER_GAME") && requestSplitted[2].equals(playerTurn)){
+
+                            System.out.println("--------------------------------------------------------------------");
 
                             if(model.abandonPossible()) {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
@@ -189,7 +191,7 @@ public class ServeurMessage {
                                 oos.writeObject("Deplacement impossible");
                             }
                         }
-                        if(requestSplitted[1].equals("ABANDONYES") && requestSplitted[2].equals(playerTurn)){
+                        else if(requestSplitted[1].equals("ABANDONYES") && requestSplitted[2].equals(playerTurn)){
                             model.distrib_seeds();
                             model.endGame();
 
@@ -200,7 +202,7 @@ public class ServeurMessage {
 
                             model.newRound =false;
                         }
-                        if (requestSplitted[1].equals(playerTurn)) {
+                        else if (requestSplitted[1].equals(playerTurn)) {
                             model.isPartyFinish(indexJoueur);
                             boolean moveIsPlayable = model.isMovePlayable(Integer.parseInt(requestSplitted[0]), indexJoueur);
 

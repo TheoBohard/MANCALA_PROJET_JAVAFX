@@ -25,7 +25,7 @@ public class GameModel {
     }
 
     public boolean abandonPossible(){
-        if(this.getNbSedd()<=10){
+        if(this.getNbSedd()<=100){
             return true;
         }else{
             return false;
