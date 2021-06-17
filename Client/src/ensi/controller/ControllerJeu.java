@@ -235,9 +235,9 @@ public class ControllerJeu implements Initializable {
             }
         });
 
-        surrenderGame.setOnAction(e -> com.sendMessage("ACTION,SURRENDER_GAME"));
+        surrenderGame.setOnAction(e -> com.sendMessage("ACTION,SURRENDER_GAME," + this.passWord));
 
-        cancelMove.setOnAction(e -> com.sendMessage("ACTION,CANCEL_MOVE"));
+        cancelMove.setOnAction(e -> com.sendMessage("ACTION,CANCEL_MOVE," + this.passWord));
 
         about.setOnAction(e -> displayAbout());
     }
@@ -249,6 +249,7 @@ public class ControllerJeu implements Initializable {
         alert.initModality(Modality.WINDOW_MODAL);
         alert.getDialogPane().setContentText(msg);
         alert.getDialogPane().setHeaderText("A propos");
+        alert.setTitle("A propos");
         alert.show();
     }
 

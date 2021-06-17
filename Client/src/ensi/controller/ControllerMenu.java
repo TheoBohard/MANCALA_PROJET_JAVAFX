@@ -146,6 +146,7 @@ public class ControllerMenu implements Initializable {
         System.out.println("sendGameInfo = " + sendGameInfo);
 
         gameStage.show();
+
         if (this.position.equals("2")){
             ExecutorService threadpool;
             threadpool = Executors.newCachedThreadPool();
