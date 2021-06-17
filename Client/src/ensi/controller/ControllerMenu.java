@@ -72,10 +72,18 @@ public class ControllerMenu implements Initializable {
         this.mode = mode;
     }
 
+    /**
+     * This function permit to set the difficulty of the game
+     * @param difficulty The difficulty
+     */
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 
+    /**
+     * This function permit to do load connexion view and setup the game
+     * @throws IOException
+     */
     public void connexion() throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/connexion.fxml"));
@@ -137,6 +145,10 @@ public class ControllerMenu implements Initializable {
         }
     }
 
+    /**
+     * This function permit to launch the game
+     * @throws IOException
+     */
     public void launchgame() throws IOException {
         Stage gameStage = new Stage();
         //TODO : Server will say what view we want to load
@@ -167,14 +179,14 @@ public class ControllerMenu implements Initializable {
             ExecutorService threadpool;
             threadpool = Executors.newCachedThreadPool();
             threadpool.submit(() -> {
-                ArrayList<?> wholesList = null;
+                ArrayList<?> holesList = null;
                 try {
-                    wholesList = (ArrayList<?>) gameController.listenToServer();
+                    holesList = (ArrayList<?>) gameController.listenToServer();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 finally {
-                    gameController.updateView(wholesList);
+                    gameController.updateView(holesList);
                 }
             });
             gameController.setTurnInfo("Ce n'est pas votre tour !");
@@ -184,6 +196,10 @@ public class ControllerMenu implements Initializable {
         }
     }
 
+    /**
+     * This function permit to load a game
+     * @throws IOException
+     */
     public void loadAGame() throws IOException {
         if(this.ip==null){
             this.connexion();
@@ -191,12 +207,17 @@ public class ControllerMenu implements Initializable {
         com.sendMessage("Load game");
     }
 
+    /**
+     * This function permit to launch options
+     */
     public void startOptions() {
     }
 
+    /**
+     * This function permit to exit the game
+     */
     public void leaveProgram() {
         com.sendMessage("EXIT");
-
         System.exit(0);
     }
 

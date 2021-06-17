@@ -125,64 +125,114 @@ public class ControllerJeu implements Initializable {
 
     private String fxmlFileLoaded = "";
 
+    private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
+    private final ArrayList<Circle> CircleArray = new ArrayList<>();
 
+
+    /**
+     * This function permit to set the port value
+     * @param port The port
+     */
     public void setPort(String port) {
         this.port = port;
     }
+
+    /**
+     * This function permit to set the password value
+     * @param passWord The password
+     */
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
 
-    public String getFxmlFileLoaded() {
-        return fxmlFileLoaded;
-    }
-
+    /**
+     * This function permit to cet the current fxml file used
+     * @param fxmlFileLoaded The fxml file path
+     */
     public void setFxmlFileLoaded(String fxmlFileLoaded) {
         this.fxmlFileLoaded = fxmlFileLoaded;
     }
 
+    /**
+     * This function permit to get the CLIENT_NUMBER_SEED
+     * @return The CLIENT_NUMBER_SEED value
+     */
     static public boolean isCLIENT_NUMBER_SEED() {
         return CLIENT_NUMBER_SEED;
     }
 
+    /**
+     * This function permit to set the CLIENT_NUMBER_SEED
+     * @param IS_NUMBER_SEED The value to set
+     */
     static public void setCLIENT_NUMBER_SEED(boolean IS_NUMBER_SEED) {
         CLIENT_NUMBER_SEED = IS_NUMBER_SEED;
     }
 
+    /**
+     * This function permit to get the CLIENT_BOARD_STATE
+     * @return The CLIENT_BOARD_STATE value
+     */
     static public boolean isCLIENT_BOARD_STATE() {
         return CLIENT_BOARD_STATE;
     }
 
+    /**
+     * This function permit to set the CLIENT_BOARD_STATE
+     * @param IS_BOARD_STATE The value to set
+     */
     static public void setCLIENT_BOARD_STATE(boolean IS_BOARD_STATE) {
         CLIENT_BOARD_STATE = IS_BOARD_STATE;
     }
 
+    /**
+     * This function permit to get the CLIENT_SOUND_EFFECT
+     * @return The CLIENT_SOUND_EFFECT value
+     */
     static public boolean isCLIENT_SOUND_EFFECT() {
         return CLIENT_SOUND_EFFECT;
     }
 
+    /**
+     * This function permit to set the CLIENT_SOUND_EFFECT
+     * @param IS_SOUND_EFFECT The value to set
+     */
     static public void setCLIENT_SOUND_EFFECT(boolean IS_SOUND_EFFECT) {
         CLIENT_SOUND_EFFECT = IS_SOUND_EFFECT;
         playSoundEffect();
     }
 
+    /**
+     * This function permit to get the CLIENT_MUSIC
+     * @return The CLIENT_MUSIC value
+     */
     static public boolean isCLIENT_MUSIC() {
         return CLIENT_MUSIC;
     }
 
+    /**
+     * This function permit to set the CLIENT_MUSIC
+     * @param IS_MUSIC The value to set
+     */
     static public void setCLIENT_MUSIC(boolean IS_MUSIC) {
         CLIENT_MUSIC = IS_MUSIC;
         playMusic();
     }
 
-    private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
-    private final ArrayList<Circle> CircleArray = new ArrayList<>();
-
+    /**
+     * Initialization function called when the view is initialized
+     * @param url The URL
+     * @param resourceBundle the RessourceBundle
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         com = new Communication();
     }
 
+    /**
+     * This function permit to init all what we need to make a party
+     * @param seedTab The default array of seed value and game info
+     */
     public void init(ArrayList<Integer> seedTab) {
         this.tabSeed = seedTab;
         this.GridPaneArray.addAll(Arrays.asList(GridPane_1, GridPane_2, GridPane_3, GridPane_4, GridPane_5,
@@ -276,6 +326,11 @@ public class ControllerJeu implements Initializable {
         about.setOnAction(e -> displayAbout());
     }
 
+    /**
+     * This function permit to ask to the use to surrender or not
+     * @param message The message we want to display
+     * @return If he want to surrender
+     */
     boolean askUserToSurrender(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.getButtonTypes().clear();
@@ -289,6 +344,9 @@ public class ControllerJeu implements Initializable {
         return result.isPresent() && result.get() == ButtonType.YES;
     }
 
+    /**
+     * This function permit to display about windows
+     */
     private void displayAbout() {
         String msg = "Mancala - Copyright 2021 \nRéalisé par Théo BOHARD & Thomas FILLION \nENSICAEN";
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -300,6 +358,10 @@ public class ControllerJeu implements Initializable {
         alert.show();
     }
 
+    /**
+     * This function permit to display the option menu to change options
+     * @throws IOException
+     */
     @FXML
     void displayOptionsMenu() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/optionsMenu.fxml"));
@@ -311,6 +373,10 @@ public class ControllerJeu implements Initializable {
         stage.show();
     }
 
+    /**
+     * This funciton permit to update the score for each player
+     * @param tabSeed The score Array
+     */
     private void updateScoreGame(ArrayList<?> tabSeed) {
         System.out.println("Array list : " + tabSeed);
         roundTextInfo.setText("Round numéro : " + ((Integer) tabSeed.get(tabSeed.size()-1) + 1));
@@ -322,6 +388,11 @@ public class ControllerJeu implements Initializable {
         }
     }
 
+    /**
+     * This function permit to display a Tooltip
+     * @param gridPane The GridPane concerned
+     * @param message The message we want to display
+     */
     private void displayTooltip(GridPane gridPane, String message) {
         if(CLIENT_NUMBER_SEED) {
             Tooltip tooltip = new Tooltip();
@@ -331,6 +402,11 @@ public class ControllerJeu implements Initializable {
         }
     }
 
+    /**
+     * This function permit to display a bubble on a tooltip
+     * @param tooltip The tooltip
+     * @return The tooltip
+     */
     private Tooltip makeBubble(Tooltip tooltip) {
         tooltip.setStyle("-fx-font-size: 16px; -fx-shape: \"" + "M24 1h-24v16.981h4v5.019l7-5.019h13z" + "\";");
         tooltip.setAnchorLocation(PopupWindow.AnchorLocation.WINDOW_BOTTOM_LEFT);
@@ -338,12 +414,22 @@ public class ControllerJeu implements Initializable {
         return tooltip;
     }
 
+    /**
+     * This function permit to clear the GridPanes
+     * @param gridPanes The GridPanes
+     */
     private void cleanGridPane(ArrayList<GridPane> gridPanes) {
         for (GridPane grid : gridPanes) {
             grid.getChildren().clear();
         }
     }
 
+    /**
+     * This function permit to populate a GridPane
+     * @param numberSeed The number of seed
+     * @param grid The GridPane concerned
+     * @throws IOException
+     */
     private void populateGridPane(int numberSeed, GridPane grid) throws IOException {
 
         for (int i = 0; i < numberSeed; i++) {
@@ -351,6 +437,10 @@ public class ControllerJeu implements Initializable {
         }
     }
 
+    /**
+     * This function permit to update the view with the game and seed informations
+     * @param tabSeed The seed/game informations
+     */
     public void updateView(ArrayList<?> tabSeed) {
         setTurnInfo("C'est votre tour !");
         Platform.runLater(() -> {
@@ -379,11 +469,20 @@ public class ControllerJeu implements Initializable {
 
     }
 
+    /**
+     * This function permit to update the score of both player
+     * @param score1 The score of the player 1
+     * @param score2 The score of the player 2
+     */
     private void updateScore(int score1, int score2) {
         scorePlayer1.setText(Integer.toString(score1));
         scorePlayer2.setText(Integer.toString(score2));
     }
 
+    /**
+     * This function permit to ask the server to move the seed when we click in a hole
+     * @param mouseEvent The event of click
+     */
     public void askServerToMove(MouseEvent mouseEvent) {
         CURRENT_SOUND = "sardoche_detruire.mp3";
         playSoundEffect();
@@ -401,14 +500,14 @@ public class ControllerJeu implements Initializable {
 
             ExecutorService threadpool = Executors.newCachedThreadPool();
             threadpool.submit(() -> {
-                ArrayList<?> wholesList = null;
+                ArrayList<?> holesList = null;
                 try {
-                    wholesList = (ArrayList<?>) listenToServer();
+                    holesList = (ArrayList<?>) listenToServer();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 finally {
-                    updateView(wholesList);
+                    updateView(holesList);
                 }
             });
 
@@ -424,6 +523,11 @@ public class ControllerJeu implements Initializable {
 
     }
 
+    /**
+     * This function permit to listen the server messages
+     * @return The response
+     * @throws InterruptedException
+     */
     public Object listenToServer() throws InterruptedException {
         System.out.println("ENTERED LISTEN");
         ServerSocket serverSocket;
@@ -461,6 +565,9 @@ public class ControllerJeu implements Initializable {
         return request;
     }
 
+    /**
+     * This function permit to play a sound effect
+     */
     private static void playSoundEffect() {
         if(CLIENT_SOUND_EFFECT) {
             String musicFile = "Client/src/ensi/assets/".concat(CURRENT_SOUND);
@@ -470,6 +577,9 @@ public class ControllerJeu implements Initializable {
         }
     }
 
+    /**
+     * This function permit to play a music
+     */
     static void playMusic() {
         System.out.println("CLIENT MUSIC = " + CLIENT_MUSIC);
         if(CLIENT_MUSIC) {
@@ -484,6 +594,10 @@ public class ControllerJeu implements Initializable {
         }
     }
 
+    /**
+     * This function permit to set the turn information
+     * @param turnInfo The turn information
+     */
     public void setTurnInfo(String turnInfo) {
         turnInfoText.setText(turnInfo);
     }

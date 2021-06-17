@@ -1,10 +1,10 @@
 package ensi.model;
 
-public class Whole {
+public class Hole {
 
     int nbSeed = 0;
 
-    public Whole() {
+    public Hole() {
     }
 
     public int getNbSeed() {
@@ -15,8 +15,8 @@ public class Whole {
         this.nbSeed = nb_seed;
     }
 
-    public Whole copyWhole(){
-        Whole copy = new Whole();
+    public Hole copyHole(){
+        Hole copy = new Hole();
         copy.setNbSeed(this.getNbSeed());
         return copy;
     }

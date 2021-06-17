@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GameModel {
 
-    private ArrayList<Whole> wholes = new ArrayList<Whole>();
+    private ArrayList<Hole> holes = new ArrayList<Hole>();
     private Integer scorePlayer1 = 0;
     private Integer scorePlayer2 = 0;
     private Integer roundPlayer1 = 0;
@@ -14,14 +14,14 @@ public class GameModel {
     public boolean newRound = false;
     private String difficulty = "";
     private  int nb_round = 0;
-    private ArrayList<Whole> old_wholes;
+    private ArrayList<Hole> old_holes;
 
     public GameModel() {
        for(int i=0;i<12;i++){
-           wholes.add(new Whole());
-           wholes.get(i).setNbSeed(4);
+           holes.add(new Hole());
+           holes.get(i).setNbSeed(4);
         }
-        old_wholes = this.copyWholes();
+        old_holes = this.copyHoles();
     }
 
     public boolean abandonPossible(){
@@ -37,17 +37,17 @@ public class GameModel {
     }
 
     public void reInitRound(){
-        wholes.clear();
+        holes.clear();
         for(int i=0;i<12;i++){
-            wholes.add(new Whole());
-            wholes.get(i).setNbSeed(4);
+            holes.add(new Hole());
+            holes.get(i).setNbSeed(4);
         }
     }
 
     public Integer getNbSedd(){
         int counter=0;
-        for(Whole whole:wholes){
-            counter+=whole.getNbSeed();
+        for(Hole hole : holes){
+            counter+= hole.getNbSeed();
         }
         return counter;
     }
@@ -68,51 +68,50 @@ public class GameModel {
         return scorePlayer2;
     }
 
-    public void moveWholes(int index, int playerIndex) {
+    public void moveHoles(int index, int playerIndex) {
 
-        old_wholes = copyWholes();
+        old_holes = copyHoles();
 
         index--;
-        int numberSeed = wholes.get(index).getNbSeed();
+        int numberSeed = holes.get(index).getNbSeed();
         System.out.println("Number seed : => " + numberSeed);
 
         for(int i = 0; i < numberSeed; i++) {
             if((index - i - 1 + 12)%12 != index) {
-                Whole whole = wholes.get((index - i - 1 + 12*10) % 12);
-                whole.setNbSeed(whole.getNbSeed() + 1);
+                Hole hole = holes.get((index - i - 1 + 12*10) % 12);
+                hole.setNbSeed(hole.getNbSeed() + 1);
             }else{
                 numberSeed++;
             }
         }
 
-        //On regarde la dernière graines placé et on vérifie si elle remplit les deux conditions
         if(this.rightToTakeSeed) {
-            int indexWholeToCheck = (index - numberSeed + 12*10) % 12;
-            Whole wholeToCheck = wholes.get(indexWholeToCheck);
-            checkWhole(wholeToCheck, indexWholeToCheck, playerIndex);
+            int indexHoleToCheck = (index - numberSeed + 12*10) % 12;
+            Hole holeToCheck = holes.get(indexHoleToCheck);
+            checkHole(holeToCheck, indexHoleToCheck, playerIndex);
         }
 
-        System.out.println("MoveWholes SIZE : " + wholes.size());
+        System.out.println("MoveHoles SIZE : " + holes.size());
 
-        wholes.get(index).setNbSeed(0);
+        holes.get(index).setNbSeed(0);
     }
 
-    private void wholesToString(){
+    private void holesToString(){
         System.out.print("[");
-        for(Whole whole:this.wholes){
-            System.out.print(whole.getNbSeed());
+        for(Hole hole :this.holes){
+            System.out.print(hole.getNbSeed());
         }
         System.out.println("]");
     }
 
     public boolean isMovePlayable(int index, int playerIndex){
-        this.wholesToString();
+        this.holesToString();
         GameModel gameCopy =  copyGameModel();
-        gameCopy.moveWholes(index,playerIndex);
+        gameCopy.moveHoles(index,playerIndex);
 
-        if(this.getWholes().get(index-1).getNbSeed()==0){
-            this.wholesToString();
-            gameCopy.wholesToString();
+        if(this.getHoles().get(index-1).getNbSeed()==0){
+            this.holesToString();
+            gameCopy.holesToString();
 
             System.out.println("JE PASSE");
             return  false;
@@ -151,10 +150,10 @@ public class GameModel {
         boolean verif=false;
         for(int i:res){
             GameModel copy = this.copyGameModel();
-            copy.moveWholes(i+1,playerIndex);
+            copy.moveHoles(i+1,playerIndex);
             System.out.println("ICI------------------------------------------------------------");
             System.out.println(i);
-            copy.wholesToString();
+            copy.holesToString();
             if(copy.getEnemySeeds(copy,playerIndex)!=0){
                 verif=true;
                 break;
@@ -219,14 +218,14 @@ public class GameModel {
         int counter=0;
         int counterSeed=0;
         boolean verif = false;
-        for (Whole whole : gameCopy.wholes) {
+        for (Hole hole : gameCopy.holes) {
             if (counter < 6 && playerIndex == 0) {
-                int nbSeed = whole.getNbSeed();
+                int nbSeed = hole.getNbSeed();
                 counterSeed += nbSeed;
 
             }
             if (counter >= 6 && playerIndex == 1) {
-                int nbSeed = whole.getNbSeed();
+                int nbSeed = hole.getNbSeed();
                 counterSeed += nbSeed;
 
             }
@@ -235,37 +234,37 @@ public class GameModel {
         return counterSeed;
     }
 
-    private ArrayList<Whole> copyWholes(){
-        ArrayList<Whole> copyWholes = new ArrayList<Whole>();
-        for(Whole whole : this.wholes){
-            copyWholes.add(whole.copyWhole());
+    private ArrayList<Hole> copyHoles(){
+        ArrayList<Hole> copyHoles = new ArrayList<Hole>();
+        for(Hole hole : this.holes){
+            copyHoles.add(hole.copyHole());
         }
-        return copyWholes;
+        return copyHoles;
     }
 
     private GameModel copyGameModel() {
         GameModel copy = new GameModel();
-        copy.setWholes(copyWholes());
+        copy.setHoles(copyHoles());
         return copy;
     }
 
-    private void checkWhole(Whole wholeToCheck, Integer wholeIndex, Integer playerIndex) {
+    private void checkHole(Hole holeToCheck, Integer holeIndex, Integer playerIndex) {
         System.out.println(playerIndex);
         if(playerIndex==0){
-            if(wholeIndex<6 && (wholeToCheck.getNbSeed()==2 || wholeToCheck.getNbSeed()==3)){
-                int scoreToGive = wholeToCheck.getNbSeed();
-                wholeToCheck.setNbSeed(0);
+            if(holeIndex<6 && (holeToCheck.getNbSeed()==2 || holeToCheck.getNbSeed()==3)){
+                int scoreToGive = holeToCheck.getNbSeed();
+                holeToCheck.setNbSeed(0);
                 scorePlayer1 += scoreToGive;
-                int newIndexToCheck = (wholeIndex+1)%12;
-                checkWhole(this.wholes.get(newIndexToCheck),newIndexToCheck,playerIndex);
+                int newIndexToCheck = (holeIndex+1)%12;
+                checkHole(this.holes.get(newIndexToCheck),newIndexToCheck,playerIndex);
             }
         }else if(playerIndex==1){
-            if(wholeIndex>=6 && (wholeToCheck.getNbSeed()==2 || wholeToCheck.getNbSeed()==3)){
-                int scoreToGive = wholeToCheck.getNbSeed();
-                wholeToCheck.setNbSeed(0);
+            if(holeIndex>=6 && (holeToCheck.getNbSeed()==2 || holeToCheck.getNbSeed()==3)){
+                int scoreToGive = holeToCheck.getNbSeed();
+                holeToCheck.setNbSeed(0);
                 scorePlayer2 += scoreToGive;
-                int newIndexToCheck = (wholeIndex+1)%12;
-                checkWhole(this.wholes.get(newIndexToCheck),newIndexToCheck,playerIndex);
+                int newIndexToCheck = (holeIndex+1)%12;
+                checkHole(this.holes.get(newIndexToCheck),newIndexToCheck,playerIndex);
             }
         }
         System.out.println(this.scorePlayer1);
@@ -273,12 +272,12 @@ public class GameModel {
     }
 
 
-    public ArrayList<Whole> getWholes() {
-        return wholes;
+    public ArrayList<Hole> getHoles() {
+        return holes;
     }
 
-    public void setWholes(ArrayList<Whole> wholes) {
-        this.wholes = wholes;
+    public void setHoles(ArrayList<Hole> holes) {
+        this.holes = holes;
     }
 
     public void setDifficulty(String difficultyChosen) {
@@ -286,8 +285,8 @@ public class GameModel {
     }
 
     public boolean cancel_move() {
-        if(this.old_wholes!=this.wholes){
-            this.wholes = this.old_wholes;
+        if(this.old_holes !=this.holes){
+            this.holes = this.old_holes;
             return true;
         }else{
             return false;

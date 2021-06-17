@@ -28,9 +28,9 @@ public class ViewUpdate {
 
         ArrayList<Integer> seedInfo = new ArrayList<>();
 
-        ArrayList<Whole> wholes = this.model.getWholes();
-        for(Whole whole:wholes){
-            int numberSeed = whole.getNbSeed();
+        ArrayList<Hole> holes = this.model.getHoles();
+        for(Hole hole : holes){
+            int numberSeed = hole.getNbSeed();
             seedInfo.add(numberSeed);
         }
 
@@ -68,9 +68,9 @@ public class ViewUpdate {
     }
 
     private void updateViewCommon(ArrayList<Integer> seedInfo) {
-        ArrayList<Whole> wholes = this.model.getWholes();
-        for(Whole whole : wholes){
-            int nbSeed = whole.getNbSeed();
+        ArrayList<Hole> holes = this.model.getHoles();
+        for(Hole hole : holes){
+            int nbSeed = hole.getNbSeed();
             seedInfo.add(nbSeed);
         }
 

@@ -212,7 +212,7 @@ public class ServeurMessage {
                             else if(moveIsPlayable && !model.newRound) {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
 
-                                model.moveWholes(Integer.parseInt(requestSplitted[0]), indexJoueur);
+                                model.moveHoles(Integer.parseInt(requestSplitted[0]), indexJoueur);
                                 update.updateView(oos, indexJoueur);
                                 System.out.println("Index du joueur : " + indexJoueur);
                                 indexJoueur = (indexJoueur + 1) % 2;
