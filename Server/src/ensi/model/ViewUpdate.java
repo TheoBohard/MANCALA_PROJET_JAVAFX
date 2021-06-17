@@ -66,6 +66,6 @@ public class ViewUpdate {
         seedInfo.add(model.getRoundPlayer2());
         seedInfo.add(model.getScoreJoueur1());
         seedInfo.add(model.getScorePlayer2());
-        //seedInfo.add(model.getNb_round());
+        seedInfo.add(model.getNb_round());
     }
 }

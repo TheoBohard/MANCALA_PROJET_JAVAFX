@@ -17,12 +17,11 @@ public class GameModel {
     private ArrayList<Whole> old_wholes;
 
     public GameModel() {
-        old_wholes = new ArrayList<Whole>();
        for(int i=0;i<12;i++){
            wholes.add(new Whole());
            wholes.get(i).setNbSeed(4);
         }
-
+        old_wholes = this.copyWholes();
     }
 
     public int getNb_round() {
@@ -274,7 +273,7 @@ public class GameModel {
     }
 
     public boolean cancel_move() {
-        if(this.old_wholes!=null && this.old_wholes!=this.wholes){
+        if(this.old_wholes!=this.wholes){
             this.wholes = this.old_wholes;
             return true;
         }else{
