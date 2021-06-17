@@ -34,7 +34,7 @@ public class ServeurMessage {
         ArrayList<String> passwords = new ArrayList<>();
 
         String modeChoosed = "";
-        String difficultyChoosed = "";
+        String difficultyChosen = "";
 
         ordre = indexJoueur  = playerUtils.chooseRandomNumber(2);
 
@@ -110,8 +110,9 @@ public class ServeurMessage {
                                 String[] requestSplitted = request.split(",");
                                 oos.writeObject("OK");
                                 modeChoosed = requestSplitted[2];
-                                difficultyChoosed = requestSplitted[1];
-                                System.out.println("Mode : " + modeChoosed + " | Difficulty : " + difficultyChoosed);
+                                difficultyChosen = requestSplitted[1];
+                                System.out.println("Mode : " + modeChoosed + " | Difficulty : " + difficultyChosen);
+                                model.setDifficulty(difficultyChosen);
                                 break;
                             }
                         default:
@@ -143,7 +144,7 @@ public class ServeurMessage {
             System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
 
-            model.isThereAnyPossiblemove(indexJoueur);
+            model.isPartyFinish(indexJoueur);
 
 
             try (Socket socket = new Socket(InetAddress.getLocalHost(), 2010)) {

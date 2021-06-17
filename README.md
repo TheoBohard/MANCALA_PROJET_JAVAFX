@@ -21,7 +21,7 @@ de deux ou trois.
 [o] Règle 5 : On ne saute pas de case lorsqu'on égrène sauf lorsqu'on a douze graines ou plus, c'est-à-dire
 qu'on fait un tour complet : on ne remplit pas la case dans laquelle on vient de prendre les graines.
 
-[x] Règle 6 : Il faut « nourrir » l'adversaire, c'est-à-dire que, quand celui-ci n'a plus de graines, il faut
+[o] Règle 6 : Il faut « nourrir » l'adversaire, c'est-à-dire que, quand celui-ci n'a plus de graines, il faut
 absolument jouer un coup qui lui permette de rejouer ensuite. Si ce n'est pas possible, la partie s'arrête et
 le joueur qui allait jouer capture les graines restantes.
 

@@ -12,6 +12,7 @@ public class GameModel {
     private boolean rightToTakeSeed = true;
     public boolean isPartyOn = true;
     public boolean newRound = false;
+    private String difficulty = "";
 
     public GameModel() {
        for(int i=0;i<12;i++){
@@ -27,6 +28,14 @@ public class GameModel {
             wholes.add(new Whole());
             wholes.get(i).setNbSeed(4);
         }
+    }
+
+    public Integer getNbSedd(){
+        int counter=0;
+        for(Whole whole:wholes){
+            counter+=whole.getNbSeed();
+        }
+        return counter;
     }
 
     public Integer getRoundJoueur1() {
@@ -119,7 +128,7 @@ public class GameModel {
         return verif;
     }
 
-    public void isThereAnyPossiblemove(int playerIndex) {
+    public void isPartyFinish(int playerIndex) {
         ArrayList<Integer> res = this.getAllPossibleIndex(playerIndex);
 
         boolean verif=false;
@@ -134,6 +143,17 @@ public class GameModel {
                 break;
             }
         }
+
+        if(difficulty.equals("middleMode")){
+            if(scorePlayer1>=25 || scorePlayer2>=25){
+                this.endGame();
+            }
+        }else if(difficulty.equals("easyMode")) {
+            if (this.getNbSedd()<6) {
+                this.endGame();
+            }
+        }
+        
         if(!verif){
             this.endGame();
         }
@@ -234,6 +254,10 @@ public class GameModel {
 
     public void setWholes(ArrayList<Whole> wholes) {
         this.wholes = wholes;
+    }
+
+    public void setDifficulty(String difficultyChosen) {
+        this.difficulty =  difficultyChosen;
     }
 }
 
