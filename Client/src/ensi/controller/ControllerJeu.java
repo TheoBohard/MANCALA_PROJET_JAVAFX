@@ -2,6 +2,8 @@ package ensi.controller;
 
 import ensi.communication.Communication;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -233,6 +235,10 @@ public class ControllerJeu implements Initializable {
                 ioException.printStackTrace();
             }
         });
+
+        surrenderGame.setOnAction(e -> com.sendMessage("ACTION,SURRENDER_GAME"));
+
+        cancelMove.setOnAction(e -> com.sendMessage("ACTION,CANCEL_MOVE"));
     }
 
     @FXML

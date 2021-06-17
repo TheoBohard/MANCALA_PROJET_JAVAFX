@@ -29,7 +29,7 @@ public class ControllerOptions {
     }
 
     private void sliderNumberSeedChanged() {
-        System.out.println("Yoooooooo slider changed");
+
     }
 
     private void sliderBoardStateChanged() {

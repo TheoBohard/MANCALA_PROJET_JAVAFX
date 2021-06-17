@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ensi.controller.ControllerOptions">
    <children>
-      <Slider fx:id="sliderNumberSeed" blockIncrement="1.0" layoutX="66.0" layoutY="97.0" majorTickUnit="1.0" max="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="34.0" />
+      <Slider fx:id="sliderNumberSeed" blockIncrement="0.0" layoutX="66.0" layoutY="97.0" majorTickUnit="1.0" max="0.1" minorTickCount="1" prefHeight="14.0" prefWidth="30.0" />
       <Slider fx:id="sliderBoardState" blockIncrement="1.0" layoutX="66.0" layoutY="162.0" max="1.0" prefHeight="14.0" prefWidth="34.0" />
       <Slider fx:id="sliderSoundEffect" blockIncrement="1.0" layoutX="66.0" layoutY="229.0" max="1.0" prefHeight="14.0" prefWidth="34.0" />
       <Slider fx:id="sliderMusic" blockIncrement="1.0" layoutX="66.0" layoutY="290.0" max="1.0" prefHeight="14.0" prefWidth="34.0" />
