@@ -28,6 +28,12 @@ public class ViewUpdate {
             seedInfo.add(numberSeed);
         }
 
+        seedInfo.add(model.getRoundJoueur1());
+        seedInfo.add(model.getRoundPlayer2());
+        seedInfo.add(model.getScoreJoueur1());
+        seedInfo.add(model.getScorePlayer2());
+        seedInfo.add(model.getNb_round());
+
         int port = Integer.parseInt(portList.get(indexPort));
         this.indexPort =(this.indexPort +1)%2;
         System.out.println(portList + "-" + indexPort);
