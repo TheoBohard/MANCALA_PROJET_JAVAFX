@@ -22,6 +22,13 @@ public class ControllerOptions {
 
     @FXML
     public void initialize() {
+
+        sliderNumberSeed.setValue(ControllerJeu.isCLIENT_NUMBER_SEED() ? 1.0 : 0.0);
+        sliderBoardState.setValue(ControllerJeu.isCLIENT_BOARD_STATE() ? 1.0 : 0.0);
+        sliderSoundEffect.setValue(ControllerJeu.isCLIENT_SOUND_EFFECT() ? 1.0 : 0.0);
+        sliderMusic.setValue(ControllerJeu.isCLIENT_MUSIC() ? 1.0 : 0.0);
+
+
         sliderNumberSeed.valueChangingProperty().addListener((source, oldValue, newValue) -> sliderNumberSeedChanged());
         sliderBoardState.valueChangingProperty().addListener((source, oldValue, newValue) -> sliderBoardStateChanged());
         sliderSoundEffect.valueChangingProperty().addListener((source, oldValue, newValue) -> sliderSoundEffectChanged());
@@ -29,15 +36,18 @@ public class ControllerOptions {
     }
 
     private void sliderNumberSeedChanged() {
-
+        ControllerJeu.setCLIENT_NUMBER_SEED(sliderNumberSeed.getValue() > 0);
     }
 
     private void sliderBoardStateChanged() {
+        ControllerJeu.setCLIENT_BOARD_STATE(sliderBoardState.getValue() > 0);
     }
 
     private void sliderSoundEffectChanged() {
+        ControllerJeu.setCLIENT_SOUND_EFFECT(sliderSoundEffect.getValue() > 0);
     }
 
     private void sliderMusicChanged() {
+        ControllerJeu.setCLIENT_MUSIC(sliderMusic.getValue() > 0);
     }
 }
