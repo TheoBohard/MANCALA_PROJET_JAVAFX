@@ -25,7 +25,7 @@ public class GameModel {
     }
 
     public boolean abandonPossible(){
-        if(this.getNbSedd()<=100){
+        if(this.getNbSedd()<=10){
             return true;
         }else{
             return false;
@@ -161,7 +161,7 @@ public class GameModel {
         }
 
         if(difficulty.equals("middleMode")){
-            if(scorePlayer1>=25 || scorePlayer2>=25){
+            if(scorePlayer1>=2 || scorePlayer2>=2){
                 this.endGame();
             }
         }else if(difficulty.equals("easyMode")) {
@@ -181,9 +181,10 @@ public class GameModel {
     }
 
     public void endGame(){
+        System.out.println("JE PASSSSSEEEEE");
         if(this.scorePlayer1 > this.scorePlayer2){
             this.roundPlayer1++;
-        }else if(this.scorePlayer1 > this.scorePlayer2){
+        }else if(this.scorePlayer1 < this.scorePlayer2){
             this.roundPlayer2++;
         }
 

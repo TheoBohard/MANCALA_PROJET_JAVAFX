@@ -274,7 +274,7 @@ public class ControllerJeu implements Initializable {
         updateScoreGame(tabSeed);
 
 
-        CURRENT_MUSIC = "blue.mp3";
+        CURRENT_MUSIC = "Mancala_song.mp3";
         playMusic();
 
         options.setOnAction(e -> {
@@ -484,7 +484,7 @@ public class ControllerJeu implements Initializable {
      * @param mouseEvent The event of click
      */
     public void askServerToMove(MouseEvent mouseEvent) {
-        CURRENT_SOUND = "sardoche_detruire.mp3";
+        CURRENT_SOUND = "notif.wav";
         playSoundEffect();
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
@@ -516,7 +516,7 @@ public class ControllerJeu implements Initializable {
 
             if(serverReponse == "PARTIE TERMINE") {
                 System.out.println("La partie est terminée");
-                //TODO : Go to menu
+                this.setTurnInfo("PARTIE TERMINE");
             }
 
         }

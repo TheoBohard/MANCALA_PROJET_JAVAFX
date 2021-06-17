@@ -12,12 +12,12 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="loadGame" layoutX="190.0" layoutY="288.0" mnemonicParsing="false" onAction="#loadAGame" prefHeight="109.0" prefWidth="345.0" text="Charger Partie">
+      <Button cancelButton="true" layoutX="190.0" layoutY="288.0" mnemonicParsing="false" onAction="#loadAGame" opacity="0.4" prefHeight="109.0" prefWidth="345.0" text="Charger Partie">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button fx:id="options" layoutX="190.0" layoutY="416.0" mnemonicParsing="false" onAction="#startOptions" prefHeight="109.0" prefWidth="345.0" text="Options">
+      <Button fx:id="options" cancelButton="true" layoutX="190.0" layoutY="416.0" mnemonicParsing="false" onAction="#startOptions" opacity="0.4" prefHeight="109.0" prefWidth="345.0" text="Options">
          <font>
             <Font size="20.0" />
          </font>
@@ -32,9 +32,6 @@
             <Text fx:id="textAnchor" layoutX="32.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" />
          </children>
       </AnchorPane>
-      <Text layoutX="607.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adresse ip : 127.0.1.1" />
-      <Text layoutX="607.0" layoutY="587.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port Joueur 1 : 2009" />
-      <Text layoutX="607.0" layoutY="603.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port Joueur 2 : 2010" />
 
    </children>
 </AnchorPane>
