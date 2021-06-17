@@ -18,6 +18,12 @@ public class ViewUpdate {
         this.indexPort =0;
     }
 
+    public void askOpponent(String message){
+        int port = Integer.parseInt(portList.get(indexPort));
+        this.indexPort =(this.indexPort +1)%2;
+        com.sendInitMessage(message,port,port-1);
+    }
+
     public void initViewAndComm() throws UnknownHostException {
 
         ArrayList<Integer> seedInfo = new ArrayList<>();

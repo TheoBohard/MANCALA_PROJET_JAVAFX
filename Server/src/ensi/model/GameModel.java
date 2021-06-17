@@ -24,6 +24,14 @@ public class GameModel {
         old_wholes = this.copyWholes();
     }
 
+    public boolean abandonPossible(){
+        if(this.getNbSedd()<=10){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public int getNb_round() {
         return nb_round;
     }
@@ -168,7 +176,12 @@ public class GameModel {
         }
     }
 
-    private void endGame(){
+    public void distrib_seeds(){
+        this.scorePlayer1+=this.getNbSedd()/2;
+        this.scorePlayer2+=this.getNbSedd()/2;
+    }
+
+    public void endGame(){
         if(this.scorePlayer1 > this.scorePlayer2){
             this.roundPlayer1++;
         }else if(this.scorePlayer1 > this.scorePlayer2){

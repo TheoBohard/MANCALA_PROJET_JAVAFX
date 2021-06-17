@@ -165,7 +165,7 @@ public class ServeurMessage {
                     default:
                         String[] requestSplitted = request.split(",");
                         System.out.println(requestSplitted);
-                        if(requestSplitted[1].equals("CANCEL_MOVE")){
+                        if(requestSplitted[1].equals("CANCEL_MOVE") && requestSplitted[2].equals(playerTurn)){
 
                             boolean change_turn = model.cancel_move();
 
@@ -174,7 +174,31 @@ public class ServeurMessage {
                                 update.updateView(oos, indexJoueur);
                                 indexJoueur = (indexJoueur + 1) % 2;
                                 update.updateViewOtherPlayer(indexJoueur);
+                            }else{
+                                oos.writeObject("Deplacement impossible");
                             }
+                        }
+                        if(requestSplitted[1].equals("SURRENDER_GAME") && requestSplitted[2].equals(playerTurn)){
+
+                            if(model.abandonPossible()) {
+                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+                                update.updateView(oos, indexJoueur);
+                                indexJoueur = (indexJoueur + 1) % 2;
+                                update.askOpponent("ABANDON?");
+                            }else{
+                                oos.writeObject("Deplacement impossible");
+                            }
+                        }
+                        if(requestSplitted[1].equals("ABANDONYES") && requestSplitted[2].equals(playerTurn)){
+                            model.distrib_seeds();
+                            model.endGame();
+
+                            playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+                            update.updateView(oos, indexJoueur);
+                            indexJoueur = (indexJoueur + 1) % 2;
+                            update.updateViewOtherPlayer(indexJoueur);
+
+                            model.newRound =false;
                         }
                         if (requestSplitted[1].equals(playerTurn)) {
                             model.isPartyFinish(indexJoueur);
