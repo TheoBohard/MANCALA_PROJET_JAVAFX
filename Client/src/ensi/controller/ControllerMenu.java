@@ -121,7 +121,7 @@ public class ControllerMenu implements Initializable {
         }
     }
 
-    public void launchgame() throws IOException, InterruptedException {
+    public void launchgame() throws IOException {
         Stage gameStage = new Stage();
         //TODO : Server will say what view we want to load
         String view = "../view/gamePlayer".concat(String.valueOf(numberPlayer)).concat(".fxml");
@@ -134,6 +134,7 @@ public class ControllerMenu implements Initializable {
         gameStage.setScene(scene);
 
         ControllerJeu gameController = loader.getController();
+        gameController.setFxmlFileLoaded(view);
         gameController.setPassWord(this.passWord);
         gameController.setPort(this.comPort);
 

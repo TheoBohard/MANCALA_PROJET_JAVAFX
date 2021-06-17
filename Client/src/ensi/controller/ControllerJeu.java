@@ -3,17 +3,25 @@ package ensi.controller;
 import ensi.communication.Communication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.PopupWindow;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 
 import java.io.*;
@@ -86,6 +94,24 @@ public class ControllerJeu implements Initializable {
     private Text roundTextInfo;
     @FXML
     private Text roundScoreInfo;
+    @FXML
+    private MenuItem loadGame;
+    @FXML
+    private MenuItem saveGame;
+    @FXML
+    private MenuItem surrenderGame;
+    @FXML
+    private MenuItem newMatch;
+    @FXML
+    private MenuItem stopMatch;
+    @FXML
+    private MenuItem cancelMove;
+    @FXML
+    private MenuItem seeRules;
+    @FXML
+    private MenuItem options;
+    @FXML
+    private MenuItem about;
 
     private Communication com;
     private String passWord;
@@ -93,13 +119,15 @@ public class ControllerJeu implements Initializable {
 
     private ArrayList<?> tabSeed;
 
-    final boolean CLIENT_NUMBER_SEED = true;
-    final boolean CLIENT_BOARD_STATE = true;
-    final boolean CLIENT_SOUND_EFFECT = true;
-    final boolean CLIENT_MUSIC = true;
+    boolean CLIENT_NUMBER_SEED = true;
+    boolean CLIENT_BOARD_STATE = true;
+    boolean CLIENT_SOUND_EFFECT = true;
+    boolean CLIENT_MUSIC = true;
 
     public MediaPlayer mediaPlayerEffect;
     public MediaPlayer mediaPlayerMusic;
+
+    private String fxmlFileLoaded = "";
 
 
     public void setPort(String port) {
@@ -108,6 +136,46 @@ public class ControllerJeu implements Initializable {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
+    }
+
+    public String getFxmlFileLoaded() {
+        return fxmlFileLoaded;
+    }
+
+    public void setFxmlFileLoaded(String fxmlFileLoaded) {
+        this.fxmlFileLoaded = fxmlFileLoaded;
+    }
+
+    public boolean isCLIENT_NUMBER_SEED() {
+        return CLIENT_NUMBER_SEED;
+    }
+
+    public void setCLIENT_NUMBER_SEED(boolean CLIENT_NUMBER_SEED) {
+        this.CLIENT_NUMBER_SEED = CLIENT_NUMBER_SEED;
+    }
+
+    public boolean isCLIENT_BOARD_STATE() {
+        return CLIENT_BOARD_STATE;
+    }
+
+    public void setCLIENT_BOARD_STATE(boolean CLIENT_BOARD_STATE) {
+        this.CLIENT_BOARD_STATE = CLIENT_BOARD_STATE;
+    }
+
+    public boolean isCLIENT_SOUND_EFFECT() {
+        return CLIENT_SOUND_EFFECT;
+    }
+
+    public void setCLIENT_SOUND_EFFECT(boolean CLIENT_SOUND_EFFECT) {
+        this.CLIENT_SOUND_EFFECT = CLIENT_SOUND_EFFECT;
+    }
+
+    public boolean isCLIENT_MUSIC() {
+        return CLIENT_MUSIC;
+    }
+
+    public void setCLIENT_MUSIC(boolean CLIENT_MUSIC) {
+        this.CLIENT_MUSIC = CLIENT_MUSIC;
     }
 
     private final ArrayList<GridPane> GridPaneArray = new ArrayList<>();
@@ -157,12 +225,35 @@ public class ControllerJeu implements Initializable {
         updateScoreGame(tabSeed);
 
         playMusic("blue.mp3");
+
+        options.setOnAction(e -> {
+            try {
+                displayOptionsMenu();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void displayOptionsMenu() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/optionsMenu.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Options");
+        stage.show();
     }
 
     private void updateScoreGame(ArrayList<?> tabSeed) {
-        int roudNumber = (Integer) tabSeed.get(tabSeed.size()-3) + (Integer) tabSeed.get(tabSeed.size()-4);
-        roundTextInfo.setText("Round numéro : " + roudNumber);
-        roundScoreInfo.setText("Score : " + tabSeed.get(tabSeed.size()-3) + "-" + tabSeed.get(tabSeed.size()-4));
+        roundTextInfo.setText("Round numéro : " + ((Integer) tabSeed.get(tabSeed.size()-1) + 1));
+
+        if (fxmlFileLoaded.equals("../view/gamePlayer1.fxml")) {
+            roundScoreInfo.setText("Score : " + tabSeed.get(tabSeed.size()-4) + "-" + tabSeed.get(tabSeed.size()-5));
+        } else if (fxmlFileLoaded.equals("../view/gamePlayer2.fxml")) {
+            roundScoreInfo.setText("Score : " + tabSeed.get(tabSeed.size()-5) + "-" + tabSeed.get(tabSeed.size()-4));
+        }
     }
 
     private void displayTooltip(GridPane gridPane, String message) {
@@ -203,7 +294,7 @@ public class ControllerJeu implements Initializable {
 
             cleanGridPane(GridPaneArray);
 
-            updateScore((Integer) tabSeed.get(tabSeed.size()-1), (Integer) tabSeed.get(tabSeed.size()-2));
+            updateScore((Integer) tabSeed.get(tabSeed.size()-2), (Integer) tabSeed.get(tabSeed.size()-3));
 
             for (GridPane gridpane : this.GridPaneArray) {
                 try {
