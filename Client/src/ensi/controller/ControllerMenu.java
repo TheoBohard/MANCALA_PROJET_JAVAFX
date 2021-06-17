@@ -2,7 +2,6 @@ package ensi.controller;
 
 import ensi.Main;
 import ensi.communication.Communication;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -90,7 +89,7 @@ public class ControllerMenu implements Initializable {
 
         anchorConnexion.getChildren().add(loader.load());
         this.controllerConnexion = loader.getController();
-        this.controllerConnexion.setCmenu(this);
+        this.controllerConnexion.setControllerMenu(this);
 
         this.ip = this.controllerConnexion.getIpFinal();
         this.port =  this.controllerConnexion.getPortFinal();

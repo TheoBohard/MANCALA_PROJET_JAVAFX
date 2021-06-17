@@ -19,7 +19,11 @@ import java.util.ArrayList;
 public class ServeurMessage {
 
 
-
+    /**
+     * This function permit to execute all class and function to play games...
+     * @param zero Program arguments
+     * @throws IOException
+     */
     public static void main(String[] zero) throws IOException {
         int indexJoueur = -1;
         int ordre = -1;
@@ -167,11 +171,11 @@ public class ServeurMessage {
                         System.out.println(requestSplitted);
                         if(requestSplitted[1].equals("CANCEL_MOVE") && requestSplitted[2].equals(playerTurn)){
 
-                            boolean change_turn = model.cancel_move();
+                            boolean change_turn = model.cancelMove();
 
                             if(change_turn) {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                                update.updateView(oos, indexJoueur);
+                                update.updateView(oos);
                                 indexJoueur = (indexJoueur + 1) % 2;
                                 update.updateViewOtherPlayer(indexJoueur);
                             }else{
@@ -182,9 +186,9 @@ public class ServeurMessage {
 
                             System.out.println("--------------------------------------------------------------------");
 
-                            if(model.abandonPossible()) {
+                            if(model.surrenderPossible()) {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                                update.updateView(oos, indexJoueur);
+                                update.updateView(oos);
                                 indexJoueur = (indexJoueur + 1) % 2;
                                 update.askOpponent("ABANDON?");
                             }else{
@@ -192,11 +196,11 @@ public class ServeurMessage {
                             }
                         }
                         else if(requestSplitted[1].equals("ABANDONYES") && requestSplitted[2].equals(playerTurn)){
-                            model.distrib_seeds();
+                            model.distribSeeds();
                             model.endGame();
 
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                            update.updateView(oos, indexJoueur);
+                            update.updateView(oos);
                             indexJoueur = (indexJoueur + 1) % 2;
                             update.updateViewOtherPlayer(indexJoueur);
 
@@ -213,13 +217,13 @@ public class ServeurMessage {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
 
                                 model.moveHoles(Integer.parseInt(requestSplitted[0]), indexJoueur);
-                                update.updateView(oos, indexJoueur);
+                                update.updateView(oos);
                                 System.out.println("Index du joueur : " + indexJoueur);
                                 indexJoueur = (indexJoueur + 1) % 2;
                                 update.updateViewOtherPlayer(indexJoueur);
                             } else if(model.newRound){
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                                update.updateView(oos, indexJoueur);
+                                update.updateView(oos);
                                 indexJoueur = (indexJoueur + 1) % 2;
                                 update.updateViewOtherPlayer(indexJoueur);
 

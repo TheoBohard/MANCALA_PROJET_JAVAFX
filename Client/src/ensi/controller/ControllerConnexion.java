@@ -17,29 +17,47 @@ public class ControllerConnexion implements Initializable {
     public String portFinal;
     public ControllerMenu controllerMenu;
 
-    public ControllerMenu getCmenu() {
-        return controllerMenu;
+    /**
+     * This function permit to set the controllerMenu on the controllerConnexion
+     * @param controllerMenu The controllerMenu
+     */
+    public void setControllerMenu(ControllerMenu controllerMenu) {
+        this.controllerMenu = controllerMenu;
     }
 
-    public void setCmenu(ControllerMenu cmenu) {
-        controllerMenu = cmenu;
-    }
-
+    /**
+     * Initializaztion function of ControllerConnexion
+     * @param url The URL
+     * @param resourceBundle The RessourceBundle
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.ipFinal = "";
         this.portFinal = "";
     }
 
+    /**
+     * This function permit to connect client to the server
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void connexion() throws IOException, ClassNotFoundException {
         this.ipFinal =ip.getText();
         this.portFinal =port.getText();
         this.controllerMenu.tryConnection(this.ipFinal,this.portFinal);
     }
 
+    /**
+     * This funnction permit to get the ip
+     * @return The ip
+     */
     public String getIpFinal(){
         return this.ipFinal;
     }
 
+    /**
+     * This function permit to get the port
+     * @return The port
+     */
     public String getPortFinal() {
         return portFinal;
     }

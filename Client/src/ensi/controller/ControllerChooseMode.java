@@ -30,30 +30,55 @@ public class ControllerChooseMode implements Initializable {
         controllerMenu = cmenu;
     }
 
+    /**
+     * This function permit to initialize the mode choose fxml
+     * @param url The URL
+     * @param resourceBundle The RessourceBundle
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.ipFinal = "";
         this.portFinal = "";
     }
 
-    public void one_player() throws IOException {
+    /**
+     * This function permit to choose One Player mode
+     * @throws IOException
+     */
+    public void onePlayer() throws IOException {
         controllerMenu.setMode("Oneplayer");
         setDifficultyMode();
     }
 
-    public void two_players() throws IOException {
+    /**
+     * This function permit to choose Two Players mode
+     * @throws IOException
+     */
+    public void twoPlayers() throws IOException {
         controllerMenu.setMode("Twoplayers");
         setDifficultyMode();
     }
 
+    /**
+     * This function permit to set the difficulty mode
+     * @throws IOException
+     */
     private void setDifficultyMode() throws IOException {
         controllerMenu.chooseDifficultyMode();
    }
 
+    /**
+     * This function permit to choose easy difficulty mode
+     * @throws IOException
+     */
     public void easyMode() throws IOException {
         controllerMenu.setDifficulty("easyMode");
         controllerMenu.launchgame();
     }
 
+    /**
+     * This function permit to choose middle difficulty mode
+     * @throws IOException
+     */
     public void middleMode() throws IOException {
         controllerMenu.setDifficulty("middleMode");
         controllerMenu.launchgame();

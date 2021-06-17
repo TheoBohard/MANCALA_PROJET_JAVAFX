@@ -4,8 +4,9 @@ TODO :
 - Handle end of the game
 - Put different song or no song if its not the turn or move is not possible and ...
 - Change sound
-- Round info when we launch the game
 - Adapt score to the current client (1-0 // 0-1) [Test the feature]
 - Gerer les differentes ip
 - Quand on clique sur la croix call leaveProgram
 - Finish all options
+- DISPLAY RULES
+- Javadoc class too

@@ -20,6 +20,9 @@ public class ControllerOptions {
     @FXML
     private Slider sliderMusic;
 
+    /**
+     * This function permit to initialize a ControllerOptions
+     */
     @FXML
     public void initialize() {
 
@@ -35,18 +38,30 @@ public class ControllerOptions {
         sliderMusic.valueChangingProperty().addListener((source, oldValue, newValue) -> sliderMusicChanged());
     }
 
+    /**
+     * Handle when the option CLIENT_NUMBER_SEED is changed
+     */
     private void sliderNumberSeedChanged() {
         ControllerJeu.setCLIENT_NUMBER_SEED(sliderNumberSeed.getValue() > 0);
     }
 
+    /**
+     * Handle when the option CLIENT_BOARD_STATE is changed
+     */
     private void sliderBoardStateChanged() {
         ControllerJeu.setCLIENT_BOARD_STATE(sliderBoardState.getValue() > 0);
     }
 
+    /**
+     * Handle when the option CLIENT_SOUND_EFFECT is changed
+     */
     private void sliderSoundEffectChanged() {
         ControllerJeu.setCLIENT_SOUND_EFFECT(sliderSoundEffect.getValue() > 0);
     }
 
+    /**
+     * Handle when the option CLIENT_MUSIC is changed
+     */
     private void sliderMusicChanged() {
         ControllerJeu.setCLIENT_MUSIC(sliderMusic.getValue() > 0);
     }
