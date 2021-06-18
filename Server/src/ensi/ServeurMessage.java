@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-/**
- * Created by faye on 01/06/2017.
- */
-
 public class ServeurMessage {
 
 
