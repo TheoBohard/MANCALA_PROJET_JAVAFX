@@ -47,10 +47,11 @@ public class Communication {
 
     /**
      * This function permit to create a socket
+     *
      * @param address The ip address
-     * @param port The port
+     * @param port    The port
      * @return The socket
-     * @throws IOException
+     * @throws IOException IOException
      */
     private Socket createServerSocket(InetAddress address, int port) throws IOException {
         Socket socket = new Socket(address, port);
@@ -60,9 +61,10 @@ public class Communication {
 
     /**
      * This function permit to send a message with a socket provided
-     * @param socket The socket
+     *
+     * @param socket  The socket
      * @param message The message
-     * @throws IOException
+     * @throws IOException IOException
      */
     private void sendMessageSocket(Socket socket, String message) throws IOException {
         OutputStream os = socket.getOutputStream();

@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,8 +36,9 @@ public class ControllerConnexion implements Initializable {
 
     /**
      * This function permit to connect client to the server
-     * @throws IOException
-     * @throws ClassNotFoundException
+     *
+     * @throws IOException            IOException
+     * @throws ClassNotFoundException ClassNotFoundException
      */
     public void connexion() throws IOException, ClassNotFoundException {
         this.ipFinal =ip.getText();
@@ -47,7 +47,8 @@ public class ControllerConnexion implements Initializable {
     }
 
     /**
-     * This funnction permit to get the ip
+     * This function permit to get the ip
+     *
      * @return The ip
      */
     public String getIpFinal(){

@@ -1,12 +1,8 @@
 package ensi.controller;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
-
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +38,8 @@ public class ControllerChooseMode implements Initializable {
 
     /**
      * This function permit to choose One Player mode
-     * @throws IOException
+     *
+     * @throws IOException IOException
      */
     public void onePlayer() throws IOException {
         controllerMenu.setMode("Oneplayer");
@@ -51,7 +48,8 @@ public class ControllerChooseMode implements Initializable {
 
     /**
      * This function permit to choose Two Players mode
-     * @throws IOException
+     *
+     * @throws IOException IOException
      */
     public void twoPlayers() throws IOException {
         controllerMenu.setMode("Twoplayers");
@@ -60,15 +58,16 @@ public class ControllerChooseMode implements Initializable {
 
     /**
      * This function permit to set the difficulty mode
-     * @throws IOException
+     *
+     * @throws IOException IOException
      */
     private void setDifficultyMode() throws IOException {
         controllerMenu.chooseDifficultyMode();
-   }
+    }
 
     /**
      * This function permit to choose easy difficulty mode
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void easyMode() throws IOException {
         controllerMenu.setDifficulty("easyMode");
@@ -77,7 +76,7 @@ public class ControllerChooseMode implements Initializable {
 
     /**
      * This function permit to choose middle difficulty mode
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void middleMode() throws IOException {
         controllerMenu.setDifficulty("middleMode");

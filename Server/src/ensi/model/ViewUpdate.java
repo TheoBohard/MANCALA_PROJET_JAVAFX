@@ -38,7 +38,7 @@ public class ViewUpdate {
     /**
      * This function permit to init the connection and the view of clients
      *
-     * @throws UnknownHostException
+     * @throws UnknownHostException UnknownHostException
      */
     public void initViewAndComm(InetAddress address) throws UnknownHostException {
 
@@ -56,8 +56,9 @@ public class ViewUpdate {
 
     /**
      * This function permit to update the view of the clients
+     *
      * @param oos The ObjectOutputStream to communicate
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void updateView(ObjectOutputStream oos) throws IOException {
         ArrayList<Integer> seedInfo = new ArrayList<>();

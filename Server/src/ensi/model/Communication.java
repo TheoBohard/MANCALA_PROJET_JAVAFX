@@ -9,8 +9,6 @@ import java.net.Socket;
 
 public class Communication {
 
-    private int nbPlayerConnected;
-
     /**
      * This function permit to send init message to the client
      *
@@ -43,9 +41,10 @@ public class Communication {
 
     /**
      * This funciton permit to send a Object over a ObjectOutputStream
+     *
      * @param message The object
-     * @param oos The ObjectOutputStream
-     * @throws IOException
+     * @param oos     The ObjectOutputStream
+     * @throws IOException IOException
      */
     public void sendMessage(Object message, ObjectOutputStream oos) throws IOException {
 
@@ -54,10 +53,11 @@ public class Communication {
 
     /**
      * This function permit to create a server socket
+     *
      * @param address The ip address
-     * @param port The port
+     * @param port    The port
      * @return The socket
-     * @throws IOException
+     * @throws IOException IOException
      */
     private Socket createServerSocket(InetAddress address, int port) throws IOException {
         Socket socket = new Socket(address, port);
@@ -67,9 +67,10 @@ public class Communication {
 
     /**
      * This function permit to send a message over a socket
-     * @param socket The socket
+     *
+     * @param socket  The socket
      * @param message The message
-     * @throws IOException
+     * @throws IOException IOException
      */
     private void sendMessageSocket(Socket socket, Object message) throws IOException {
         OutputStream os = socket.getOutputStream();

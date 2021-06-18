@@ -61,10 +61,11 @@ public class ControllerMenu implements Initializable {
 
     /**
      * This function permit to try the connexion on the server
-     * @param ip The IP of the server
+     *
+     * @param ip   The IP of the server
      * @param port The port of the server
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException            IOException
+     * @throws ClassNotFoundException ClassNotFoundException
      */
     public void tryConnection(String ip, String port) throws IOException, ClassNotFoundException {
         ControllerMenu.ip = ip;
@@ -90,7 +91,8 @@ public class ControllerMenu implements Initializable {
 
     /**
      * This function permit to do load connexion view and setup the game
-     * @throws IOException
+     *
+     * @throws IOException IOException
      */
     public void connexion() throws IOException {
 
@@ -104,6 +106,11 @@ public class ControllerMenu implements Initializable {
         port = this.controllerConnexion.getPortFinal();
     }
 
+    /**
+     * This function permit to choose the difficulty mode
+     *
+     * @throws IOException IOException
+     */
     public void chooseDifficultyMode() throws IOException {
         anchorConnexion.getChildren().clear();
 
@@ -113,6 +120,12 @@ public class ControllerMenu implements Initializable {
         this.controllerModeChoose.setCmenu(this);
     }
 
+    /**
+     * This function permit to start a new game
+     *
+     * @throws IOException            IOException
+     * @throws ClassNotFoundException ClassNotFoundException
+     */
     public void startNewGame() throws IOException, ClassNotFoundException {
         if (ip == null) {
             this.connexion();
@@ -155,7 +168,8 @@ public class ControllerMenu implements Initializable {
 
     /**
      * This function permit to launch the game
-     * @throws IOException
+     *
+     * @throws IOException IOException
      */
     public void launchgame() throws IOException {
         Stage gameStage = new Stage();
@@ -206,7 +220,7 @@ public class ControllerMenu implements Initializable {
 
     /**
      * This function permit to load a game
-     * @throws IOException
+     * @throws IOException IOException
      */
     public void loadAGame() throws IOException {
         if (ip == null) {

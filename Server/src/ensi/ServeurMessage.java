@@ -21,12 +21,13 @@ public class ServeurMessage {
 
     /**
      * This function permit to execute all class and function to play games...
+     *
      * @param zero Program arguments
-     * @throws IOException
+     * @throws IOException IOException
      */
     public static void main(String[] zero) throws IOException {
-        int indexJoueur = -1;
-        int ordre = -1;
+        int indexJoueur;
+        int ordre;
 
         int nbPlayerConnected = 0;
         ArrayList<String> listPorts = new ArrayList<>();
@@ -37,12 +38,12 @@ public class ServeurMessage {
         idGenerator utilPass = new idGenerator();
         ArrayList<String> passwords = new ArrayList<>();
 
-        String modeChoosed = "";
-        String difficultyChosen = "";
+        String modeChoosed;
+        String difficultyChosed;
 
-        ordre = indexJoueur  = playerUtils.chooseRandomNumber(2);
+        ordre = indexJoueur = playerUtils.chooseRandomNumber(2);
 
-        if(ordre < 0 || ordre > 1) {
+        if (ordre < 0 || ordre > 1) {
             System.out.println("Backup de l'ordre [Pas très accurate]");
             ordre = indexJoueur = 0;
         }
@@ -114,9 +115,9 @@ public class ServeurMessage {
                                 String[] requestSplitted = request.split(",");
                                 oos.writeObject("OK");
                                 modeChoosed = requestSplitted[2];
-                                difficultyChosen = requestSplitted[1];
-                                System.out.println("Mode : " + modeChoosed + " | Difficulty : " + difficultyChosen);
-                                model.setDifficulty(difficultyChosen);
+                                difficultyChosed = requestSplitted[1];
+                                System.out.println("Mode : " + modeChoosed + " | Difficulty : " + difficultyChosed);
+                                model.setDifficulty(difficultyChosed);
                                 break;
                             }
                         default:
@@ -161,81 +162,73 @@ public class ServeurMessage {
 
                 System.out.println("Resquest received");
                 System.out.println("Request : " + request);
-                switch (request) {
-                    case "EXIT":
-                        System.out.println("EXIT");
-                        socket.close();
-                        break;
-                    default:
-                        String[] requestSplitted = request.split(",");
-                        System.out.println(Arrays.toString(requestSplitted));
-                        if(requestSplitted[1].equals("CANCEL_MOVE") && requestSplitted[2].equals(playerTurn)){
+                if ("EXIT".equals(request)) {
+                    System.out.println("EXIT");
+                    socket.close();
+                } else {
+                    String[] requestSplitted = request.split(",");
+                    System.out.println(Arrays.toString(requestSplitted));
+                    if (requestSplitted[1].equals("CANCEL_MOVE") && requestSplitted[2].equals(playerTurn)) {
 
-                            boolean change_turn = model.cancelMove();
+                        boolean change_turn = model.cancelMove();
 
-                            if(change_turn) {
-                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                                update.updateView(oos);
-                                indexJoueur = (indexJoueur + 1) % 2;
-                                update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
-                            }else{
-                                oos.writeObject("Deplacement impossible");
-                            }
+                        if (change_turn) {
+                            playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+                            update.updateView(oos);
+                            indexJoueur = (indexJoueur + 1) % 2;
+                            update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
+                        } else {
+                            oos.writeObject("Deplacement impossible");
                         }
-                        else if(requestSplitted[1].equals("SURRENDER_GAME") && requestSplitted[2].equals(playerTurn)){
+                    } else if (requestSplitted[1].equals("SURRENDER_GAME") && requestSplitted[2].equals(playerTurn)) {
 
-                            System.out.println("--------------------------------------------------------------------");
+                        System.out.println("--------------------------------------------------------------------");
 
-                            if(model.surrenderPossible()) {
-                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                                update.updateView(oos);
-                                indexJoueur = (indexJoueur + 1) % 2;
-                                update.askOpponent("ABANDON?", serverSocket.getInetAddress());
-                            }else{
-                                oos.writeObject("Deplacement impossible");
-                            }
+                        if (model.surrenderPossible()) {
+                            playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+                            update.updateView(oos);
+                            indexJoueur = (indexJoueur + 1) % 2;
+                            update.askOpponent("ABANDON?", serverSocket.getInetAddress());
+                        } else {
+                            oos.writeObject("Deplacement impossible");
                         }
-                        else if(requestSplitted[1].equals("ABANDONYES") && requestSplitted[2].equals(playerTurn)){
-                            model.distribSeeds();
-                            model.endGame();
+                    } else if (requestSplitted[1].equals("ABANDONYES") && requestSplitted[2].equals(playerTurn)) {
+                        model.distribSeeds();
+                        model.endGame();
 
+                        playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+                        update.updateView(oos);
+                        indexJoueur = (indexJoueur + 1) % 2;
+                        update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
+
+                        model.newRound = false;
+                    } else if (requestSplitted[1].equals(playerTurn)) {
+                        model.isPartyFinish(indexJoueur);
+                        boolean moveIsPlayable = model.isMovePlayable(Integer.parseInt(requestSplitted[0]), indexJoueur);
+
+                        if (!model.isPartyOn) {
+                            oos.writeObject("PARTIE TERMINE");
+                        } else if (moveIsPlayable && !model.newRound) {
+                            playerTurn = playerUtils.changePlayer(playerTurn, passwords);
+
+                            model.moveHoles(Integer.parseInt(requestSplitted[0]), indexJoueur);
+                            update.updateView(oos);
+                            System.out.println("Index du joueur : " + indexJoueur);
+                            indexJoueur = (indexJoueur + 1) % 2;
+                            update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
+                        } else if (model.newRound) {
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                             update.updateView(oos);
                             indexJoueur = (indexJoueur + 1) % 2;
                             update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
 
-                            model.newRound =false;
-                        }
-                        else if (requestSplitted[1].equals(playerTurn)) {
-                            model.isPartyFinish(indexJoueur);
-                            boolean moveIsPlayable = model.isMovePlayable(Integer.parseInt(requestSplitted[0]), indexJoueur);
-
-                            if(!model.isPartyOn){
-                                oos.writeObject("PARTIE TERMINE");
-                            }
-                            else if(moveIsPlayable && !model.newRound) {
-                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-
-                                model.moveHoles(Integer.parseInt(requestSplitted[0]), indexJoueur);
-                                update.updateView(oos);
-                                System.out.println("Index du joueur : " + indexJoueur);
-                                indexJoueur = (indexJoueur + 1) % 2;
-                                update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
-                            } else if(model.newRound){
-                                playerTurn = playerUtils.changePlayer(playerTurn, passwords);
-                                update.updateView(oos);
-                                indexJoueur = (indexJoueur + 1) % 2;
-                                update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
-
-                                model.newRound =false;
-                            } else{
-                                oos.writeObject("Deplacement impossible");
-                            }
+                            model.newRound = false;
                         } else {
-                            oos.writeObject("Ce n'est pas ton tour");
+                            oos.writeObject("Deplacement impossible");
                         }
-
-                        break;
+                    } else {
+                        oos.writeObject("Ce n'est pas ton tour");
+                    }
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

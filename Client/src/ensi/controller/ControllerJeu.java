@@ -394,7 +394,8 @@ public class ControllerJeu implements Initializable {
 
     /**
      * This function permit to display the option menu to change options
-     * @throws IOException
+     *
+     * @throws IOException IOException
      */
     @FXML
     void displayOptionsMenu() throws IOException {
@@ -460,9 +461,10 @@ public class ControllerJeu implements Initializable {
 
     /**
      * This function permit to populate a GridPane
+     *
      * @param numberSeed The number of seed
-     * @param grid The GridPane concerned
-     * @throws IOException
+     * @param grid       The GridPane concerned
+     * @throws IOException IOException
      */
     private void populateGridPane(int numberSeed, GridPane grid) throws IOException {
 
@@ -559,8 +561,9 @@ public class ControllerJeu implements Initializable {
 
     /**
      * This function permit to listen the server messages
+     *
      * @return The response
-     * @throws InterruptedException
+     * @throws InterruptedException InterruptedException
      */
     public Object listenToServer() throws InterruptedException {
         System.out.println("ENTERED LISTEN");
