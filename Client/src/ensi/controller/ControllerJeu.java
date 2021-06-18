@@ -2,8 +2,6 @@ package ensi.controller;
 
 import ensi.communication.Communication;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,16 +10,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Text;
-import javafx.stage.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.stage.Modality;
+import javafx.stage.PopupWindow;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -542,7 +548,7 @@ public class ControllerJeu implements Initializable {
             inputSocket = serverSocket.accept();
             System.out.println("Le socket a ete accepte");
 
-            Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(this.port) + 2);
+            Socket socket = new Socket(InetAddress.getByName(ControllerMenu.ip), Integer.parseInt(this.port) + 2);
 
             System.out.println("Hello on essaye de recevoir l'array list");
             InputStream is = socket.getInputStream();

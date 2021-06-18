@@ -13,7 +13,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -22,20 +25,26 @@ import java.util.concurrent.Executors;
 
 public class ControllerMenu implements Initializable {
 
-    @FXML public Button newGame;
-    @FXML public Button loadGame;
-    @FXML public Button options;
-    @FXML public Button leave;
-    @FXML public AnchorPane anchorConnexion;
-    @FXML public Text textAnchor;
+    public static String ip;
+    public static String port;
+    @FXML
+    public Button newGame;
+    @FXML
+    public Button loadGame;
+    @FXML
+    public Button options;
+    @FXML
+    public Button leave;
     public String mode;
     public String difficulty;
     public ControllerConnexion controllerConnexion;
-    public String ip;
-    public String port;
+    @FXML
+    public AnchorPane anchorConnexion;
+    @FXML
+    public Text textAnchor;
     public String comPort;
     private ControllerChooseMode controllerModeChoose;
-    private ArrayList<Integer> tab_seed = new ArrayList<Integer>();
+    private ArrayList<Integer> tab_seed = new ArrayList<>();
     private Communication com;
     private String passWord;
     private int numberPlayer = 0;
@@ -58,8 +67,8 @@ public class ControllerMenu implements Initializable {
      * @throws ClassNotFoundException
      */
     public void tryConnection(String ip, String port) throws IOException, ClassNotFoundException {
-        this.ip = ip;
-        this.port = port;
+        ControllerMenu.ip = ip;
+        ControllerMenu.port = port;
         this.startNewGame();
     }
 
@@ -91,8 +100,8 @@ public class ControllerMenu implements Initializable {
         this.controllerConnexion = loader.getController();
         this.controllerConnexion.setControllerMenu(this);
 
-        this.ip = this.controllerConnexion.getIpFinal();
-        this.port =  this.controllerConnexion.getPortFinal();
+        ip = this.controllerConnexion.getIpFinal();
+        port = this.controllerConnexion.getPortFinal();
     }
 
     public void chooseDifficultyMode() throws IOException {
@@ -105,7 +114,7 @@ public class ControllerMenu implements Initializable {
     }
 
     public void startNewGame() throws IOException, ClassNotFoundException {
-        if(this.ip==null){
+        if (ip == null) {
             this.connexion();
         } else {
             String response = (String) com.sendMessage("New game");
@@ -116,7 +125,7 @@ public class ControllerMenu implements Initializable {
             this.numberPlayer = Integer.parseInt(tab[3]);
             this.position = tab[4];
 
-            if(tab[0].equals("Bien reçu : nouvelle partie")) {
+            if (tab[0].equals("Bien reçu : nouvelle partie")) {
 
                 anchorConnexion.getChildren().clear();
                 //Selection of game_mode
@@ -129,7 +138,7 @@ public class ControllerMenu implements Initializable {
                 System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
                 Socket inputSocket = serverSocket.accept();
 
-                Socket socket = new Socket(InetAddress.getLocalHost(), Integer.parseInt(this.comPort)-1);
+                Socket socket = new Socket(InetAddress.getByName(ip), Integer.parseInt(this.comPort) - 1);
 
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
@@ -200,7 +209,7 @@ public class ControllerMenu implements Initializable {
      * @throws IOException
      */
     public void loadAGame() throws IOException {
-        if(this.ip==null){
+        if (ip == null) {
             this.connexion();
         }
         com.sendMessage("Load game");

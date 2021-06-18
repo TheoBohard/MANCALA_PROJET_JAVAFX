@@ -1,5 +1,7 @@
 package ensi.communication;
 
+import ensi.controller.ControllerMenu;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -18,7 +20,7 @@ public class Communication {
         Object response = null;
 
         try {
-            socket = createServerSocket(InetAddress.getLocalHost(), Integer.parseInt(String.valueOf(2009)));
+            socket = createServerSocket(InetAddress.getByName(ControllerMenu.ip), Integer.parseInt(String.valueOf(2009)));
 
             ServerSocket clientSocket = new ServerSocket(2010);
             serverSocket = clientSocket.accept();

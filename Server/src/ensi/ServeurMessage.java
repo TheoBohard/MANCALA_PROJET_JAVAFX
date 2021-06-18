@@ -1,15 +1,15 @@
 package ensi;
 
-import ensi.utils.idGenerator;
-import ensi.utils.playerUtils;
 import ensi.model.GameModel;
 import ensi.model.ViewUpdate;
+import ensi.utils.idGenerator;
+import ensi.utils.playerUtils;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -58,7 +58,7 @@ public class ServeurMessage {
                 System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
                 inputSocket = serverSocket.accept();
 
-                try (Socket socket = new Socket(InetAddress.getLocalHost(), 2010)) {
+                try (Socket socket = new Socket(serverSocket.getInetAddress(), 2010)) {
 
                     InputStream is = socket.getInputStream();
                     ObjectInputStream ois = new ObjectInputStream(is);
@@ -98,7 +98,7 @@ public class ServeurMessage {
                                     .concat(",")
                                     .concat(Integer.toString(position)));
 
-                            update.initViewAndComm();
+                            update.initViewAndComm(serverSocket.getInetAddress());
                             System.out.println("JE SUIS LA");
 
                             break;
@@ -149,7 +149,7 @@ public class ServeurMessage {
             inputSocket = serverSocket.accept();
 
 
-            try (Socket socket = new Socket(InetAddress.getLocalHost(), 2010)) {
+            try (Socket socket = new Socket(serverSocket.getInetAddress(), 2010)) {
 
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
@@ -168,7 +168,7 @@ public class ServeurMessage {
                         break;
                     default:
                         String[] requestSplitted = request.split(",");
-                        System.out.println(requestSplitted);
+                        System.out.println(Arrays.toString(requestSplitted));
                         if(requestSplitted[1].equals("CANCEL_MOVE") && requestSplitted[2].equals(playerTurn)){
 
                             boolean change_turn = model.cancelMove();
@@ -177,7 +177,7 @@ public class ServeurMessage {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                                 update.updateView(oos);
                                 indexJoueur = (indexJoueur + 1) % 2;
-                                update.updateViewOtherPlayer(indexJoueur);
+                                update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
                             }else{
                                 oos.writeObject("Deplacement impossible");
                             }
@@ -190,7 +190,7 @@ public class ServeurMessage {
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                                 update.updateView(oos);
                                 indexJoueur = (indexJoueur + 1) % 2;
-                                update.askOpponent("ABANDON?");
+                                update.askOpponent("ABANDON?", serverSocket.getInetAddress());
                             }else{
                                 oos.writeObject("Deplacement impossible");
                             }
@@ -202,7 +202,7 @@ public class ServeurMessage {
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                             update.updateView(oos);
                             indexJoueur = (indexJoueur + 1) % 2;
-                            update.updateViewOtherPlayer(indexJoueur);
+                            update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
 
                             model.newRound =false;
                         }
@@ -220,12 +220,12 @@ public class ServeurMessage {
                                 update.updateView(oos);
                                 System.out.println("Index du joueur : " + indexJoueur);
                                 indexJoueur = (indexJoueur + 1) % 2;
-                                update.updateViewOtherPlayer(indexJoueur);
+                                update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
                             } else if(model.newRound){
                                 playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                                 update.updateView(oos);
                                 indexJoueur = (indexJoueur + 1) % 2;
-                                update.updateViewOtherPlayer(indexJoueur);
+                                update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
 
                                 model.newRound =false;
                             } else{

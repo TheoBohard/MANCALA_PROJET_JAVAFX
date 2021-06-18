@@ -1,6 +1,8 @@
 package ensi.model;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,18 +13,19 @@ public class Communication {
 
     /**
      * This function permit to send init message to the client
-     * @param message The message
-     * @param portSocket The port of the socket
+     *
+     * @param message          The message
+     * @param portSocket       The port of the socket
      * @param portSocketServer The port of the server socket
      */
-    public void sendInitMessage(Object message, int portSocket, int portSocketServer) {
+    public void sendInitMessage(Object message, int portSocket, int portSocketServer, InetAddress address) {
         Socket socket;
         Socket serverSocket;
         System.out.println(portSocket);
         System.out.println(portSocketServer);
         try {
             System.out.println(portSocket);
-            socket = createServerSocket(InetAddress.getLocalHost(), portSocket);
+            socket = createServerSocket(address, portSocket);
 
             ServerSocket clientSocket = new ServerSocket(portSocketServer);
             serverSocket = clientSocket.accept();
