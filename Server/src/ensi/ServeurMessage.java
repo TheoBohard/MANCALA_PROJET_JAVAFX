@@ -55,7 +55,7 @@ public class ServeurMessage {
                 System.out.println("Le ensi est à l'écoute du port " + serverSocket.getLocalPort());
                 inputSocket = serverSocket.accept();
 
-                try (Socket socket = new Socket(serverSocket.getInetAddress(), 2010)) {
+                try (Socket socket = new Socket(inputSocket.getInetAddress(), 2010)) {
 
                     InputStream is = socket.getInputStream();
                     ObjectInputStream ois = new ObjectInputStream(is);
@@ -95,7 +95,7 @@ public class ServeurMessage {
                                     .concat(",")
                                     .concat(Integer.toString(position)));
 
-                            update.initViewAndComm(serverSocket.getInetAddress());
+                            update.initViewAndComm(inputSocket.getInetAddress());
                             System.out.println("JE SUIS LA");
 
                             break;
@@ -146,7 +146,7 @@ public class ServeurMessage {
             inputSocket = serverSocket.accept();
 
 
-            try (Socket socket = new Socket(serverSocket.getInetAddress(), 2010)) {
+            try (Socket socket = new Socket(inputSocket.getInetAddress(), 2010)) {
 
                 InputStream is = socket.getInputStream();
                 ObjectInputStream ois = new ObjectInputStream(is);
@@ -172,7 +172,7 @@ public class ServeurMessage {
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                             update.updateView(oos);
                             indexJoueur = (indexJoueur + 1) % 2;
-                            update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
+                            update.updateViewOtherPlayer(indexJoueur, inputSocket.getInetAddress());
                         } else {
                             oos.writeObject("Deplacement impossible");
                         }
@@ -184,7 +184,7 @@ public class ServeurMessage {
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                             update.updateView(oos);
                             indexJoueur = (indexJoueur + 1) % 2;
-                            update.askOpponent("ABANDON?", serverSocket.getInetAddress());
+                            update.askOpponent("ABANDON?", inputSocket.getInetAddress());
                         } else {
                             oos.writeObject("Deplacement impossible");
                         }
@@ -195,7 +195,7 @@ public class ServeurMessage {
                         playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                         update.updateView(oos);
                         indexJoueur = (indexJoueur + 1) % 2;
-                        update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
+                        update.updateViewOtherPlayer(indexJoueur, inputSocket.getInetAddress());
 
                         model.newRound = false;
                     } else if (requestSplitted[1].equals(playerTurn)) {
@@ -211,12 +211,12 @@ public class ServeurMessage {
                             update.updateView(oos);
                             System.out.println("Index du joueur : " + indexJoueur);
                             indexJoueur = (indexJoueur + 1) % 2;
-                            update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
+                            update.updateViewOtherPlayer(indexJoueur, inputSocket.getInetAddress());
                         } else if (model.newRound) {
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
                             update.updateView(oos);
                             indexJoueur = (indexJoueur + 1) % 2;
-                            update.updateViewOtherPlayer(indexJoueur, serverSocket.getInetAddress());
+                            update.updateViewOtherPlayer(indexJoueur, inputSocket.getInetAddress());
 
                             model.newRound = false;
                         } else {
