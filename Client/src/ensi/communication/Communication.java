@@ -10,7 +10,8 @@ import java.net.Socket;
 public class Communication {
 
     /**
-     * This funciton permit to send a message on the server
+     * This function permit to send a message on the server
+     *
      * @param message The message
      * @return The Object provided by the server
      */
