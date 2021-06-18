@@ -2,10 +2,10 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ensi.controller.ControllerChooseMode">
    <children>
-      <Button layoutX="128.0" layoutY="101.0" mnemonicParsing="false" onAction="#onePlayer" opacity="0.4" prefHeight="70.0" prefWidth="345.0" text="1 JOUEUR" />
+      <Button disable="true" layoutX="128.0" layoutY="101.0" mnemonicParsing="false" onAction="#onePlayer" opacity="0.4"
+              prefHeight="70.0" prefWidth="345.0" text="1 JOUEUR"/>
       <Button fx:id="two_player" layoutX="128.0" layoutY="211.0" mnemonicParsing="false" onAction="#twoPlayers" prefHeight="70.0" prefWidth="345.0" text="2 JOUEURS" />
    </children>
 </AnchorPane>
