@@ -62,11 +62,9 @@ public class ServeurMessage {
         ordre = indexJoueur = playerUtils.chooseRandomNumber(2);
 
         if (ordre < 0 || ordre > 1) {
-            System.out.println("Backup de l'ordre [Pas très accurate]");
             ordre = indexJoueur = 0;
         }
 
-        System.out.println("Ordre = " + ordre);
 
         while (passwords.size() < 2) {
             ServerSocket serverSocket;
@@ -87,8 +85,7 @@ public class ServeurMessage {
                     OutputStream os = inputSocket.getOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(os);
 
-                    System.out.println("Resquest received");
-                    System.out.println(request);
+
 
                     switch (request.split(",")[0]) {
 
@@ -118,14 +115,13 @@ public class ServeurMessage {
                                     .concat(Integer.toString(position)));
 
                             update.initViewAndComm(inputSocket.getInetAddress());
-                            System.out.println("JE SUIS LA");
 
                             break;
                         case "Load game":
                             oos.writeObject("Bien reçu : chargement de partie");// envoie de l'objet
                             break;
                         case "EXIT":
-                            System.out.println("EXIT");
+
                             socket.close();
                             break;
                         case "GAME_INFO":
@@ -134,7 +130,6 @@ public class ServeurMessage {
                                 oos.writeObject("OK");
                                 modeChoosed = requestSplitted[2];
                                 difficultyChosed = requestSplitted[1];
-                                System.out.println("Mode : " + modeChoosed + " | Difficulty : " + difficultyChosed);
                                 model.setDifficulty(difficultyChosed);
                                 break;
                             }
@@ -178,14 +173,11 @@ public class ServeurMessage {
                 OutputStream os = inputSocket.getOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(os);
 
-                System.out.println("Resquest received");
-                System.out.println("Request : " + request);
                 if ("EXIT".equals(request)) {
-                    System.out.println("EXIT");
+
                     socket.close();
                 } else {
                     String[] requestSplitted = request.split(",");
-                    System.out.println(Arrays.toString(requestSplitted));
                     if (requestSplitted[1].equals("CANCEL_MOVE") && requestSplitted[2].equals(playerTurn)) {
 
                         boolean change_turn = model.cancelMove();
@@ -199,8 +191,6 @@ public class ServeurMessage {
                             oos.writeObject("Deplacement impossible");
                         }
                     } else if (requestSplitted[1].equals("SURRENDER_GAME") && requestSplitted[2].equals(playerTurn)) {
-
-                        System.out.println("--------------------------------------------------------------------");
 
                         if (model.surrenderPossible()) {
                             playerTurn = playerUtils.changePlayer(playerTurn, passwords);
@@ -231,7 +221,6 @@ public class ServeurMessage {
 
                             model.moveHoles(Integer.parseInt(requestSplitted[0]), indexJoueur);
                             update.updateView(oos);
-                            System.out.println("Index du joueur : " + indexJoueur);
                             indexJoueur = (indexJoueur + 1) % 2;
                             update.updateViewOtherPlayer(indexJoueur, inputSocket.getInetAddress());
                         } else if (model.newRound) {

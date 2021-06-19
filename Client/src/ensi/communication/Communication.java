@@ -54,7 +54,6 @@ public class Communication {
             ObjectInputStream ois = new ObjectInputStream(is);
             if(!message.equals("EXIT")){
                 response = ois.readObject();
-                System.out.println(response);
             }
             socket.close();
             serverSocket.close();
@@ -78,7 +77,6 @@ public class Communication {
      */
     private Socket createServerSocket(InetAddress address, int port) throws IOException {
         Socket socket = new Socket(address, port);
-        System.out.println("Connexion au serveur, IP = " + address.toString() + " / Port = " + port);
         return socket;
     }
 

@@ -41,10 +41,7 @@ public class Communication {
     public void sendInitMessage(Object message, int portSocket, int portSocketServer, InetAddress address) {
         Socket socket;
         Socket serverSocket;
-        System.out.println(portSocket);
-        System.out.println(portSocketServer);
         try {
-            System.out.println(portSocket);
             socket = createServerSocket(address, portSocket);
 
             ServerSocket clientSocket = new ServerSocket(portSocketServer);

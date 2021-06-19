@@ -154,7 +154,6 @@ public class ControllerMenu implements Initializable {
         } else {
             String response = (String) com.sendMessage("New game");
             String[] tab = response.split(",");
-            System.out.println(Arrays.toString(tab));
             this.comPort = tab[1];
             this.passWord = tab[2];
             this.numberPlayer = Integer.parseInt(tab[3]);
@@ -182,8 +181,6 @@ public class ControllerMenu implements Initializable {
 
                 OutputStream os = inputSocket.getOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(os);
-
-                System.out.println("Resquest received");
             }
         }
     }
@@ -212,10 +209,9 @@ public class ControllerMenu implements Initializable {
 
         gameController.init(tab_seed);
         Main.primaryStage.close();
-        System.out.println("Position : " + position);
 
         String sendGameInfo = ((String) com.sendMessage("GAME_INFO," + difficulty + "," + mode));
-        System.out.println("sendGameInfo = " + sendGameInfo);
+
 
         gameStage.show();
 

@@ -435,7 +435,6 @@ public class ControllerJeu implements Initializable {
      * @param tabSeed The score Array
      */
     private void updateScoreGame(ArrayList<?> tabSeed) {
-        System.out.println("Array list : " + tabSeed);
         roundTextInfo.setText("Round numéro : " + ((Integer) tabSeed.get(tabSeed.size()-1) + 1));
 
         if (fxmlFileLoaded.equals("../view/gamePlayer1.fxml")) {
@@ -504,7 +503,6 @@ public class ControllerJeu implements Initializable {
         Platform.runLater(() -> {
             this.tabSeed = tabSeed;
             int compteur = 0;
-            System.out.println("Array list : " + tabSeed);
 
             cleanGridPane(GridPaneArray);
 
@@ -514,7 +512,6 @@ public class ControllerJeu implements Initializable {
                 try {
                     populateGridPane((Integer) tabSeed.get(compteur), gridpane);
                     compteur++;
-                    System.out.println("Entered in updaterView");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -547,11 +544,8 @@ public class ControllerJeu implements Initializable {
         GridPane gridpaneClicked = ((GridPane) mouseEvent.getSource());
         String id = gridpaneClicked.getId().split("_")[1];
         Object serverReponse = com.sendMessage(id.concat(",").concat(this.passWord));
-        System.out.println("Hello = " + serverReponse);
 
         if (serverReponse instanceof ArrayList) {
-            System.out.println("Object is array list");
-            System.out.println(serverReponse);
             updateView((ArrayList<?>) serverReponse);
 
             setTurnInfo("Ce n'est pas votre tour !");
@@ -570,10 +564,8 @@ public class ControllerJeu implements Initializable {
             });
 
         } else if (serverReponse instanceof String) {
-            System.out.println("Object is String");
 
             if(serverReponse == "PARTIE TERMINE") {
-                System.out.println("La partie est terminée");
                 this.setTurnInfo("PARTIE TERMINE");
             }
 
@@ -588,29 +580,22 @@ public class ControllerJeu implements Initializable {
      * @throws InterruptedException InterruptedException
      */
     public Object listenToServer() throws InterruptedException {
-        System.out.println("ENTERED LISTEN");
         ServerSocket serverSocket;
         Socket inputSocket;
         Object request = null;
 
         try {
-            System.out.println("Port = " + this.port);
-            System.out.println(this.port);
             serverSocket = new ServerSocket(Integer.parseInt(this.port)+1);
             System.out.println("Le client est à l'écoute du port " + serverSocket.getLocalPort());
             inputSocket = serverSocket.accept();
-            System.out.println("Le socket a ete accepte");
 
             Socket socket = new Socket(InetAddress.getByName(ControllerMenu.ip), Integer.parseInt(this.port) + 2);
 
-            System.out.println("Hello on essaye de recevoir l'array list");
+
             InputStream is = socket.getInputStream();
             ObjectInputStream ois = new ObjectInputStream(is);
 
             request = ois.readObject();
-
-            System.out.println("Request received ECOUTE");
-            System.out.println(request);
 
             inputSocket.close();
             serverSocket.close();
@@ -619,7 +604,7 @@ public class ControllerJeu implements Initializable {
             e.printStackTrace();
         }
 
-        System.out.println("EXITED LISTEN");
+
 
         return request;
     }
@@ -640,7 +625,6 @@ public class ControllerJeu implements Initializable {
      * This function permit to play a music
      */
     static void playMusic() {
-        System.out.println(CLIENT_MUSIC);
         if(CLIENT_MUSIC) {
             String musicFile = "Client/src/ensi/assets/".concat(CURRENT_MUSIC);
             Media sound = new Media(new File(musicFile).toURI().toString());

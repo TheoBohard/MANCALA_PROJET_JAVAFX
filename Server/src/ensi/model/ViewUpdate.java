@@ -70,9 +70,6 @@ public class ViewUpdate {
 
         int port = Integer.parseInt(portList.get(indexPort));
         this.indexPort = (this.indexPort + 1) % 2;
-        System.out.println(portList + "-" + indexPort);
-
-        System.out.println("TENTATIVE ENVOIE");
         com.sendInitMessage(seedInfo, port, port - 1, address);
     }
 
@@ -84,9 +81,7 @@ public class ViewUpdate {
      */
     public void updateView(ObjectOutputStream oos) throws IOException {
         ArrayList<Integer> seedInfo = new ArrayList<>();
-        System.out.println("TEST");
         updateViewCommon(seedInfo);
-        System.out.println(seedInfo);
 
         com.sendMessage(seedInfo, oos);
     }
@@ -98,9 +93,7 @@ public class ViewUpdate {
      */
     public void updateViewOtherPlayer(int indexPlayer, InetAddress address) {
         ArrayList<Integer> seedInfo = new ArrayList<>();
-        System.out.println("TEST other player");
         updateViewCommon(seedInfo);
-        System.out.println(seedInfo);
 
         com.sendInitMessage(seedInfo, Integer.parseInt(this.portList.get((indexPlayer) % 2)) + 1,
                 Integer.parseInt(this.portList.get((indexPlayer) % 2)) + 2, address);

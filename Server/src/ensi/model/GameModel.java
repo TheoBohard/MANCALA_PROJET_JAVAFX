@@ -131,7 +131,7 @@ public class GameModel {
 
         index--;
         int numberSeed = holes.get(index).getNbSeed();
-        System.out.println("Number seed : => " + numberSeed);
+
 
         for(int i = 0; i < numberSeed; i++) {
             if((index - i - 1 + 12)%12 != index) {
@@ -148,7 +148,6 @@ public class GameModel {
             checkHole(holeToCheck, indexHoleToCheck, playerIndex);
         }
 
-        System.out.println("MoveHoles SIZE : " + holes.size());
 
         holes.get(index).setNbSeed(0);
     }
@@ -179,7 +178,6 @@ public class GameModel {
             this.holesToString();
             gameCopy.holesToString();
 
-            System.out.println("JE PASSE");
             return  false;
         }
 
@@ -192,10 +190,6 @@ public class GameModel {
         } else{
             int enemySeeds = gameCopy.getEnemySeeds(gameCopy,playerIndex);
             this.rightToTakeSeed = enemySeeds != 0;
-        }
-
-        if(!verif){
-            System.out.println("JE PASSE 2");
         }
 
         return verif;
@@ -212,8 +206,6 @@ public class GameModel {
         for(int i:res){
             GameModel copy = this.copyGameModel();
             copy.moveHoles(i+1,playerIndex);
-            System.out.println("ICI------------------------------------------------------------");
-            System.out.println(i);
             copy.holesToString();
             if(copy.getEnemySeeds(copy,playerIndex)!=0){
                 verif=true;
@@ -248,7 +240,6 @@ public class GameModel {
      * This function permit to end a game
      */
     public void endGame(){
-        System.out.println("JE PASSSSSEEEEE");
         if(this.scorePlayer1 > this.scorePlayer2){
             this.roundPlayer1++;
         }else if(this.scorePlayer1 < this.scorePlayer2){
@@ -259,7 +250,6 @@ public class GameModel {
         this.scorePlayer1 = this.scorePlayer2 = 0;
 
         if(this.nb_round == 6){
-            System.out.println("FIN DE LA PARTIE");
             this.isPartyOn = false;
         }else{
             this.newRound = true;
@@ -338,7 +328,6 @@ public class GameModel {
      * @param playerIndex The player index
      */
     private void checkHole(Hole holeToCheck, Integer holeIndex, Integer playerIndex) {
-        System.out.println(playerIndex);
         if(playerIndex==0){
             if(holeIndex<6 && (holeToCheck.getNbSeed()==2 || holeToCheck.getNbSeed()==3)){
                 int scoreToGive = holeToCheck.getNbSeed();
@@ -356,8 +345,6 @@ public class GameModel {
                 checkHole(this.holes.get(newIndexToCheck),newIndexToCheck,playerIndex);
             }
         }
-        System.out.println(this.scorePlayer1);
-        System.out.println(this.scorePlayer2);
     }
 
     /**
