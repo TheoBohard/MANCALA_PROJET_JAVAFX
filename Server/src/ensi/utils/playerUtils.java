@@ -1,3 +1,25 @@
+/*
+ *
+ * ENSICAEN
+ * 6 Boulevard Maréchal Juin
+ * F-14050 Caen Cedex
+ *
+ *  This file is owned by ENSICAEN students. No portion of this document may be reproduced,
+ *  copied or revised without written permission of the authors.
+ *
+ *  @file playerUtils.java
+ *  @author Théo BOHARD (theo.bohard@ecole.ensicaen.fr)
+ *  @author Thomas FILLION (thomas.fillion@ecole.ensicaen.fr)
+ *  @brief Class used to manage some player features
+ *  @version 1.0
+ *  @date 2021-6-19
+ *
+ *  @copyright Copyright (c) 2021.
+ *
+ *
+ *
+ */
+
 package ensi.utils;
 
 import java.util.ArrayList;
