@@ -214,7 +214,7 @@ public class GameModel {
         }
 
         if(difficulty.equals("middleMode")){
-            if(scorePlayer1>=2 || scorePlayer2>=2){
+            if(scorePlayer1>=25 || scorePlayer2>=25){
                 this.endGame();
             }
         }else if(difficulty.equals("easyMode")) {
