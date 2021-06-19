@@ -85,6 +85,7 @@ public class ControllerOptions {
      * Handle when the option CLIENT_MUSIC is changed
      */
     private void sliderMusicChanged() {
-        ControllerJeu.setCLIENT_MUSIC(sliderMusic.getValue() > 0);
+        ControllerJeu.setCLIENT_MUSIC(sliderMusic.getValue() == 1);
     }
 }
+

@@ -640,7 +640,7 @@ public class ControllerJeu implements Initializable {
      * This function permit to play a music
      */
     static void playMusic() {
-        System.out.println("CLIENT MUSIC = " + CLIENT_MUSIC);
+        System.out.println(CLIENT_MUSIC);
         if(CLIENT_MUSIC) {
             String musicFile = "Client/src/ensi/assets/".concat(CURRENT_MUSIC);
             Media sound = new Media(new File(musicFile).toURI().toString());
